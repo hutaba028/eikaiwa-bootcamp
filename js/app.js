@@ -61,12 +61,17 @@
   }
   function masteredCount(vocab) { return vocab.filter((v) => isMastered(v.en)).length; }
 
-  // 全Dayの単語（重複は除く）
+  // 日本語訳から英語原形の注釈（例:「行った(go)」の "(go)"）を除く。クイズ/カード表示用。
+  function cleanJa(ja) {
+    return String(ja).replace(/\s*[（(][A-Za-z][^（()）]*[)）]\s*/g, "").trim() || ja;
+  }
+
+  // 全Dayの単語（重複は除く・注釈は除去）
   function allVocab() {
     const seen = {}, list = [];
     CURRICULUM.forEach((d) => d.vocab.forEach((v) => {
       const k = masterKey(v.en);
-      if (!seen[k]) { seen[k] = true; list.push({ en: v.en, ja: v.ja, day: d.day }); }
+      if (!seen[k]) { seen[k] = true; list.push({ en: v.en, ja: cleanJa(v.ja), day: d.day }); }
     }));
     return list;
   }
@@ -583,7 +588,7 @@
   function renderFlashcards(day) {
     const d = CURRICULUM.find((x) => x.day === day);
     renderDeck({
-      deck: d.vocab.map((v) => ({ en: v.en, ja: v.ja, day: d.day })),
+      deck: d.vocab.map((v) => ({ en: v.en, ja: cleanJa(v.ja), day: d.day })),
       title: "Day " + d.day + " 単語カード",
       day: d.day,
       backLabel: "← 学習ページに戻る",
@@ -1749,6 +1754,7 @@
   // 今日の単語5問（間違えたら出題プールに戻す・逐次出題）
   function renderDailyWordQuiz() {
     window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
     const all = allVocab();
     const enPool = all.map((v) => v.en);
     const jaPool = all.map((v) => v.ja);
