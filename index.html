@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#4f46e5" />
+  <title>7日間 英会話ブートキャンプ</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <!-- スマホのホーム追加（スタンドアロン表示）最適化 -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="英会話7d" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <button id="brand" class="brand" aria-label="ダッシュボードへ">
+        <span class="brand-mark">7d</span>
+        <span class="brand-text">英会話ブートキャンプ</span>
+      </button>
+      <nav class="header-nav">
+        <button class="nav-btn" data-nav="dashboard">ホーム</button>
+        <button class="nav-btn" data-nav="conversation">会話</button>
+        <button class="nav-btn" data-nav="review">復習</button>
+        <button class="theme-btn" id="theme-btn" title="ダークモード切替" aria-label="ダークモード切替">🌙</button>
+        <button class="nav-btn danger" id="reset-btn">リセット</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app" class="app-main">
+    <!-- 動的に描画されます -->
+  </main>
+
+  <footer class="app-footer">
+    <p>1日 学習20分＋テスト10分が目安。進捗はこの端末に自動保存されます。</p>
+  </footer>
+
+  <!-- 確認ダイアログ -->
+  <div id="modal-overlay" class="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn btn-ghost">キャンセル</button>
+        <button id="modal-ok" class="btn btn-danger">実行する</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/conversation.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

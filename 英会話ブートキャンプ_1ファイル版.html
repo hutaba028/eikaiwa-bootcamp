@@ -1,0 +1,3116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#4f46e5" />
+  <title>7日間 英会話ブートキャンプ</title>
+  <style>
+:root {
+  --indigo: #4f46e5;
+  --indigo-dark: #4338ca;
+  --indigo-soft: #eef2ff;
+  --green: #16a34a;
+  --green-soft: #dcfce7;
+  --red: #dc2626;
+  --red-soft: #fee2e2;
+  --amber: #d97706;
+  --amber-soft: #fef3c7;
+  --ink: #1e293b;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --shadow: 0 1px 3px rgba(15, 23, 42, .08), 0 8px 24px rgba(15, 23, 42, .06);
+  --radius: 16px;
+}
+
+[data-theme="dark"] {
+  --indigo: #818cf8;
+  --indigo-dark: #a5b4fc;
+  --indigo-soft: #1e1b4b;
+  --green: #4ade80;
+  --green-soft: #14532d;
+  --red: #f87171;
+  --red-soft: #7f1d1d;
+  --amber: #fbbf24;
+  --amber-soft: #78350f;
+  --ink: #e2e8f0;
+  --muted: #94a3b8;
+  --line: #334155;
+  --bg: #0f172a;
+  --card: #1e293b;
+  --shadow: 0 1px 3px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Header ===== */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  color: var(--ink);
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--indigo), #7c3aed);
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: .5px;
+}
+.brand-text { font-weight: 700; font-size: 17px; }
+.header-nav { display: flex; gap: 6px; }
+.nav-btn {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.nav-btn:hover { background: var(--indigo-soft); color: var(--indigo-dark); }
+.nav-btn.danger:hover { background: var(--red-soft); color: var(--red); }
+
+/* ===== Layout ===== */
+.app-main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 22px 16px 48px;
+}
+.app-footer {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ===== Generic ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform .08s, box-shadow .15s, background .15s, opacity .15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn-primary { background: var(--indigo); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--indigo-dark); }
+.btn-ghost { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.btn-ghost:hover:not(:disabled) { background: var(--indigo-soft); }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-danger:hover { background: #b91c1c; }
+.btn-block { width: 100%; }
+
+.section-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+.section-sub { color: var(--muted); margin: 0 0 20px; font-size: 14px; }
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.fade-in { animation: fade .35s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ===== Dashboard ===== */
+.overview {
+  background: linear-gradient(135deg, var(--indigo), #7c3aed);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow);
+}
+.overview h1 { margin: 0 0 4px; font-size: 20px; }
+.overview p { margin: 0 0 16px; opacity: .9; font-size: 14px; }
+.overall-bar {
+  height: 14px;
+  background: rgba(255, 255, 255, .25);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.overall-bar > span {
+  display: block;
+  height: 100%;
+  background: #fff;
+  border-radius: 999px;
+  transition: width .5s ease;
+}
+.overall-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px;
+}
+.day-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid transparent;
+  transition: border-color .15s, transform .12s;
+}
+.day-card:hover { transform: translateY(-2px); border-color: var(--indigo-soft); }
+.day-card.done { border-color: var(--green); }
+.day-top { display: flex; align-items: center; gap: 12px; }
+.day-badge {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: var(--indigo-soft);
+  color: var(--indigo-dark);
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  line-height: 1.1;
+  text-align: center;
+}
+.day-card.done .day-badge { background: var(--green-soft); color: var(--green); }
+.day-title { font-weight: 700; font-size: 15px; }
+.day-theme { color: var(--muted); font-size: 12.5px; }
+.day-status {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.status-done { color: var(--green); }
+.status-todo { color: var(--muted); }
+.mini-bar {
+  height: 8px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.mini-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--indigo);
+  border-radius: 999px;
+  transition: width .5s;
+}
+.day-card.done .mini-bar > span { background: var(--green); }
+.day-actions { display: flex; gap: 8px; margin-top: auto; }
+.day-actions .btn { flex: 1; padding: 10px; font-size: 14px; }
+
+/* ===== Learn ===== */
+.back-link {
+  background: none;
+  border: 0;
+  color: var(--indigo);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 14px;
+}
+.learn-block { margin-bottom: 20px; }
+.block-label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--indigo-dark);
+  background: var(--indigo-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.grammar-point {
+  border-left: 3px solid var(--indigo);
+  padding: 4px 0 4px 14px;
+  margin: 0 0 14px;
+}
+.grammar-point h4 { margin: 0 0 4px; font-size: 15.5px; }
+.grammar-point p { margin: 0; color: var(--ink); font-size: 14.5px; }
+.grammar-point .eg { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+.vocab-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+.vocab-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+.vocab-en { font-weight: 700; }
+.vocab-ja { color: var(--muted); font-size: 13.5px; }
+.vocab-text { flex: 1; min-width: 0; }
+
+.example-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.example-item:last-child { border-bottom: 0; }
+.example-en { font-weight: 600; }
+.example-ja { color: var(--muted); font-size: 13.5px; }
+
+.speak-btn {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  cursor: pointer;
+  font-size: 15px;
+  display: grid;
+  place-items: center;
+  transition: background .12s, border-color .12s;
+}
+.speak-btn:hover { background: var(--indigo-soft); border-color: var(--indigo); }
+.speak-btn.speaking { background: var(--amber-soft); border-color: var(--amber); }
+
+/* ===== Test ===== */
+.test-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.test-progress .mini-bar { flex: 1; }
+.test-progress .count { font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+
+.question {
+  margin-bottom: 16px;
+}
+.q-type-tag {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .03em;
+  color: var(--amber);
+  background: var(--amber-soft);
+  padding: 3px 9px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.q-prompt {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 10px 0 14px;
+}
+.q-prompt .blank { color: var(--indigo); letter-spacing: 2px; }
+
+/* choice */
+.choices { display: grid; gap: 8px; }
+.choice {
+  text-align: left;
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  border-radius: 11px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.choice:hover:not(:disabled) { border-color: var(--indigo); background: var(--indigo-soft); }
+.choice.selected { border-color: var(--indigo); background: var(--indigo-soft); }
+.choice .key {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.choice.selected .key { background: var(--indigo); color: #fff; }
+.choice.correct { border-color: var(--green); background: var(--green-soft); }
+.choice.correct .key { background: var(--green); color: #fff; }
+.choice.wrong { border-color: var(--red); background: var(--red-soft); }
+.choice.wrong .key { background: var(--red); color: #fff; }
+.choice:disabled { cursor: default; }
+
+/* order */
+.order-answer {
+  min-height: 50px;
+  border: 1.5px dashed var(--indigo);
+  border-radius: 11px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--indigo-soft);
+  margin-bottom: 10px;
+}
+.order-answer:empty::before {
+  content: "ここに語を並べます";
+  color: var(--muted);
+  font-size: 13.5px;
+}
+.order-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.token {
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  border-radius: 9px;
+  padding: 8px 13px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .08s, border-color .12s;
+}
+.token:hover:not(:disabled) { border-color: var(--indigo); }
+.token:active { transform: scale(.96); }
+.token.in-answer { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+.token:disabled { cursor: default; opacity: .9; }
+
+/* fill / translate */
+.text-input {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: 11px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 15px;
+  background: var(--card);
+  color: var(--ink);
+  transition: border-color .12s;
+}
+.text-input:focus { outline: none; border-color: var(--indigo); }
+.text-input.correct { border-color: var(--green); background: var(--green-soft); }
+.text-input.wrong { border-color: var(--red); background: var(--red-soft); }
+.hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+/* feedback */
+.feedback {
+  margin-top: 12px;
+  border-radius: 11px;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+.feedback.ok { background: var(--green-soft); color: #14532d; }
+.feedback.ng { background: var(--red-soft); color: #7f1d1d; }
+.feedback .fb-head { font-weight: 800; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.feedback .model { font-weight: 700; }
+
+.test-foot { margin-top: 8px; }
+
+/* ===== Result ===== */
+.result-hero {
+  text-align: center;
+  padding: 26px 20px;
+  margin-bottom: 18px;
+}
+.score-ring {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 14px;
+  position: relative;
+}
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .pct {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  font-weight: 800;
+}
+.result-msg { font-size: 18px; font-weight: 800; margin: 4px 0; }
+.result-detail { color: var(--muted); font-size: 14px; }
+.result-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; justify-content: center; }
+
+/* ===== Empty ===== */
+.empty {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--muted);
+}
+.empty .big { font-size: 44px; margin-bottom: 8px; }
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .5);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  padding: 20px;
+}
+.modal-overlay[hidden] { display: none; }
+.modal {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+.modal p { margin: 0 0 18px; font-size: 15px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ===== Responsive ===== */
+@media (max-width: 560px) {
+  .brand-text { display: none; }
+  .section-title { font-size: 20px; }
+  .day-grid { grid-template-columns: 1fr; }
+  .vocab-list { grid-template-columns: 1fr 1fr; }
+  .overview { padding: 18px; }
+}
+@media (max-width: 380px) {
+  .vocab-list { grid-template-columns: 1fr; }
+  .nav-btn { padding: 8px 9px; }
+}
+
+/* ===== Theme transition & dark overrides ===== */
+body { transition: background .25s, color .25s; }
+.card, .day-card, .choice, .token, .vocab-item, .text-input, .speak-btn, .btn-ghost {
+  transition: background .25s, border-color .15s, color .25s, transform .12s;
+}
+[data-theme="dark"] .app-header { background: rgba(15, 23, 42, .92); }
+[data-theme="dark"] .feedback.ok { color: #bbf7d0; }
+[data-theme="dark"] .feedback.ng { color: #fecaca; }
+[data-theme="dark"] .modal-overlay { background: rgba(0, 0, 0, .6); }
+
+.theme-btn {
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.theme-btn:hover { background: var(--indigo-soft); }
+
+/* ===== Streak chip ===== */
+.streak-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, .2);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin: 6px 0 2px;
+}
+
+/* ===== Flashcards ===== */
+.fc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.fc-toolbar .count { font-weight: 700; color: var(--muted); }
+.toggle-dir {
+  margin-left: auto;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+.toggle-dir:hover { border-color: var(--indigo); }
+
+.flashcard {
+  position: relative;
+  min-height: 240px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  background: var(--card);
+  border: 2px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 30px 20px;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  transition: border-color .15s, transform .1s;
+}
+.flashcard:active { transform: scale(.99); }
+.flashcard.mastered { border-color: var(--green); }
+.fc-side-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.fc-front { font-size: 34px; font-weight: 800; }
+.fc-back { font-size: 22px; font-weight: 700; color: var(--indigo-dark); }
+.fc-tap-hint { font-size: 12.5px; color: var(--muted); }
+.fc-mastered-tag {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--green);
+}
+.fc-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.fc-controls .btn { flex: 1; }
+.fc-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  gap: 10px;
+}
+.fc-nav .btn-ghost { min-width: 90px; }
+.fc-progress-bar {
+  height: 8px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 6px 0 16px;
+}
+.fc-progress-bar > span { display: block; height: 100%; background: var(--green); border-radius: 999px; transition: width .3s; }
+
+/* ===== Special launch card (修了テスト等) ===== */
+.feature-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  border: 1px dashed var(--indigo);
+}
+.feature-card .fc-icon { font-size: 30px; }
+.feature-card .fc-text { flex: 1; min-width: 200px; }
+.feature-card .fc-text strong { font-size: 16px; }
+.feature-card .fc-text div { color: var(--muted); font-size: 13.5px; }
+
+/* ===== Mini link (タップで表示するヒント等) ===== */
+.mini-link {
+  background: none;
+  border: 0;
+  color: var(--indigo);
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 0;
+}
+.mini-link:hover { text-decoration: underline; }
+
+/* ===== Conversation hub ===== */
+.conv-hero {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.conv-hero h1 { margin: 0 0 6px; font-size: 20px; }
+.conv-hero p { margin: 0; opacity: .92; font-size: 14px; }
+.conv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.conv-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color .15s, transform .12s;
+}
+.conv-card:hover { transform: translateY(-2px); border-color: var(--indigo-soft); }
+.conv-card .ic { font-size: 30px; }
+.conv-card h3 { margin: 8px 0 4px; font-size: 16px; }
+.conv-card p { margin: 0; color: var(--muted); font-size: 13px; }
+
+/* ===== Dialogue ===== */
+.dialogue-scene { margin-bottom: 18px; }
+.dia-line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.dia-line:last-child { border-bottom: 0; }
+.dia-speaker {
+  flex: 0 0 auto;
+  min-width: 42px;
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--indigo);
+  border-radius: 8px;
+  padding: 3px 6px;
+  margin-top: 2px;
+}
+.dia-line.right .dia-speaker { background: var(--green); }
+.dia-body { flex: 1; min-width: 0; }
+.dia-en { font-weight: 600; }
+.dia-ja { color: var(--muted); font-size: 13.5px; }
+
+/* ===== Phrasebook ===== */
+.phrase-cat { margin-bottom: 16px; }
+.phrase-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.phrase-item:last-child { border-bottom: 0; }
+.phrase-en { font-weight: 600; }
+.phrase-ja { color: var(--muted); font-size: 13.5px; }
+
+/* ===== Keyboard hint ===== */
+.kbd-hint { color: var(--muted); font-size: 12.5px; margin-top: 6px; }
+kbd {
+  display: inline-block;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-size: 11.5px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  background: var(--card);
+}
+
+</style>
+  <!-- スマホのホーム追加（スタンドアロン表示）最適化 -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="英会話7d" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <button id="brand" class="brand" aria-label="ダッシュボードへ">
+        <span class="brand-mark">7d</span>
+        <span class="brand-text">英会話ブートキャンプ</span>
+      </button>
+      <nav class="header-nav">
+        <button class="nav-btn" data-nav="dashboard">ホーム</button>
+        <button class="nav-btn" data-nav="conversation">会話</button>
+        <button class="nav-btn" data-nav="review">復習</button>
+        <button class="theme-btn" id="theme-btn" title="ダークモード切替" aria-label="ダークモード切替">🌙</button>
+        <button class="nav-btn danger" id="reset-btn">リセット</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app" class="app-main">
+    <!-- 動的に描画されます -->
+  </main>
+
+  <footer class="app-footer">
+    <p>1日 学習20分＋テスト10分が目安。進捗はこの端末に自動保存されます。</p>
+  </footer>
+
+  <!-- 確認ダイアログ -->
+  <div id="modal-overlay" class="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn btn-ghost">キャンセル</button>
+        <button id="modal-ok" class="btn btn-danger">実行する</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+/* =========================================================
+   7日間 英会話ブートキャンプ — 学習コンテンツ & テストデータ
+   - grammar : 文法解説（ポイント＋例文）
+   - vocab   : Day別 頻出単語
+   - examples: 会話で使える例文（読み上げ対応）
+   - questions: テスト問題
+       type: 'choice'    4択      -> answer は正解インデックス
+       type: 'order'     並べ替え -> answer は正しい語順の配列
+       type: 'fill'      穴埋め   -> answer は許容解の配列（表記ゆれ可）
+       type: 'translate' 英作文   -> keywords 必須語 / model 模範解答
+   ========================================================= */
+
+const CURRICULUM = [
+  /* ================= DAY 1 ================= */
+  {
+    day: 1,
+    title: "be動詞・自己紹介",
+    theme: "I am / You are / This is、肯定・否定・疑問、人称代名詞",
+    grammar: {
+      intro: "英語の土台になる「be動詞（am / is / are）」を覚えます。主語によって形が変わるのがポイントです。",
+      points: [
+        { h: "主語とbe動詞の組み合わせ", p: "I → am、he / she / it → is、you / we / they → are。", eg: "I am Ken. / She is a teacher. / They are students." },
+        { h: "否定文は not を足すだけ", p: "be動詞の後ろに not を置きます。短縮形(isn't / aren't)もよく使います。", eg: "I am not busy. / He is not (isn't) here." },
+        { h: "疑問文は be動詞を前に出す", p: "主語とbe動詞を入れ替えます。答えは Yes, I am. / No, I'm not. など。", eg: "Are you a student? — Yes, I am." },
+        { h: "人称代名詞", p: "I(私), you(あなた), he(彼), she(彼女), it(それ), we(私たち), they(彼ら)。", eg: "This is my friend. He is from Osaka." },
+      ],
+    },
+    vocab: [
+      { en: "I", ja: "私は" }, { en: "you", ja: "あなたは" }, { en: "he", ja: "彼は" },
+      { en: "she", ja: "彼女は" }, { en: "it", ja: "それは" }, { en: "we", ja: "私たちは" },
+      { en: "they", ja: "彼らは" }, { en: "this", ja: "これ" }, { en: "that", ja: "あれ" },
+      { en: "name", ja: "名前" }, { en: "friend", ja: "友達" }, { en: "teacher", ja: "先生" },
+      { en: "student", ja: "学生" }, { en: "from", ja: "〜出身で" }, { en: "Japan", ja: "日本" },
+      { en: "nice", ja: "すてきな" }, { en: "happy", ja: "うれしい" }, { en: "tired", ja: "疲れた" },
+      { en: "busy", ja: "忙しい" }, { en: "fine", ja: "元気な" }, { en: "yes", ja: "はい" },
+      { en: "no", ja: "いいえ" }, { en: "and", ja: "そして" }, { en: "very", ja: "とても" },
+      { en: "here", ja: "ここに" }, { en: "now", ja: "今" }, { en: "old", ja: "年をとった/古い" },
+      { en: "young", ja: "若い" }, { en: "my", ja: "私の" }, { en: "your", ja: "あなたの" },
+    ],
+    examples: [
+      { en: "Hi, I am Ken. Nice to meet you.", ja: "やあ、ケンです。はじめまして。" },
+      { en: "I am from Japan.", ja: "私は日本出身です。" },
+      { en: "Are you a student?", ja: "あなたは学生ですか？" },
+      { en: "This is my friend, Mari.", ja: "こちらは友達のマリです。" },
+      { en: "She is very kind.", ja: "彼女はとても親切です。" },
+      { en: "I am not tired.", ja: "私は疲れていません。" },
+    ],
+    questions: [
+      { type: "choice", q: "I ___ a student.", options: ["am", "is", "are", "be"], answer: 0, explain: "主語が I のときは am を使います。" },
+      { type: "choice", q: "She ___ from Japan.", options: ["am", "are", "is", "do"], answer: 2, explain: "主語が she（3人称単数）なので is。" },
+      { type: "choice", q: "「彼らは忙しい」を表すのは？", options: ["They is busy.", "They are busy.", "They am busy.", "They be busy."], answer: 1, explain: "they には are を使います。" },
+      { type: "choice", q: "疑問文として正しいのは？", options: ["You are a teacher?", "Are you a teacher?", "Do you teacher?", "Is you a teacher?"], answer: 1, explain: "be動詞の疑問文は be動詞を主語の前に出します。" },
+      { type: "order", q: "「私はケンです」を並べ替えましょう。", answer: ["I", "am", "Ken"], explain: "I + am + 名前 の語順です。" },
+      { type: "order", q: "「彼女は私の友達です」を並べ替えましょう。", answer: ["She", "is", "my", "friend"], explain: "She is my friend. が正解です。" },
+      { type: "order", q: "「あなたは学生ですか？」を並べ替えましょう。", answer: ["Are", "you", "a", "student"], explain: "疑問文は Are を先頭に。" },
+      { type: "fill", q: "He ___ a teacher.（be動詞を入れる）", answer: ["is"], explain: "he は3人称単数なので is。" },
+      { type: "fill", q: "We ___ happy.（be動詞を入れる）", answer: ["are"], explain: "we には are を使います。" },
+      { type: "fill", q: "I am ___ tired.（「〜ない」の語）", answer: ["not"], explain: "否定は be動詞の後ろに not。" },
+      { type: "translate", q: "「私は日本出身です。」を英語にしましょう。", keywords: ["i", "am", "from", "japan"], model: "I am from Japan.", explain: "I am from + 場所。" },
+      { type: "translate", q: "「はじめまして。」を英語にしましょう。", keywords: ["nice", "to", "meet", "you"], model: "Nice to meet you.", explain: "定番の挨拶 Nice to meet you. です。to を忘れずに。" },
+    ],
+  },
+
+  /* ================= DAY 2 ================= */
+  {
+    day: 2,
+    title: "一般動詞の現在形",
+    theme: "I like / He likes、Do/Does、3単現のs、頻度の副詞",
+    grammar: {
+      intro: "「〜する」を表す一般動詞を学びます。3人称単数(he/she/it)が主語のとき動詞に s が付くのが最大のポイントです。",
+      points: [
+        { h: "3単現の s", p: "he / she / it が主語のとき、動詞に s（または es）を付けます。", eg: "I like coffee. / She likes coffee." },
+        { h: "疑問文は Do / Does", p: "主語が he/she/it なら Does、それ以外は Do を文頭に。動詞は原形に戻します。", eg: "Do you like music? / Does he play tennis?" },
+        { h: "否定文は don't / doesn't", p: "don't / doesn't の後ろは動詞の原形。", eg: "I don't eat meat. / She doesn't drink coffee." },
+        { h: "頻度を表す副詞", p: "always(いつも) > usually(たいてい) > often(よく) > sometimes(時々) > never(全くない)。ふつう動詞の前に置きます。", eg: "I always get up at six. / He sometimes plays games." },
+      ],
+    },
+    vocab: [
+      { en: "like", ja: "好む" }, { en: "have", ja: "持っている" }, { en: "want", ja: "ほしい" },
+      { en: "need", ja: "必要とする" }, { en: "go", ja: "行く" }, { en: "play", ja: "(競技を)する/遊ぶ" },
+      { en: "work", ja: "働く/仕事" }, { en: "study", ja: "勉強する" }, { en: "eat", ja: "食べる" },
+      { en: "drink", ja: "飲む" }, { en: "live", ja: "住む" }, { en: "speak", ja: "話す" },
+      { en: "know", ja: "知っている" }, { en: "do", ja: "する" }, { en: "make", ja: "作る" },
+      { en: "always", ja: "いつも" }, { en: "usually", ja: "たいてい" }, { en: "often", ja: "よく" },
+      { en: "sometimes", ja: "時々" }, { en: "never", ja: "決して〜ない" }, { en: "every day", ja: "毎日" },
+      { en: "coffee", ja: "コーヒー" }, { en: "music", ja: "音楽" }, { en: "English", ja: "英語" },
+      { en: "tennis", ja: "テニス" }, { en: "morning", ja: "朝" }, { en: "food", ja: "食べ物" },
+      { en: "water", ja: "水" }, { en: "book", ja: "本" }, { en: "well", ja: "上手に" },
+    ],
+    examples: [
+      { en: "I like Japanese food.", ja: "私は和食が好きです。" },
+      { en: "She speaks English very well.", ja: "彼女は英語をとても上手に話します。" },
+      { en: "Do you play tennis?", ja: "テニスをしますか？" },
+      { en: "He doesn't drink coffee.", ja: "彼はコーヒーを飲みません。" },
+      { en: "I usually study in the morning.", ja: "私はたいてい朝に勉強します。" },
+      { en: "We sometimes go to the movies.", ja: "私たちは時々映画に行きます。" },
+    ],
+    questions: [
+      { type: "choice", q: "She ___ coffee every morning.", options: ["drink", "drinks", "drinking", "is drink"], answer: 1, explain: "she が主語なので3単現の s を付けて drinks。" },
+      { type: "choice", q: "「あなたは音楽が好きですか？」", options: ["Do you like music?", "Does you like music?", "Are you like music?", "You like music?"], answer: 0, explain: "you の疑問文は Do を文頭に。" },
+      { type: "choice", q: "He ___ play soccer.（否定文）", options: ["don't", "doesn't", "isn't", "not"], answer: 1, explain: "he の否定は doesn't。後ろは原形 play。" },
+      { type: "choice", q: "頻度が最も高いのは？", options: ["sometimes", "never", "always", "often"], answer: 2, explain: "always(いつも)が最も頻度が高い副詞です。" },
+      { type: "order", q: "「私は毎日英語を勉強します」を並べ替えましょう。", answer: ["I", "study", "English", "every day"], explain: "I study English every day. が正解。" },
+      { type: "order", q: "「彼はテニスをしますか？」を並べ替えましょう。", answer: ["Does", "he", "play", "tennis"], explain: "Does + 主語 + 動詞の原形。" },
+      { type: "order", q: "「彼女はコーヒーを飲みません」を並べ替えましょう。", answer: ["She", "doesn't", "drink", "coffee"], explain: "doesn't の後ろは原形 drink。" },
+      { type: "fill", q: "He ___ in Tokyo.（live を正しい形に）", answer: ["lives"], explain: "he が主語なので live に s を付けて lives。" },
+      { type: "fill", q: "___ you want some water?（Do/Does）", answer: ["do"], explain: "you の疑問文は Do。" },
+      { type: "fill", q: "I ___ eat meat.（「食べない」の否定語）", answer: ["don't", "do not"], explain: "I の否定は don't（do not）。" },
+      { type: "translate", q: "「私は和食が好きです。」を英語にしましょう。", keywords: ["i", "like", "japanese", "food"], model: "I like Japanese food.", explain: "I like + 名詞。" },
+      { type: "translate", q: "「彼女は英語を話します。」を英語にしましょう。", keywords: ["she", "speaks", "english"], model: "She speaks English.", explain: "she なので speak に s を付けます。" },
+    ],
+  },
+
+  /* ================= DAY 3 ================= */
+  {
+    day: 3,
+    title: "過去形",
+    theme: "規則変化(-ed)、不規則動詞、Did〜?",
+    grammar: {
+      intro: "「〜した」という過去の出来事を表します。規則動詞は -ed、不規則動詞は形が変わります。",
+      points: [
+        { h: "規則動詞は -ed", p: "多くの動詞は語尾に ed を付けます。", eg: "play → played, want → wanted, study → studied" },
+        { h: "頻出の不規則動詞", p: "go→went, have→had, eat→ate, see→saw, get→got, make→made, take→took, come→came。", eg: "I went to school. / She had lunch." },
+        { h: "疑問文は Did", p: "Did を文頭に置き、動詞は原形に戻します。", eg: "Did you go to the party? — Yes, I did." },
+        { h: "否定文は didn't", p: "didn't の後ろは動詞の原形。", eg: "I didn't see him. / She didn't come." },
+      ],
+    },
+    vocab: [
+      { en: "went", ja: "行った(go)" }, { en: "had", ja: "持っていた(have)" }, { en: "ate", ja: "食べた(eat)" },
+      { en: "saw", ja: "見た(see)" }, { en: "got", ja: "得た(get)" }, { en: "made", ja: "作った(make)" },
+      { en: "took", ja: "取った(take)" }, { en: "came", ja: "来た(come)" }, { en: "bought", ja: "買った(buy)" },
+      { en: "said", ja: "言った(say)" }, { en: "did", ja: "した(do)" }, { en: "yesterday", ja: "昨日" },
+      { en: "last night", ja: "昨夜" }, { en: "last week", ja: "先週" }, { en: "ago", ja: "〜前に" },
+      { en: "then", ja: "それから/その時" }, { en: "buy", ja: "買う" }, { en: "see", ja: "見る/会う" },
+      { en: "get", ja: "得る/着く" }, { en: "take", ja: "取る/乗る" }, { en: "come", ja: "来る" },
+      { en: "say", ja: "言う" }, { en: "party", ja: "パーティー" }, { en: "lunch", ja: "昼食" },
+      { en: "dinner", ja: "夕食" }, { en: "movie", ja: "映画" }, { en: "home", ja: "家(へ)" },
+      { en: "school", ja: "学校" }, { en: "weekend", ja: "週末" }, { en: "great", ja: "すばらしい" },
+    ],
+    examples: [
+      { en: "I went to the park yesterday.", ja: "私は昨日公園に行きました。" },
+      { en: "We had dinner at a nice restaurant.", ja: "私たちはすてきなレストランで夕食を食べました。" },
+      { en: "Did you watch the movie?", ja: "その映画を見ましたか？" },
+      { en: "She didn't come to the party.", ja: "彼女はパーティーに来ませんでした。" },
+      { en: "I saw my friend last week.", ja: "先週、友達に会いました。" },
+      { en: "It was a great weekend.", ja: "すばらしい週末でした。" },
+    ],
+    questions: [
+      { type: "choice", q: "I ___ to school yesterday.", options: ["go", "goed", "went", "gone"], answer: 2, explain: "go の過去形は不規則変化で went。" },
+      { type: "choice", q: "「play」の過去形は？", options: ["played", "plaid", "plaied", "plays"], answer: 0, explain: "規則動詞なので -ed を付けて played。" },
+      { type: "choice", q: "「彼は来ましたか？」", options: ["Did he came?", "Did he come?", "Does he come?", "Was he come?"], answer: 1, explain: "Did の後ろは動詞の原形 come。" },
+      { type: "choice", q: "She ___ see the email.（否定文）", options: ["didn't", "doesn't", "wasn't", "don't"], answer: 0, explain: "過去の否定は didn't。後ろは原形 see。" },
+      { type: "order", q: "「私は昨日テニスをしました」を並べ替えましょう。", answer: ["I", "played", "tennis", "yesterday"], explain: "play の過去形 played を使います。" },
+      { type: "order", q: "「私たちは夕食を食べました」を並べ替えましょう。", answer: ["We", "had", "dinner"], explain: "have の過去形は had。" },
+      { type: "order", q: "「あなたは公園に行きましたか？」を並べ替えましょう。", answer: ["Did", "you", "go", "to", "the", "park"], explain: "Did + 主語 + 原形(go)。" },
+      { type: "fill", q: "I ___ a new phone last week.（buy の過去形）", answer: ["bought"], explain: "buy の過去形は bought。" },
+      { type: "fill", q: "She ___ lunch with me.（have の過去形）", answer: ["had"], explain: "have の過去形は had。" },
+      { type: "fill", q: "I ___ come yesterday.（「来なかった」の否定語）", answer: ["didn't", "did not"], explain: "過去の否定は didn't（did not）。" },
+      { type: "translate", q: "「私は昨日公園に行きました。」を英語にしましょう。", keywords: ["i", "went", "park", "yesterday"], model: "I went to the park yesterday.", explain: "go の過去形 went を使います。" },
+      { type: "translate", q: "「その映画を見ましたか？」を英語にしましょう。", keywords: ["did", "you", "watch", "movie"], model: "Did you watch the movie?", explain: "Did you + 原形 で過去の疑問文。" },
+    ],
+  },
+
+  /* ================= DAY 4 ================= */
+  {
+    day: 4,
+    title: "未来表現",
+    theme: "will / be going to、予定や意志の言い方",
+    grammar: {
+      intro: "これからのこと（未来）を表す2つの言い方を学びます。will と be going to です。",
+      points: [
+        { h: "will（その場の意志・予測）", p: "will + 動詞の原形。「〜するつもり」「〜だろう」。", eg: "I will call you later. / It will rain tomorrow." },
+        { h: "be going to（決まっている予定）", p: "am/is/are going to + 動詞の原形。すでに決めている予定に使います。", eg: "I am going to visit Kyoto. / She is going to study abroad." },
+        { h: "否定・疑問", p: "will not(won't)、Will you 〜? / be動詞を前に出して Are you going to 〜?", eg: "I won't be late. / Are you going to come?" },
+        { h: "未来を表す語句", p: "tomorrow(明日), next week(来週), soon(まもなく), later(あとで)。", eg: "See you tomorrow! / I'll be back soon." },
+      ],
+    },
+    vocab: [
+      { en: "will", ja: "〜だろう/するつもり" }, { en: "going to", ja: "〜する予定" }, { en: "tomorrow", ja: "明日" },
+      { en: "next week", ja: "来週" }, { en: "soon", ja: "まもなく" }, { en: "later", ja: "あとで" },
+      { en: "visit", ja: "訪れる" }, { en: "call", ja: "電話する" }, { en: "meet", ja: "会う" },
+      { en: "travel", ja: "旅行する" }, { en: "rain", ja: "雨が降る/雨" }, { en: "leave", ja: "出発する/去る" },
+      { en: "arrive", ja: "到着する" }, { en: "stay", ja: "滞在する" }, { en: "start", ja: "始める" },
+      { en: "finish", ja: "終える" }, { en: "tonight", ja: "今夜" }, { en: "future", ja: "未来" },
+      { en: "plan", ja: "計画" }, { en: "trip", ja: "旅行" }, { en: "weekend", ja: "週末" },
+      { en: "back", ja: "戻って" }, { en: "ready", ja: "準備ができた" }, { en: "late", ja: "遅れて" },
+      { en: "early", ja: "早く" }, { en: "tomorrow morning", ja: "明日の朝" }, { en: "vacation", ja: "休暇" },
+      { en: "next year", ja: "来年" }, { en: "probably", ja: "おそらく" }, { en: "maybe", ja: "たぶん" },
+    ],
+    examples: [
+      { en: "I will call you later.", ja: "あとで電話しますね。" },
+      { en: "I am going to visit Kyoto next week.", ja: "来週、京都を訪れる予定です。" },
+      { en: "It will rain tomorrow.", ja: "明日は雨でしょう。" },
+      { en: "Are you going to come to the party?", ja: "パーティーに来る予定ですか？" },
+      { en: "I won't be late.", ja: "遅れません。" },
+      { en: "See you tomorrow!", ja: "また明日！" },
+    ],
+    questions: [
+      { type: "choice", q: "I ___ call you tonight.", options: ["will", "am", "do", "did"], answer: 0, explain: "「〜するつもり」は will + 原形。" },
+      { type: "choice", q: "I am going ___ visit Osaka.", options: ["to", "for", "at", "in"], answer: 0, explain: "be going to + 動詞の原形。to が入ります。" },
+      { type: "choice", q: "「彼女は来る予定ですか？」", options: ["Is she going to come?", "She is going to come?", "Does she going to come?", "Will she coming?"], answer: 0, explain: "be動詞を前に出して疑問文に。" },
+      { type: "choice", q: "won't は何の短縮形？", options: ["will not", "want not", "would not", "was not"], answer: 0, explain: "won't = will not。" },
+      { type: "order", q: "「明日電話します」を並べ替えましょう。", answer: ["I", "will", "call", "you", "tomorrow"], explain: "will + 原形 call。" },
+      { type: "order", q: "「私は京都を訪れる予定です」を並べ替えましょう。", answer: ["I", "am", "going", "to", "visit", "Kyoto"], explain: "be going to + 原形 visit。" },
+      { type: "order", q: "「明日は雨でしょう」を並べ替えましょう。", answer: ["It", "will", "rain", "tomorrow"], explain: "It will rain tomorrow. が正解。" },
+      { type: "fill", q: "I ___ be late.（「〜しないだろう」の短縮形）", answer: ["won't", "will not"], explain: "won't（will not）で否定の未来。" },
+      { type: "fill", q: "She is ___ to study abroad.（going を補う）", answer: ["going"], explain: "be going to の going。" },
+      { type: "fill", q: "We ___ travel next year.（will を補う）", answer: ["will"], explain: "未来の意志は will + 原形。" },
+      { type: "translate", q: "「あとで電話します。」を英語にしましょう。", keywords: ["i", "will", "call", "you", "later"], model: "I will call you later.", explain: "will + 原形 call。" },
+      { type: "translate", q: "「また明日！」を英語にしましょう。", keywords: ["see", "you", "tomorrow"], model: "See you tomorrow!", explain: "別れの定番表現 See you tomorrow!。" },
+    ],
+  },
+
+  /* ================= DAY 5 ================= */
+  {
+    day: 5,
+    title: "助動詞・依頼表現",
+    theme: "can / could / must / should / would like to、Can I〜? / Could you〜?",
+    grammar: {
+      intro: "「できる」「〜すべき」など気持ちを添える助動詞と、ていねいな依頼の表現を学びます。",
+      points: [
+        { h: "can（能力・可能）", p: "can + 動詞の原形。「〜できる」。否定は can't。", eg: "I can swim. / She can't drive." },
+        { h: "should（助言）/ must（義務）", p: "should は「〜したほうがいい」、must は「〜しなければならない」。", eg: "You should rest. / I must go now." },
+        { h: "ていねいな依頼・許可", p: "Can I 〜?（〜してもいい？）、Could you 〜?（〜してもらえますか？）。could はより丁寧。", eg: "Can I sit here? / Could you help me?" },
+        { h: "would like to（〜したい）", p: "want to のていねいな言い方。注文などで便利。", eg: "I would like to order coffee. / I'd like a cup of tea." },
+      ],
+    },
+    vocab: [
+      { en: "can", ja: "〜できる" }, { en: "could", ja: "〜できた/(丁寧)〜してもらえる" }, { en: "should", ja: "〜すべき" },
+      { en: "must", ja: "〜しなければ" }, { en: "would like", ja: "〜したい(丁寧)" }, { en: "help", ja: "助ける" },
+      { en: "swim", ja: "泳ぐ" }, { en: "drive", ja: "運転する" }, { en: "cook", ja: "料理する" },
+      { en: "rest", ja: "休む" }, { en: "order", ja: "注文する" }, { en: "open", ja: "開ける" },
+      { en: "close", ja: "閉める" }, { en: "sit", ja: "座る" }, { en: "wait", ja: "待つ" },
+      { en: "use", ja: "使う" }, { en: "try", ja: "試す" }, { en: "ask", ja: "頼む/尋ねる" },
+      { en: "please", ja: "どうか/お願いします" }, { en: "sure", ja: "もちろん" }, { en: "of course", ja: "もちろん" },
+      { en: "maybe", ja: "たぶん" }, { en: "menu", ja: "メニュー" }, { en: "bill", ja: "勘定書" },
+      { en: "tea", ja: "紅茶" }, { en: "window", ja: "窓" }, { en: "door", ja: "ドア" },
+      { en: "again", ja: "もう一度" }, { en: "slowly", ja: "ゆっくり" }, { en: "problem", ja: "問題" },
+    ],
+    examples: [
+      { en: "I can speak a little English.", ja: "私は少し英語を話せます。" },
+      { en: "Could you help me, please?", ja: "手伝っていただけますか？" },
+      { en: "Can I sit here?", ja: "ここに座ってもいいですか？" },
+      { en: "You should get some rest.", ja: "少し休んだほうがいいですよ。" },
+      { en: "I would like to order, please.", ja: "注文したいのですが。" },
+      { en: "Could you speak more slowly?", ja: "もう少しゆっくり話してもらえますか？" },
+    ],
+    questions: [
+      { type: "choice", q: "I ___ swim very well.", options: ["can", "am", "do", "must"], answer: 0, explain: "「〜できる」は can + 原形。" },
+      { type: "choice", q: "ていねいに「手伝ってもらえますか？」", options: ["You help me?", "Could you help me?", "Do you help me?", "Help you me?"], answer: 1, explain: "Could you 〜? はていねいな依頼。" },
+      { type: "choice", q: "「もう休んだほうがいいよ」", options: ["You should rest.", "You can rest.", "You must rest?", "Rest you should."], answer: 0, explain: "助言は should。" },
+      { type: "choice", q: "レストランで「注文したいのですが」", options: ["I want order.", "I would like to order.", "I can order?", "I order would."], answer: 1, explain: "would like to + 原形 でていねいに希望を伝えます。" },
+      { type: "order", q: "「ここに座ってもいいですか？」を並べ替えましょう。", answer: ["Can", "I", "sit", "here"], explain: "Can I + 原形 で許可を求めます。" },
+      { type: "order", q: "「窓を開けてもらえますか？」を並べ替えましょう。", answer: ["Could", "you", "open", "the", "window"], explain: "Could you + 原形 でていねいな依頼。" },
+      { type: "order", q: "「私は今行かなければならない」を並べ替えましょう。", answer: ["I", "must", "go", "now"], explain: "must + 原形 go。" },
+      { type: "fill", q: "She ___ drive a car.（「できない」の短縮形）", answer: ["can't", "cannot", "can not"], explain: "can の否定は can't。" },
+      { type: "fill", q: "___ I use your pen?（許可を求める助動詞）", answer: ["can", "could", "may"], explain: "Can I 〜? / Could I 〜? で許可を求めます。" },
+      { type: "fill", q: "You ___ see a doctor.（「〜すべき」の助動詞）", answer: ["should"], explain: "助言の should。" },
+      { type: "translate", q: "「手伝っていただけますか？」を英語にしましょう。", keywords: ["could", "you", "help", "me"], model: "Could you help me?", explain: "Could you help me? がていねいです。" },
+      { type: "translate", q: "「私は少し英語が話せます。」を英語にしましょう。", keywords: ["i", "can", "speak", "english"], model: "I can speak a little English.", explain: "can + 原形 speak。" },
+    ],
+  },
+
+  /* ================= DAY 6 ================= */
+  {
+    day: 6,
+    title: "疑問詞・疑問文",
+    theme: "what, where, when, who, why, how、How much/many、語順整理",
+    grammar: {
+      intro: "「何？どこ？いつ？」など、具体的に質問する言い方を学びます。会話を広げる鍵です。",
+      points: [
+        { h: "基本の疑問詞", p: "what(何), where(どこ), when(いつ), who(誰), why(なぜ), how(どう/どうやって)。", eg: "Where do you live? / What is this?" },
+        { h: "語順", p: "疑問詞 + 疑問文の語順（do/does/be動詞 + 主語 …）。", eg: "What do you want? / Where is the station?" },
+        { h: "How much / How many", p: "How much は値段・量（数えない名詞）、How many は数（数えられる名詞）。", eg: "How much is it? / How many books do you have?" },
+        { h: "why と because", p: "Why 〜? には Because 〜（なぜなら）で答えます。", eg: "Why are you happy? — Because it's Friday." },
+      ],
+    },
+    vocab: [
+      { en: "what", ja: "何" }, { en: "where", ja: "どこ" }, { en: "when", ja: "いつ" },
+      { en: "who", ja: "誰" }, { en: "why", ja: "なぜ" }, { en: "how", ja: "どう/どうやって" },
+      { en: "how much", ja: "いくら/どのくらい(量)" }, { en: "how many", ja: "いくつ(数)" }, { en: "how long", ja: "どのくらい(時間/長さ)" },
+      { en: "because", ja: "なぜなら" }, { en: "station", ja: "駅" }, { en: "time", ja: "時間/時刻" },
+      { en: "day", ja: "日" }, { en: "people", ja: "人々" }, { en: "place", ja: "場所" },
+      { en: "money", ja: "お金" }, { en: "price", ja: "値段" }, { en: "address", ja: "住所" },
+      { en: "phone", ja: "電話" }, { en: "way", ja: "道/方法" }, { en: "ticket", ja: "チケット" },
+      { en: "open", ja: "開いている" }, { en: "favorite", ja: "お気に入りの" }, { en: "color", ja: "色" },
+      { en: "weather", ja: "天気" }, { en: "today", ja: "今日" }, { en: "right", ja: "右/正しい" },
+      { en: "left", ja: "左" }, { en: "near", ja: "近くに" }, { en: "far", ja: "遠くに" },
+    ],
+    examples: [
+      { en: "Where do you live?", ja: "どこに住んでいますか？" },
+      { en: "What time is it now?", ja: "今、何時ですか？" },
+      { en: "How much is this?", ja: "これはいくらですか？" },
+      { en: "Why are you late?", ja: "なぜ遅れたのですか？" },
+      { en: "How many people are there?", ja: "何人いますか？" },
+      { en: "Where is the station?", ja: "駅はどこですか？" },
+    ],
+    questions: [
+      { type: "choice", q: "___ do you live? (どこに住んでいますか？)", options: ["What", "Where", "When", "Who"], answer: 1, explain: "場所をたずねるのは Where。" },
+      { type: "choice", q: "「これはいくらですか？」", options: ["How many is this?", "How much is this?", "What much is this?", "How long is this?"], answer: 1, explain: "値段は How much。" },
+      { type: "choice", q: "___ is your birthday? (いつ？)", options: ["When", "Where", "Why", "How"], answer: 0, explain: "時をたずねるのは When。" },
+      { type: "choice", q: "本の数をたずねるなら？", options: ["How much books", "How many books", "How long books", "What books much"], answer: 1, explain: "数えられる名詞の数は How many。" },
+      { type: "order", q: "「あなたは何がほしいですか？」を並べ替えましょう。", answer: ["What", "do", "you", "want"], explain: "疑問詞 + do you + 原形。" },
+      { type: "order", q: "「駅はどこですか？」を並べ替えましょう。", answer: ["Where", "is", "the", "station"], explain: "Where is + 主語。" },
+      { type: "order", q: "「今、何時ですか？」を並べ替えましょう。", answer: ["What", "time", "is", "it", "now"], explain: "What time is it now? が正解。" },
+      { type: "fill", q: "___ are you sad?（理由をたずねる疑問詞）", answer: ["why"], explain: "理由は Why。答えは Because 〜。" },
+      { type: "fill", q: "___ is that man?（人をたずねる疑問詞）", answer: ["who"], explain: "人をたずねるのは Who。" },
+      { type: "fill", q: "I'm happy ___ it's Friday.（「なぜなら」の語）", answer: ["because"], explain: "理由を述べるのは because。" },
+      { type: "translate", q: "「どこに住んでいますか？」を英語にしましょう。", keywords: ["where", "do", "you", "live"], model: "Where do you live?", explain: "Where do you + 原形。" },
+      { type: "translate", q: "「これはいくらですか？」を英語にしましょう。", keywords: ["how", "much", "is", "this"], model: "How much is this?", explain: "値段は How much is 〜?。" },
+    ],
+  },
+
+  /* ================= DAY 7 ================= */
+  {
+    day: 7,
+    title: "接続詞・前置詞＋総合復習",
+    theme: "and, but, because, so / in, on, at, to, for ＋総復習・ロールプレイ",
+    grammar: {
+      intro: "最終日は文をつなぐ接続詞と、場所・時間を表す前置詞を学び、これまでの総復習をします。",
+      points: [
+        { h: "接続詞", p: "and(そして), but(しかし), because(なぜなら), so(だから)。文や語をつなぎます。", eg: "I'm tired, but I'm happy. / I stayed home because it rained." },
+        { h: "時の前置詞 at / on / in", p: "at + 時刻(at 7), on + 曜日・日付(on Monday), in + 月・年・季節(in May)。", eg: "I get up at six. / See you on Friday." },
+        { h: "場所の前置詞 in / on / at", p: "in + 広い場所(in Tokyo), on + 接している面(on the table), at + 地点(at the station)。", eg: "The book is on the desk. / Meet me at the cafe." },
+        { h: "to / for", p: "to は方向「〜へ」、for は目的・相手「〜のために」。", eg: "I go to work. / This is for you." },
+      ],
+    },
+    vocab: [
+      { en: "and", ja: "そして" }, { en: "but", ja: "しかし" }, { en: "because", ja: "なぜなら" },
+      { en: "so", ja: "だから" }, { en: "or", ja: "または" }, { en: "in", ja: "〜の中に/(月・年)に" },
+      { en: "on", ja: "〜の上に/(曜日)に" }, { en: "at", ja: "〜で/(時刻)に" }, { en: "to", ja: "〜へ" },
+      { en: "for", ja: "〜のために" }, { en: "with", ja: "〜と一緒に" }, { en: "from", ja: "〜から" },
+      { en: "table", ja: "テーブル" }, { en: "desk", ja: "机" }, { en: "cafe", ja: "カフェ" },
+      { en: "city", ja: "都市" }, { en: "Monday", ja: "月曜日" }, { en: "May", ja: "5月" },
+      { en: "gift", ja: "贈り物" }, { en: "thanks", ja: "ありがとう" }, { en: "sorry", ja: "ごめんなさい" },
+      { en: "excuse me", ja: "すみません" }, { en: "welcome", ja: "どういたしまして" }, { en: "really", ja: "本当に" },
+      { en: "together", ja: "一緒に" }, { en: "about", ja: "〜について/およそ" }, { en: "after", ja: "〜の後で" },
+      { en: "before", ja: "〜の前に" }, { en: "next to", ja: "〜の隣に" }, { en: "between", ja: "〜の間に" },
+    ],
+    examples: [
+      { en: "I'm tired, but I'm happy.", ja: "疲れたけど、うれしいです。" },
+      { en: "I stayed home because it rained.", ja: "雨が降ったので家にいました。" },
+      { en: "The book is on the desk.", ja: "本は机の上にあります。" },
+      { en: "Let's meet at the cafe at three.", ja: "3時にカフェで会いましょう。" },
+      { en: "This gift is for you. Thank you so much.", ja: "この贈り物はあなたへ。本当にありがとう。" },
+      { en: "I'm sorry. Excuse me, where is the station?", ja: "すみません。あの、駅はどこですか？" },
+    ],
+    questions: [
+      { type: "choice", q: "I like tea, ___ I don't like coffee.", options: ["and", "but", "so", "because"], answer: 1, explain: "対比「しかし」は but。" },
+      { type: "choice", q: "See you ___ Monday.", options: ["at", "in", "on", "to"], answer: 2, explain: "曜日には on を使います。" },
+      { type: "choice", q: "I get up ___ six.", options: ["on", "in", "at", "for"], answer: 2, explain: "時刻には at。" },
+      { type: "choice", q: "This present is ___ you.", options: ["to", "for", "at", "in"], answer: 1, explain: "相手・目的は for。" },
+      { type: "choice", q: "It rained, ___ I stayed home.", options: ["but", "or", "so", "because"], answer: 2, explain: "結果「だから」は so。" },
+      { type: "order", q: "「本は机の上にあります」を並べ替えましょう。", answer: ["The", "book", "is", "on", "the", "desk"], explain: "接している面の上は on。" },
+      { type: "order", q: "「3時にカフェで会いましょう」を並べ替えましょう。", answer: ["Let's", "meet", "at", "the", "cafe"], explain: "地点には at the cafe。" },
+      { type: "order", q: "「雨が降ったので家にいました」を並べ替えましょう。", answer: ["I", "stayed", "home", "because", "it", "rained"], explain: "理由は because でつなぎます。" },
+      { type: "fill", q: "I live ___ Tokyo.（広い場所の前置詞）", answer: ["in"], explain: "都市・国など広い場所は in。" },
+      { type: "fill", q: "I'm happy ___ it's my birthday.（理由の接続詞）", answer: ["because"], explain: "理由は because。" },
+      { type: "translate", q: "「すみません、駅はどこですか？」を英語にしましょう。", keywords: ["excuse", "me", "where", "station"], model: "Excuse me, where is the station?", explain: "声をかけるときは Excuse me。" },
+      { type: "translate", q: "「本当にありがとう。」を英語にしましょう。", keywords: ["thank", "you", "much"], model: "Thank you so much.", explain: "強調するなら Thank you so much.。" },
+    ],
+  },
+];
+
+// 1日あたりの設問数（評価表示などで使用）
+CURRICULUM.forEach((d) => { d.totalQuestions = d.questions.length; });
+
+/* =========================================================
+   実践会話モジュール — フレーズ集 / 会話シナリオ / 会話力判定テスト
+   ・PHRASES   : 普段使いフレーズ集（カテゴリ別）
+   ・DIALOGUES : 場面別のリアルな会話の流れ（A↔B）
+   ・CONV_TEST : 会話できそう度を測る判定テスト（場面対応・自然な返し）
+   ========================================================= */
+
+const PHRASES = [
+  {
+    category: "🙋 あいさつ・声かけ",
+    items: [
+      { en: "Hi! / Hello!", ja: "やあ！／こんにちは！" },
+      { en: "Good morning.", ja: "おはようございます。" },
+      { en: "How are you?", ja: "元気ですか？" },
+      { en: "I'm good, thanks. And you?", ja: "元気です、ありがとう。あなたは？" },
+      { en: "How's it going?", ja: "調子はどう？" },
+      { en: "Long time no see!", ja: "久しぶり！" },
+      { en: "Have a nice day!", ja: "よい一日を！" },
+      { en: "Excuse me.", ja: "すみません（声かけ）。" },
+    ],
+  },
+  {
+    category: "🤝 自己紹介",
+    items: [
+      { en: "My name is Ken. Nice to meet you.", ja: "ケンです。はじめまして。" },
+      { en: "Nice to meet you, too.", ja: "こちらこそ、はじめまして。" },
+      { en: "Where are you from?", ja: "どこの出身ですか？" },
+      { en: "I'm from Japan.", ja: "日本出身です。" },
+      { en: "What do you do?", ja: "お仕事は何を？" },
+      { en: "I'm a student. / I work at a company.", ja: "学生です。／会社で働いています。" },
+      { en: "How about you?", ja: "あなたはどうですか？" },
+    ],
+  },
+  {
+    category: "👍 あいづち・リアクション",
+    items: [
+      { en: "Really?", ja: "本当に？" },
+      { en: "That's great!", ja: "いいですね！" },
+      { en: "I see.", ja: "なるほど。" },
+      { en: "Sounds good!", ja: "いいね！" },
+      { en: "Me too.", ja: "私もです。" },
+      { en: "Exactly.", ja: "そのとおり。" },
+      { en: "That's too bad.", ja: "それは残念。" },
+      { en: "Wow, that's interesting!", ja: "わあ、面白いですね！" },
+    ],
+  },
+  {
+    category: "❓ 聞き返す・質問する",
+    items: [
+      { en: "Could you say that again?", ja: "もう一度言ってもらえますか？" },
+      { en: "Could you speak more slowly?", ja: "もう少しゆっくり話してもらえますか？" },
+      { en: "Sorry, I didn't catch that.", ja: "すみません、聞き取れませんでした。" },
+      { en: "What does \"busy\" mean?", ja: "“busy” はどういう意味ですか？" },
+      { en: "How do you say \"ありがとう\" in English?", ja: "「ありがとう」は英語で何と言いますか？" },
+      { en: "What do you mean?", ja: "どういう意味ですか？" },
+    ],
+  },
+  {
+    category: "🙏 お願い・お礼・謝罪",
+    items: [
+      { en: "Could you help me?", ja: "手伝ってもらえますか？" },
+      { en: "Can I have a coffee, please?", ja: "コーヒーをもらえますか？" },
+      { en: "Just a moment, please.", ja: "少々お待ちください。" },
+      { en: "Thank you so much.", ja: "本当にありがとうございます。" },
+      { en: "You're welcome.", ja: "どういたしまして。" },
+      { en: "I'm sorry. / Sorry about that.", ja: "ごめんなさい。／申し訳ない。" },
+      { en: "No problem.", ja: "問題ないですよ。" },
+    ],
+  },
+  {
+    category: "🆘 困ったとき",
+    items: [
+      { en: "I don't understand.", ja: "わかりません。" },
+      { en: "I'm not sure.", ja: "よくわかりません／確信がないです。" },
+      { en: "Where is the bathroom?", ja: "トイレはどこですか？" },
+      { en: "How much is it?", ja: "いくらですか？" },
+      { en: "I'm lost.", ja: "道に迷いました。" },
+      { en: "Can you help me, please?", ja: "助けてもらえますか？" },
+    ],
+  },
+  {
+    category: "👋 会話の締め・別れ",
+    items: [
+      { en: "It was nice talking to you.", ja: "お話しできてよかったです。" },
+      { en: "Let's keep in touch.", ja: "また連絡を取り合いましょう。" },
+      { en: "See you later! / See you soon!", ja: "また後で！／また近いうちに！" },
+      { en: "Take care!", ja: "気をつけてね！" },
+      { en: "Goodbye. / Bye!", ja: "さようなら。／バイバイ！" },
+    ],
+  },
+  {
+    category: "✈️ 旅行・サバイバル",
+    items: [
+      { en: "Where is the bathroom?", ja: "トイレはどこですか？" },
+      { en: "Could you take a picture, please?", ja: "写真を撮ってもらえますか？" },
+      { en: "I'd like to check in, please.", ja: "チェックインをお願いします。" },
+      { en: "Do you take credit cards?", ja: "クレジットカードは使えますか？" },
+      { en: "I lost my wallet.", ja: "財布をなくしました。" },
+      { en: "Could you call a taxi for me?", ja: "タクシーを呼んでもらえますか？" },
+      { en: "I don't feel well.", ja: "気分が悪いです。" },
+      { en: "Help! / Call the police!", ja: "助けて！／警察を呼んで！" },
+    ],
+  },
+];
+
+const DIALOGUES = [
+  {
+    scene: "🤝 はじめての出会い（あいさつ→自己紹介→会話を広げる）",
+    lines: [
+      { s: "A", en: "Hi! I'm Ken. Nice to meet you.", ja: "やあ！ケンです。はじめまして。" },
+      { s: "B", en: "Nice to meet you, too. I'm Emma.", ja: "こちらこそ、はじめまして。エマです。" },
+      { s: "A", en: "Where are you from, Emma?", ja: "エマはどこの出身ですか？" },
+      { s: "B", en: "I'm from Canada. How about you?", ja: "カナダです。あなたは？" },
+      { s: "A", en: "I'm from Japan. What do you do?", ja: "日本出身です。お仕事は？" },
+      { s: "B", en: "I'm a student. I study music.", ja: "学生です。音楽を勉強しています。" },
+      { s: "A", en: "That's great! I love music too.", ja: "いいですね！私も音楽が好きです。" },
+      { s: "B", en: "Really? Let's talk again sometime!", ja: "本当に？またいつか話しましょう！" },
+    ],
+  },
+  {
+    scene: "☕ カフェで注文する",
+    lines: [
+      { s: "店員", en: "Hi! What can I get for you?", ja: "いらっしゃいませ！ご注文は？" },
+      { s: "You", en: "Hi. Can I have a coffee, please?", ja: "こんにちは。コーヒーをお願いします。" },
+      { s: "店員", en: "Sure. Small, medium, or large?", ja: "かしこまりました。S・M・Lどれに？" },
+      { s: "You", en: "Medium, please. How much is it?", ja: "Mでお願いします。いくらですか？" },
+      { s: "店員", en: "That's four dollars.", ja: "4ドルです。" },
+      { s: "You", en: "Here you are. Thank you.", ja: "どうぞ。ありがとう。" },
+      { s: "店員", en: "Thanks! Have a nice day.", ja: "ありがとうございます！よい一日を。" },
+    ],
+  },
+  {
+    scene: "🗺️ 道をたずねる",
+    lines: [
+      { s: "You", en: "Excuse me. Where is the station?", ja: "すみません。駅はどこですか？" },
+      { s: "通行人", en: "Go straight and turn left.", ja: "まっすぐ行って左に曲がってください。" },
+      { s: "You", en: "Sorry, could you say that again?", ja: "すみません、もう一度言ってもらえますか？" },
+      { s: "通行人", en: "Sure. Go straight, then turn left.", ja: "もちろん。まっすぐ進んで、左に曲がります。" },
+      { s: "You", en: "How long does it take?", ja: "どのくらいかかりますか？" },
+      { s: "通行人", en: "About five minutes.", ja: "5分くらいです。" },
+      { s: "You", en: "Thank you so much!", ja: "本当にありがとうございます！" },
+    ],
+  },
+  {
+    scene: "💬 スモールトーク（天気・週末）",
+    lines: [
+      { s: "A", en: "Nice weather today, isn't it?", ja: "今日はいい天気ですね。" },
+      { s: "B", en: "Yes, it's beautiful. Do you have any plans?", ja: "ええ、最高です。予定はあるんですか？" },
+      { s: "A", en: "I'm going to the park. How about you?", ja: "公園に行く予定です。あなたは？" },
+      { s: "B", en: "I'll stay home and relax.", ja: "家でゆっくりします。" },
+      { s: "A", en: "Sounds good! Have a great weekend.", ja: "いいですね！よい週末を。" },
+      { s: "B", en: "You too! See you.", ja: "あなたも！またね。" },
+    ],
+  },
+  {
+    scene: "✈️ 空港でチェックイン",
+    lines: [
+      { s: "係員", en: "Good morning. May I see your passport?", ja: "おはようございます。パスポートを見せてください。" },
+      { s: "You", en: "Sure. Here you are.", ja: "はい。どうぞ。" },
+      { s: "係員", en: "How many bags are you checking in?", ja: "預ける荷物はいくつですか？" },
+      { s: "You", en: "Just one, please.", ja: "1つだけお願いします。" },
+      { s: "係員", en: "Here's your boarding pass. Gate 12.", ja: "搭乗券です。12番ゲートです。" },
+      { s: "You", en: "Thank you. Where is the gate?", ja: "ありがとう。ゲートはどこですか？" },
+      { s: "係員", en: "Go straight and turn right.", ja: "まっすぐ行って右に曲がってください。" },
+    ],
+  },
+  {
+    scene: "🏨 ホテルでチェックイン",
+    lines: [
+      { s: "You", en: "Hi, I have a reservation under Ken.", ja: "こんにちは、ケンで予約しています。" },
+      { s: "フロント", en: "Welcome! Could I see your ID, please?", ja: "ようこそ！身分証を見せてもらえますか？" },
+      { s: "You", en: "Here it is. What time is check-out?", ja: "どうぞ。チェックアウトは何時ですか？" },
+      { s: "フロント", en: "Check-out is at 11 a.m.", ja: "チェックアウトは午前11時です。" },
+      { s: "You", en: "Is breakfast included?", ja: "朝食は含まれていますか？" },
+      { s: "フロント", en: "Yes, it is. Enjoy your stay!", ja: "はい、含まれています。良いご滞在を！" },
+    ],
+  },
+  {
+    scene: "🚉 電車・切符を買う",
+    lines: [
+      { s: "You", en: "Excuse me. How can I get to the city center?", ja: "すみません。市の中心へはどう行けますか？" },
+      { s: "駅員", en: "Take the blue line and get off at Main Street.", ja: "青い路線に乗って、メインストリートで降りてください。" },
+      { s: "You", en: "How much is a ticket?", ja: "切符はいくらですか？" },
+      { s: "駅員", en: "It's three dollars.", ja: "3ドルです。" },
+      { s: "You", en: "Which platform is it?", ja: "何番ホームですか？" },
+      { s: "駅員", en: "Platform 2, over there.", ja: "あちらの2番ホームです。" },
+      { s: "You", en: "Thank you for your help.", ja: "助けてくれてありがとう。" },
+    ],
+  },
+  {
+    scene: "🏥 体調が悪い・病院/薬局で",
+    lines: [
+      { s: "You", en: "Excuse me, I don't feel well.", ja: "すみません、気分が悪いです。" },
+      { s: "店員", en: "I'm sorry to hear that. What's wrong?", ja: "それはお気の毒に。どうされましたか？" },
+      { s: "You", en: "I have a headache and a fever.", ja: "頭痛と熱があります。" },
+      { s: "店員", en: "You should take this medicine and rest.", ja: "この薬を飲んで休んだほうがいいですよ。" },
+      { s: "You", en: "How often should I take it?", ja: "どのくらいの頻度で飲めばいいですか？" },
+      { s: "店員", en: "Twice a day, after meals.", ja: "1日2回、食後です。" },
+      { s: "You", en: "Thank you. I appreciate it.", ja: "ありがとう。感謝します。" },
+    ],
+  },
+  {
+    scene: "🆘 トラブル（道に迷う・なくす）",
+    lines: [
+      { s: "You", en: "Excuse me, I'm lost. Can you help me?", ja: "すみません、道に迷いました。助けてもらえますか？" },
+      { s: "通行人", en: "Of course. Where do you want to go?", ja: "もちろん。どこに行きたいんですか？" },
+      { s: "You", en: "I'm looking for the police station.", ja: "警察署を探しています。" },
+      { s: "通行人", en: "Is everything okay?", ja: "大丈夫ですか？" },
+      { s: "You", en: "I lost my wallet.", ja: "財布をなくしてしまって。" },
+      { s: "通行人", en: "Oh no. It's just around the corner.", ja: "それは大変。すぐそこの角を曲がったところですよ。" },
+      { s: "You", en: "Thank you so much for your help.", ja: "助けてくれて本当にありがとう。" },
+    ],
+  },
+];
+
+/* 数字・時刻・お金など、会話で必須の実用表現 */
+const ESSENTIALS = [
+  {
+    title: "🔢 数字（基数）",
+    items: [
+      { en: "one, two, three", ja: "1, 2, 3" },
+      { en: "four, five, six", ja: "4, 5, 6" },
+      { en: "seven, eight, nine, ten", ja: "7, 8, 9, 10" },
+      { en: "eleven, twelve, thirteen", ja: "11, 12, 13" },
+      { en: "twenty", ja: "20" },
+      { en: "twenty-one", ja: "21" },
+      { en: "thirty / forty / fifty", ja: "30 / 40 / 50" },
+      { en: "one hundred", ja: "100" },
+      { en: "one thousand", ja: "1,000" },
+    ],
+  },
+  {
+    title: "🕐 時刻・時間",
+    items: [
+      { en: "What time is it?", ja: "今、何時ですか？" },
+      { en: "It's seven o'clock.", ja: "7時ちょうどです。" },
+      { en: "It's half past eight.", ja: "8時半です。" },
+      { en: "It's a quarter to nine.", ja: "9時15分前（8時45分）です。" },
+      { en: "It's ten thirty.", ja: "10時30分です。" },
+      { en: "in the morning / afternoon / evening", ja: "午前／午後／夕方に" },
+      { en: "at noon / at midnight", ja: "正午に／真夜中に" },
+    ],
+  },
+  {
+    title: "📅 曜日・日付",
+    items: [
+      { en: "Monday, Tuesday, Wednesday", ja: "月・火・水曜日" },
+      { en: "Thursday, Friday", ja: "木・金曜日" },
+      { en: "Saturday, Sunday", ja: "土・日曜日" },
+      { en: "today / tomorrow / yesterday", ja: "今日／明日／昨日" },
+      { en: "What's the date today?", ja: "今日は何日ですか？" },
+      { en: "It's May 5th.", ja: "5月5日です。" },
+      { en: "next week / last week", ja: "来週／先週" },
+    ],
+  },
+  {
+    title: "💰 お金・買い物",
+    items: [
+      { en: "How much is it?", ja: "いくらですか？" },
+      { en: "How much is the total?", ja: "合計でいくらですか？" },
+      { en: "It's ten dollars.", ja: "10ドルです。" },
+      { en: "That's too expensive.", ja: "高すぎます。" },
+      { en: "Do you take credit cards?", ja: "クレジットカードは使えますか？" },
+      { en: "Can I pay in cash?", ja: "現金で払えますか？" },
+      { en: "Here's your change.", ja: "おつりです。" },
+      { en: "Can I have a receipt?", ja: "レシートをもらえますか？" },
+    ],
+  },
+];
+
+/* 会話力判定テスト：場面に合った自然な返し・定番表現を問う
+   type は通常テストと共通（choice / translate）。day は "conv"。 */
+const CONV_TEST = [
+  { type: "choice", q: "相手に「How are you?」と聞かれました。自然な返事は？",
+    options: ["I'm good, thanks. And you?", "Yes, I am.", "How are you do?", "I'm from Japan."], answer: 0,
+    explain: "「元気です、ありがとう。あなたは？」と返して会話を続けます。" },
+  { type: "choice", q: "初対面で「Nice to meet you.」と言われました。返し方は？",
+    options: ["Me too the meet.", "Nice to meet you, too.", "You are welcome.", "I meet you nice."], answer: 1,
+    explain: "「こちらこそ」は Nice to meet you, too. です。" },
+  { type: "choice", q: "相手の言葉が聞き取れませんでした。何と言う？",
+    options: ["I don't like it.", "Say again you?", "Sorry, could you say that again?", "What you say me?"], answer: 2,
+    explain: "聞き返すていねいな定番表現です。" },
+  { type: "choice", q: "カフェでコーヒーを頼みたいとき、自然なのは？",
+    options: ["Give coffee.", "Can I have a coffee, please?", "I want coffee now.", "Coffee you have?"], answer: 1,
+    explain: "Can I have 〜, please? でていねいに注文できます。" },
+  { type: "choice", q: "相手が「I got a new job!」と言いました。良いリアクションは？",
+    options: ["That's too bad.", "I'm sorry.", "That's great! Congratulations!", "Really? No way."], answer: 2,
+    explain: "うれしい知らせには That's great! と祝福を。" },
+  { type: "choice", q: "道で人に声をかけて道をたずねるとき、最初の一言は？",
+    options: ["Hey you!", "Excuse me.", "Listen to me.", "Give me way."], answer: 1,
+    explain: "知らない人への声かけは Excuse me. が基本です。" },
+  { type: "choice", q: "話の最後に別れるとき、自然な締めは？",
+    options: ["Finish talk.", "It was nice talking to you. See you!", "Go away now.", "Stop talking."], answer: 1,
+    explain: "「お話しできてよかった、またね」と締めると好印象です。" },
+  { type: "choice", q: "相手の話に「なるほど」と相づちを打つには？",
+    options: ["I see.", "I sea.", "Eye see.", "I know it all."], answer: 0,
+    explain: "I see. は「なるほど」の定番相づちです。" },
+  { type: "translate", q: "「もう一度言ってもらえますか？」を英語で。",
+    keywords: ["could", "you", "say", "that", "again"], model: "Could you say that again?",
+    explain: "聞き返しの最重要フレーズです。" },
+  { type: "translate", q: "「手伝ってもらえますか？」を英語で。",
+    keywords: ["could", "you", "help", "me"], model: "Could you help me?",
+    explain: "困ったときの依頼表現です。" },
+  { type: "translate", q: "「本当にありがとうございます。」を英語で。",
+    keywords: ["thank", "you", "so", "much"], model: "Thank you so much.",
+    explain: "感謝を強く伝える表現です。" },
+  { type: "translate", q: "「あなたはどこの出身ですか？」を英語で。",
+    keywords: ["where", "are", "you", "from"], model: "Where are you from?",
+    explain: "自己紹介で会話を広げる質問です。" },
+];
+
+/* =========================================================
+   7日間 英会話ブートキャンプ — アプリ本体
+   ========================================================= */
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "eikaiwa_bootcamp_v1";
+  const app = document.getElementById("app");
+
+  /* ---------- 進捗データ（localStorage） ---------- */
+  function loadProgress() {
+    let p = null;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) p = JSON.parse(raw);
+    } catch (e) { /* 破損時は初期化 */ }
+    if (!p || typeof p !== "object") p = {};
+    if (!p.days || typeof p.days !== "object") p.days = {};
+    if (!Array.isArray(p.wrong)) p.wrong = [];
+    if (!p.mastered || typeof p.mastered !== "object") p.mastered = {};
+    if (!p.streak || typeof p.streak !== "object") p.streak = { count: 0, lastDate: null };
+    if (typeof p.finalBest !== "number") p.finalBest = 0;
+    if (typeof p.convBest !== "number") p.convBest = 0;
+    if (typeof p.phraseBest !== "number") p.phraseBest = 0;
+    if (typeof p.dialogueBest !== "number") p.dialogueBest = 0;
+    if (typeof p.listenBest !== "number") p.listenBest = 0;
+    if (typeof p.essentialBest !== "number") p.essentialBest = 0;
+    return p;
+  }
+  function saveProgress(p) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {}
+  }
+  let progress = loadProgress();
+
+  function dayRecord(day) {
+    return progress.days[day] || { best: 0, attempts: 0, completed: false };
+  }
+
+  /* ---------- ストリーク（連続学習日数） ---------- */
+  function dateKey(d) { return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+  function todayKey() { return dateKey(new Date()); }
+  function studiedToday() { return progress.streak.lastDate === todayKey(); }
+  function recordActivityToday() {
+    const t = todayKey();
+    if (progress.streak.lastDate === t) return; // 本日はカウント済み
+    const y = new Date(); y.setDate(y.getDate() - 1);
+    progress.streak.count = (progress.streak.lastDate === dateKey(y)) ? (progress.streak.count || 0) + 1 : 1;
+    progress.streak.lastDate = t;
+    saveProgress(progress);
+  }
+
+  /* ---------- 暗記済み単語 ---------- */
+  function masterKey(en) { return String(en).toLowerCase().trim(); }
+  function isMastered(en) { return !!progress.mastered[masterKey(en)]; }
+  function setMastered(en, val) {
+    const k = masterKey(en);
+    if (val) progress.mastered[k] = true; else delete progress.mastered[k];
+    saveProgress(progress);
+  }
+  function masteredCount(vocab) { return vocab.filter((v) => isMastered(v.en)).length; }
+
+  /* ---------- テーマ（ダークモード） ---------- */
+  const THEME_KEY = "eikaiwa_theme_v1";
+  function loadTheme() {
+    let t = null;
+    try { t = localStorage.getItem(THEME_KEY); } catch (e) {}
+    if (!t) t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+    return t;
+  }
+  function applyTheme(t) {
+    document.documentElement.setAttribute("data-theme", t);
+    const btn = document.getElementById("theme-btn");
+    if (btn) btn.textContent = t === "dark" ? "☀️" : "🌙";
+  }
+  let theme = loadTheme();
+  applyTheme(theme);
+  function toggleTheme() {
+    theme = theme === "dark" ? "light" : "dark";
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+    applyTheme(theme);
+  }
+  function wrongKey(day, qi) { return day + ":" + qi; }
+  function isWrong(day, qi) {
+    return progress.wrong.some((w) => w.day === day && w.qIndex === qi);
+  }
+  function markWrong(day, qi) {
+    if (!isWrong(day, qi)) { progress.wrong.push({ day: day, qIndex: qi }); saveProgress(progress); }
+  }
+  function clearWrong(day, qi) {
+    const before = progress.wrong.length;
+    progress.wrong = progress.wrong.filter((w) => !(w.day === day && w.qIndex === qi));
+    if (progress.wrong.length !== before) saveProgress(progress);
+  }
+
+  /* ---------- ユーティリティ ---------- */
+  function normalize(s) {
+    return String(s)
+      .toLowerCase()
+      .replace(/[.,!?;:"'’`]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function el(tag, cls, html) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  }
+
+  const TYPE_LABEL = { choice: "4択", order: "並べ替え", fill: "穴埋め", translate: "英作文", listen: "リスニング", dictation: "聞き取り" };
+
+  /* ---------- 読み上げ（SpeechSynthesis） ---------- */
+  const speechOK = "speechSynthesis" in window;
+  const VOICE_KEY = "eikaiwa_voice_v1";
+
+  function loadVoiceSettings() {
+    try {
+      const r = localStorage.getItem(VOICE_KEY);
+      if (r) return JSON.parse(r);
+    } catch (e) {}
+    return { name: null, rate: 0.9 };
+  }
+  function saveVoiceSettings() {
+    try { localStorage.setItem(VOICE_KEY, JSON.stringify(voiceSettings)); } catch (e) {}
+  }
+  const voiceSettings = loadVoiceSettings();
+
+  let enVoice = null; // 自動選択された英語音声（ユーザー未指定時のフォールバック）
+  function englishVoices() {
+    return window.speechSynthesis.getVoices().filter((v) => /^en([-_]|$)/i.test(v.lang) || /english/i.test(v.name));
+  }
+  function pickVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices || !voices.length) return;
+    enVoice =
+      voices.find((v) => /^en[-_]us/i.test(v.lang)) ||
+      voices.find((v) => /^en[-_]gb/i.test(v.lang)) ||
+      voices.find((v) => /^en([-_]|$)/i.test(v.lang)) ||
+      voices.find((v) => /english/i.test(v.name)) ||
+      null;
+  }
+  function currentVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    if (voiceSettings.name) {
+      const m = voices.find((v) => v.name === voiceSettings.name);
+      if (m) return m;
+    }
+    return enVoice;
+  }
+  if (speechOK) {
+    pickVoice();
+    window.speechSynthesis.onvoiceschanged = function () {
+      pickVoice();
+      // 設定カードが表示中なら音声リストを更新
+      const sel = document.getElementById("voice-select");
+      if (sel) refreshVoiceSelect(sel);
+    };
+  }
+  // 読み上げに不要な記号（/, 矢印, 括弧）を除去してから発音させる
+  function cleanForSpeech(t) {
+    return String(t)
+      .replace(/\s*[/／]\s*/g, ", ")
+      .replace(/[→←↑↓➡]/g, " ")
+      .replace(/[()（）「」『』]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+  function speak(text, btn) {
+    if (!speechOK) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(cleanForSpeech(text));
+    const v = currentVoice();
+    if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = "en-US"; }
+    u.rate = voiceSettings.rate || 0.9;
+    if (btn) {
+      btn.classList.add("speaking");
+      u.onend = u.onerror = () => btn.classList.remove("speaking");
+    }
+    window.speechSynthesis.speak(u);
+  }
+  // 複数の英文を順番に読み上げ（会話の通し再生用）
+  function speakSequence(texts, btn) {
+    if (!speechOK) return;
+    window.speechSynthesis.cancel();
+    const v = currentVoice();
+    texts.forEach((t, i) => {
+      const u = new SpeechSynthesisUtterance(cleanForSpeech(t));
+      if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = "en-US"; }
+      u.rate = voiceSettings.rate || 0.9;
+      if (btn) {
+        if (i === 0) u.onstart = () => btn.classList.add("speaking");
+        if (i === texts.length - 1) u.onend = u.onerror = () => btn.classList.remove("speaking");
+      }
+      window.speechSynthesis.speak(u);
+    });
+  }
+
+  /* ---------- 読み上げ設定カード ---------- */
+  function refreshVoiceSelect(sel) {
+    const evs = englishVoices();
+    sel.innerHTML = "";
+    if (evs.length === 0) {
+      const o = document.createElement("option");
+      o.textContent = "英語音声が見つかりません";
+      sel.appendChild(o);
+      sel.disabled = true;
+      return;
+    }
+    sel.disabled = false;
+    evs.forEach((v) => {
+      const o = document.createElement("option");
+      o.value = v.name;
+      o.textContent = v.name.replace(/^Microsoft\s+/, "") + "（" + v.lang + "）";
+      if (voiceSettings.name === v.name) o.selected = true;
+      sel.appendChild(o);
+    });
+    // 未指定なら自動選択中の音声を選択状態に
+    if (!voiceSettings.name && enVoice) sel.value = enVoice.name;
+  }
+
+  function buildVoiceSettingsCard() {
+    const card = el("div", "card");
+    card.style.marginBottom = "18px";
+    card.appendChild(el("span", "block-label", "🔊 読み上げ設定"));
+    if (!speechOK) {
+      card.appendChild(el("p", "section-sub", "このブラウザは読み上げ（音声合成）に対応していません。"));
+      return card;
+    }
+    const row = el("div");
+    row.style.display = "flex";
+    row.style.flexWrap = "wrap";
+    row.style.gap = "14px";
+    row.style.alignItems = "flex-end";
+
+    // 音声選択
+    const vWrap = el("div");
+    vWrap.style.flex = "1";
+    vWrap.style.minWidth = "200px";
+    vWrap.appendChild(el("div", "hint", "音声を選ぶ"));
+    const sel = el("select", "text-input");
+    sel.id = "voice-select";
+    refreshVoiceSelect(sel);
+    sel.addEventListener("change", () => { voiceSettings.name = sel.value; saveVoiceSettings(); });
+    vWrap.appendChild(sel);
+    row.appendChild(vWrap);
+
+    // スピード
+    const rWrap = el("div");
+    rWrap.style.minWidth = "180px";
+    const rLabel = el("div", "hint", "スピード： " + (voiceSettings.rate || 0.9).toFixed(2) + "x");
+    rWrap.appendChild(rLabel);
+    const rng = el("input");
+    rng.type = "range";
+    rng.min = "0.5";
+    rng.max = "1.1";
+    rng.step = "0.05";
+    rng.value = voiceSettings.rate || 0.9;
+    rng.style.width = "100%";
+    rng.style.accentColor = "var(--indigo)";
+    rng.addEventListener("input", () => {
+      voiceSettings.rate = parseFloat(rng.value);
+      rLabel.textContent = "スピード： " + voiceSettings.rate.toFixed(2) + "x";
+    });
+    rng.addEventListener("change", saveVoiceSettings);
+    rWrap.appendChild(rng);
+    row.appendChild(rWrap);
+
+    // 試聴
+    const prev = el("button", "btn btn-ghost", "試聴 🔊");
+    prev.addEventListener("click", () => speak("Hello! Nice to meet you. Let's study English together.", prev));
+    row.appendChild(prev);
+
+    card.appendChild(row);
+    card.appendChild(el("p", "hint", "聞き取りやすい音声・スピードに調整できます。設定はこの端末に保存されます。"));
+    return card;
+  }
+  function speakButton(text) {
+    const b = el("button", "speak-btn", "🔊");
+    b.title = "読み上げ";
+    b.setAttribute("aria-label", "読み上げ");
+    b.addEventListener("click", () => speak(text, b));
+    if (!speechOK) b.style.display = "none";
+    return b;
+  }
+
+  /* ============================================================
+     ダッシュボード
+     ============================================================ */
+  function renderDashboard() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+
+    // 全体進捗
+    const totalDays = CURRICULUM.length;
+    let completedDays = 0;
+    let scoreSum = 0;
+    CURRICULUM.forEach((d) => {
+      const r = dayRecord(d.day);
+      if (r.completed) completedDays++;
+      scoreSum += r.best;
+    });
+    const overallPct = Math.round((completedDays / totalDays) * 100);
+    const avgScore = Math.round(scoreSum / totalDays);
+
+    const streak = progress.streak.count || 0;
+    const streakHtml = '<div class="streak-chip">🔥 ' +
+      (streak > 0 ? streak + "日連続" : "今日からスタート") +
+      (studiedToday() ? " ・ 今日は学習済み ✅" : " ・ 今日はまだ") + "</div>";
+
+    const ov = el("div", "overview");
+    ov.innerHTML =
+      '<h1>7日間 英会話ブートキャンプ 🚀</h1>' +
+      streakHtml +
+      '<p>1日1テーマ。会話で使える基礎を一気に身につけましょう。</p>' +
+      '<div class="overall-bar"><span style="width:' + overallPct + '%"></span></div>' +
+      '<div class="overall-meta"><span>達成 ' + completedDays + " / " + totalDays + " 日</span>" +
+      "<span>平均スコア " + avgScore + "%</span></div>";
+    wrap.appendChild(ov);
+
+    // 読み上げ設定
+    wrap.appendChild(buildVoiceSettingsCard());
+
+    // 復習バナー
+    if (progress.wrong.length > 0) {
+      const rv = el("div", "card");
+      rv.style.marginBottom = "18px";
+      rv.style.display = "flex";
+      rv.style.alignItems = "center";
+      rv.style.gap = "12px";
+      rv.style.flexWrap = "wrap";
+      rv.innerHTML =
+        '<div style="flex:1;min-width:180px"><strong>復習リスト：' + progress.wrong.length +
+        ' 問</strong><div style="color:var(--muted);font-size:13.5px">間違えた問題だけをまとめて解き直せます。</div></div>';
+      const btn = el("button", "btn btn-primary", "復習する");
+      btn.addEventListener("click", () => startReview());
+      rv.appendChild(btn);
+      wrap.appendChild(rv);
+    }
+
+    // Dayカード
+    const grid = el("div", "day-grid");
+    CURRICULUM.forEach((d) => {
+      const r = dayRecord(d.day);
+      const card = el("div", "day-card" + (r.completed ? " done" : ""));
+      const status = r.completed
+        ? '<span class="day-status status-done">✓ 完了（ベスト ' + r.best + "%）</span>"
+        : (r.attempts > 0
+          ? '<span class="day-status status-todo">挑戦中（ベスト ' + r.best + "%）</span>"
+          : '<span class="day-status status-todo">未着手</span>');
+      const barPct = r.best;
+      const mc = masteredCount(d.vocab);
+      card.innerHTML =
+        '<div class="day-top">' +
+        '<div class="day-badge">Day<br>' + d.day + "</div>" +
+        '<div><div class="day-title">' + escapeHtml(d.title) + "</div>" +
+        '<div class="day-theme">' + escapeHtml(d.theme) + "</div></div></div>" +
+        status +
+        '<div class="day-theme">🎴 暗記 ' + mc + " / " + d.vocab.length + " 語</div>" +
+        '<div class="mini-bar"><span style="width:' + barPct + '%"></span></div>';
+
+      const actions = el("div", "day-actions");
+      const learnBtn = el("button", "btn btn-ghost", "学習");
+      learnBtn.addEventListener("click", () => renderLearn(d.day));
+      const testBtn = el("button", "btn btn-primary", "テスト");
+      testBtn.addEventListener("click", () => startTest(d.day));
+      actions.appendChild(learnBtn);
+      actions.appendChild(testBtn);
+      card.appendChild(actions);
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+
+    // 修了テスト
+    const allCompleted = CURRICULUM.every((d) => dayRecord(d.day).completed);
+    const fcard = el("div", "feature-card");
+    const bestTxt = progress.finalBest > 0 ? "（ベスト " + progress.finalBest + "%）" : "";
+    fcard.innerHTML =
+      '<div class="fc-icon">🎓</div>' +
+      '<div class="fc-text"><strong>修了テスト ' + bestTxt + "</strong>" +
+      "<div>7日間の全範囲からランダムに15問。定着度をチェックしましょう。" +
+      (allCompleted ? "" : "（全Day完了で挑戦推奨）") + "</div></div>";
+    const fbtn = el("button", "btn btn-primary", "挑戦する");
+    fbtn.addEventListener("click", () => startFinalTest());
+    fcard.appendChild(fbtn);
+    wrap.appendChild(fcard);
+
+    // 実践会話への入口
+    const ccard = el("div", "feature-card");
+    ccard.style.borderColor = "#0ea5e9";
+    const convBestTxt = progress.convBest > 0 ? "（判定ベスト " + progress.convBest + "%）" : "";
+    ccard.innerHTML =
+      '<div class="fc-icon">💬</div>' +
+      '<div class="fc-text"><strong>実践会話 ' + convBestTxt + "</strong>" +
+      "<div>挨拶〜会話の流れ・普段使いフレーズ集・会話力判定テスト。実際の会話に備えましょう。</div></div>";
+    const cbtn = el("button", "btn btn-primary", "開く");
+    cbtn.addEventListener("click", () => renderConversationHub());
+    ccard.appendChild(cbtn);
+    wrap.appendChild(ccard);
+
+    // データのバックアップ
+    const bcard = el("div", "card");
+    bcard.style.marginTop = "18px";
+    bcard.appendChild(el("span", "block-label", "💾 データのバックアップ"));
+    bcard.appendChild(el("p", "section-sub",
+      "進捗はこの端末のブラウザに保存されています。機種変更・ブラウザ変更の前にエクスポートしておくと復元できます。"));
+    const brow = el("div");
+    brow.style.display = "flex";
+    brow.style.gap = "8px";
+    brow.style.flexWrap = "wrap";
+    const expBtn = el("button", "btn btn-ghost", "⬇ エクスポート");
+    expBtn.addEventListener("click", exportData);
+    const impBtn = el("button", "btn btn-ghost", "⬆ インポート");
+    impBtn.addEventListener("click", importData);
+    brow.appendChild(expBtn);
+    brow.appendChild(impBtn);
+    bcard.appendChild(brow);
+    wrap.appendChild(bcard);
+
+    app.appendChild(wrap);
+  }
+
+  /* ============================================================
+     学習ページ
+     ============================================================ */
+  function renderLearn(day) {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    const d = CURRICULUM.find((x) => x.day === day);
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+
+    const back = el("button", "back-link", "← ホームに戻る");
+    back.addEventListener("click", renderDashboard);
+    wrap.appendChild(back);
+
+    wrap.appendChild(el("h2", "section-title", "Day " + d.day + "：" + escapeHtml(d.title)));
+    wrap.appendChild(el("p", "section-sub", escapeHtml(d.theme)));
+
+    // 文法
+    const gcard = el("div", "card learn-block");
+    gcard.appendChild(el("span", "block-label", "📘 文法"));
+    gcard.appendChild(el("p", null, escapeHtml(d.grammar.intro)));
+    d.grammar.points.forEach((pt) => {
+      const p = el("div", "grammar-point");
+      p.innerHTML = "<h4>" + escapeHtml(pt.h) + "</h4><p>" + escapeHtml(pt.p) + "</p>";
+      const eg = el("div", "eg");
+      eg.appendChild(document.createTextNode("例) " + pt.eg));
+      eg.appendChild(speakButton(pt.eg));
+      eg.style.display = "flex";
+      eg.style.alignItems = "center";
+      eg.style.gap = "8px";
+      p.appendChild(eg);
+      gcard.appendChild(p);
+    });
+    wrap.appendChild(gcard);
+
+    // 単語
+    const vcard = el("div", "card learn-block");
+    const vHead = el("div");
+    vHead.style.display = "flex";
+    vHead.style.alignItems = "center";
+    vHead.style.justifyContent = "space-between";
+    vHead.style.flexWrap = "wrap";
+    vHead.style.gap = "8px";
+    vHead.style.marginBottom = "4px";
+    vHead.appendChild(el("span", "block-label", "📗 単語（" + d.vocab.length + "語）"));
+    const fcBtn = el("button", "btn btn-primary", "🎴 カードで暗記");
+    fcBtn.style.padding = "8px 14px";
+    fcBtn.style.fontSize = "14px";
+    fcBtn.addEventListener("click", () => renderFlashcards(d.day));
+    vHead.appendChild(fcBtn);
+    vcard.appendChild(vHead);
+    const vlist = el("div", "vocab-list");
+    d.vocab.forEach((v) => {
+      const item = el("div", "vocab-item");
+      item.appendChild(speakButton(v.en));
+      const t = el("div", "vocab-text");
+      t.innerHTML = '<span class="vocab-en">' + escapeHtml(v.en) + '</span> <span class="vocab-ja">' + escapeHtml(v.ja) + "</span>";
+      item.appendChild(t);
+      vlist.appendChild(item);
+    });
+    vcard.appendChild(vlist);
+    wrap.appendChild(vcard);
+
+    // 例文
+    const ecard = el("div", "card learn-block");
+    ecard.appendChild(el("span", "block-label", "💬 会話で使える例文"));
+    d.examples.forEach((ex) => {
+      const item = el("div", "example-item");
+      item.appendChild(speakButton(ex.en));
+      const t = el("div");
+      t.innerHTML = '<div class="example-en">' + escapeHtml(ex.en) + '</div><div class="example-ja">' + escapeHtml(ex.ja) + "</div>";
+      item.appendChild(t);
+      ecard.appendChild(item);
+    });
+    wrap.appendChild(ecard);
+
+    // テストへ
+    const go = el("button", "btn btn-primary btn-block", "このDayのテストに挑戦 →");
+    go.style.marginTop = "6px";
+    go.addEventListener("click", () => startTest(d.day));
+    wrap.appendChild(go);
+
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  /* ============================================================
+     単語フラッシュカード（暗記モード）
+     ============================================================ */
+  function renderFlashcards(day) {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    const d = CURRICULUM.find((x) => x.day === day);
+    const cards = shuffle(d.vocab);
+    let idx = 0;
+    let flipped = false;
+    let dir = "en2ja"; // en2ja: 表=英語 / ja2en: 表=日本語
+
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+
+    const back = el("button", "back-link", "← 学習ページに戻る");
+    back.addEventListener("click", () => renderLearn(day));
+    wrap.appendChild(back);
+
+    wrap.appendChild(el("h2", "section-title", "Day " + d.day + " 単語カード"));
+
+    // ツールバー（カウンタ＋出題方向）
+    const toolbar = el("div", "fc-toolbar");
+    const count = el("div", "count", "");
+    toolbar.appendChild(count);
+    const dirBtn = el("button", "toggle-dir", "");
+    toolbar.appendChild(dirBtn);
+    wrap.appendChild(toolbar);
+
+    // 進捗バー（暗記済み）
+    const pbar = el("div", "fc-progress-bar");
+    const pspan = el("span");
+    pbar.appendChild(pspan);
+    wrap.appendChild(pbar);
+
+    // カード
+    const card = el("div", "flashcard");
+    wrap.appendChild(card);
+
+    // 操作（覚えた / 苦手）
+    const controls = el("div", "fc-controls");
+    const hardBtn = el("button", "btn btn-ghost", "😖 苦手");
+    const gotBtn = el("button", "btn btn-primary", "✅ 覚えた");
+    controls.appendChild(hardBtn);
+    controls.appendChild(gotBtn);
+    wrap.appendChild(controls);
+
+    // 前後ナビ
+    const nav = el("div", "fc-nav");
+    const prevBtn = el("button", "btn btn-ghost", "← 前へ");
+    const speakBtn = el("button", "btn btn-ghost", "🔊 発音");
+    const nextBtn = el("button", "btn btn-ghost", "次へ →");
+    nav.appendChild(prevBtn);
+    nav.appendChild(speakBtn);
+    nav.appendChild(nextBtn);
+    wrap.appendChild(nav);
+
+    wrap.appendChild(el("p", "kbd-hint",
+      "ヒント： カードをクリックで裏返し / " +
+      "<kbd>Space</kbd> めくる ・ <kbd>←</kbd><kbd>→</kbd> 移動 ・ <kbd>↑</kbd> 覚えた ・ <kbd>↓</kbd> 苦手"));
+
+    function render() {
+      const v = cards[idx];
+      const front = dir === "en2ja" ? v.en : v.ja;
+      const back2 = dir === "en2ja" ? v.ja : v.en;
+      const mastered = isMastered(v.en);
+      card.className = "flashcard" + (mastered ? " mastered" : "");
+      card.innerHTML =
+        (mastered ? '<span class="fc-mastered-tag">✓ 暗記済み</span>' : "") +
+        '<span class="fc-side-label">' + (dir === "en2ja" ? "English" : "日本語") + "</span>" +
+        '<div class="fc-front">' + escapeHtml(front) + "</div>" +
+        (flipped
+          ? '<span class="fc-side-label">' + (dir === "en2ja" ? "意味" : "English") + '</span><div class="fc-back">' + escapeHtml(back2) + "</div>"
+          : '<div class="fc-tap-hint">タップして答えを見る</div>');
+      count.textContent = (idx + 1) + " / " + cards.length;
+      dirBtn.textContent = dir === "en2ja" ? "英 → 日" : "日 → 英";
+      gotBtn.textContent = mastered ? "✓ 暗記済み（解除）" : "✅ 覚えた";
+      pspan.style.width = Math.round((masteredCount(d.vocab) / d.vocab.length) * 100) + "%";
+      prevBtn.disabled = idx === 0;
+      nextBtn.disabled = idx === cards.length - 1;
+    }
+    function flip() { flipped = !flipped; render(); }
+    function go(n) { if (n >= 0 && n < cards.length) { idx = n; flipped = false; render(); } }
+
+    card.addEventListener("click", flip);
+    dirBtn.addEventListener("click", () => { dir = dir === "en2ja" ? "ja2en" : "en2ja"; flipped = false; render(); });
+    speakBtn.addEventListener("click", () => speak(cards[idx].en, speakBtn));
+    prevBtn.addEventListener("click", () => go(idx - 1));
+    nextBtn.addEventListener("click", () => go(idx + 1));
+    gotBtn.addEventListener("click", () => {
+      const v = cards[idx];
+      setMastered(v.en, !isMastered(v.en));
+      recordActivityToday();
+      if (isMastered(v.en) && idx < cards.length - 1) go(idx + 1); else render();
+    });
+    hardBtn.addEventListener("click", () => {
+      setMastered(cards[idx].en, false);
+      if (idx < cards.length - 1) go(idx + 1); else render();
+    });
+
+    // キーボード操作
+    function onKey(e) {
+      if (e.key === " " || e.key === "Spacebar") { e.preventDefault(); flip(); }
+      else if (e.key === "ArrowRight") go(idx + 1);
+      else if (e.key === "ArrowLeft") go(idx - 1);
+      else if (e.key === "ArrowUp") { e.preventDefault(); gotBtn.click(); }
+      else if (e.key === "ArrowDown") { e.preventDefault(); hardBtn.click(); }
+    }
+    document.addEventListener("keydown", onKey);
+    fcKeyHandler = onKey; // 画面遷移時に解除
+
+    render();
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+  let fcKeyHandler = null;
+  function clearFcKeys() {
+    if (fcKeyHandler) { document.removeEventListener("keydown", fcKeyHandler); fcKeyHandler = null; }
+  }
+
+  /* ============================================================
+     テスト / 復習
+     ============================================================ */
+  let session = null; // { items:[{day,qIndex,q}], checked:[], correct:[], title, mode }
+
+  function startTest(day) {
+    const d = CURRICULUM.find((x) => x.day === day);
+    const items = d.questions.map((q, i) => ({ day: day, qIndex: i, q: q }));
+    session = {
+      mode: "day",
+      day: day,
+      title: "Day " + day + "：" + d.title,
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
+  function startReview() {
+    if (progress.wrong.length === 0) { renderDashboard(); return; }
+    const items = progress.wrong
+      .map((w) => {
+        const d = CURRICULUM.find((x) => x.day === w.day);
+        if (!d || !d.questions[w.qIndex]) return null;
+        return { day: w.day, qIndex: w.qIndex, q: d.questions[w.qIndex] };
+      })
+      .filter(Boolean);
+    session = {
+      mode: "review",
+      title: "復習モード（" + items.length + "問）",
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
+  function startFinalTest() {
+    // 全Dayの全問題から重複なくランダムに最大15問
+    let pool = [];
+    CURRICULUM.forEach((d) => {
+      d.questions.forEach((q, i) => pool.push({ day: d.day, qIndex: i, q: q }));
+    });
+    pool = shuffle(pool);
+    const items = pool.slice(0, Math.min(15, pool.length));
+    session = {
+      mode: "final",
+      title: "🎓 修了テスト（" + items.length + "問）",
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
+  function renderTest() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+
+    const back = el("button", "back-link", "← ホームに戻る");
+    back.addEventListener("click", renderDashboard);
+    wrap.appendChild(back);
+
+    wrap.appendChild(el("h2", "section-title", session.title));
+    wrap.appendChild(el("p", "section-sub",
+      "各問題に答えたら「答え合わせ」を押してください。全問終えると結果が表示されます。"));
+    wrap.appendChild(el("p", "kbd-hint",
+      "⌨️ 4択は <kbd>1</kbd>〜<kbd>4</kbd> で選択 ・ 穴埋めは <kbd>Enter</kbd> ・ 英作文は <kbd>Ctrl</kbd>+<kbd>Enter</kbd> で答え合わせ"));
+
+    // 進捗バー
+    const prog = el("div", "test-progress");
+    const bar = el("div", "mini-bar");
+    const barSpan = el("span", null, "");
+    bar.appendChild(barSpan);
+    const count = el("div", "count", "");
+    prog.appendChild(bar);
+    prog.appendChild(count);
+    wrap.appendChild(prog);
+
+    function updateProgress() {
+      const done = session.checked.filter(Boolean).length;
+      const total = session.items.length;
+      barSpan.style.width = Math.round((done / total) * 100) + "%";
+      count.textContent = done + " / " + total;
+      finishBtn.disabled = done < total;
+    }
+
+    // 各問題
+    session.items.forEach((item, idx) => {
+      const card = el("div", "card question");
+      card.appendChild(el("span", "q-type-tag",
+        (session.mode === "review" ? "Day " + item.day + " ・ " : "") + (TYPE_LABEL[item.q.type] || "問題")));
+      buildQuestion(card, item, idx, updateProgress);
+      wrap.appendChild(card);
+    });
+
+    // 結果ボタン
+    const finishBtn = el("button", "btn btn-primary btn-block", "結果を見る →");
+    finishBtn.style.marginTop = "6px";
+    finishBtn.disabled = true;
+    finishBtn.addEventListener("click", () => renderResult());
+    wrap.appendChild(finishBtn);
+
+    app.appendChild(wrap);
+    updateProgress();
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- 問題ごとのUI ---------- */
+  function buildQuestion(card, item, idx, onChecked) {
+    const q = item.q;
+    let getResult = () => false; // 採点関数（正誤を返す）
+    let lock = () => {};         // 入力ロック
+
+    if (q.type === "choice" || q.type === "listen") {
+      card.appendChild(el("div", "q-prompt", escapeHtml(q.q)));
+      if (q.audio) {
+        const play = el("button", "btn btn-ghost", "🔊 音声を再生");
+        play.style.marginBottom = "10px";
+        play.addEventListener("click", () => speak(q.audio, play));
+        card.appendChild(play);
+      }
+      const box = el("div", "choices");
+      let selected = -1;
+      const btns = [];
+      q.options.forEach((opt, i) => {
+        const b = el("button", "choice");
+        b.innerHTML = '<span class="key">' + String.fromCharCode(65 + i) + "</span><span>" + escapeHtml(opt) + "</span>";
+        b.addEventListener("click", () => {
+          if (b.disabled) return;
+          selected = i;
+          btns.forEach((x) => x.classList.remove("selected"));
+          b.classList.add("selected");
+        });
+        btns.push(b);
+        box.appendChild(b);
+      });
+      card.appendChild(box);
+      // キーボード: 数字キー 1〜4 で選択
+      box.addEventListener("keydown", (e) => {
+        const n = parseInt(e.key, 10);
+        if (n >= 1 && n <= btns.length && !btns[n - 1].disabled) { e.preventDefault(); btns[n - 1].click(); btns[n - 1].focus(); }
+      });
+      getResult = () => selected === q.answer;
+      lock = (ok) => {
+        btns.forEach((b, i) => {
+          b.disabled = true;
+          if (i === q.answer) b.classList.add("correct");
+          else if (i === selected) b.classList.add("wrong");
+        });
+      };
+      var canCheck = () => selected >= 0;
+
+    } else if (q.type === "order") {
+      card.appendChild(el("div", "q-prompt", escapeHtml(q.q)));
+      const answerBox = el("div", "order-answer");
+      const pool = el("div", "order-pool");
+      let pieces = shuffle(q.answer);
+      if (pieces.length > 1 && pieces.join(" ") === q.answer.join(" ")) pieces = shuffle(pieces);
+      const current = []; // 選択された語（文字列）
+      function rebuild() {
+        answerBox.innerHTML = "";
+        current.forEach((w, i) => {
+          const t = el("button", "token in-answer", escapeHtml(w));
+          t.addEventListener("click", () => { current.splice(i, 1); rebuild(); });
+          answerBox.appendChild(t);
+        });
+        pool.innerHTML = "";
+        const used = current.slice();
+        pieces.forEach((w) => {
+          const ui = used.indexOf(w);
+          if (ui >= 0) { used.splice(ui, 1); return; } // すでに使用済み
+          const t = el("button", "token", escapeHtml(w));
+          t.addEventListener("click", () => { current.push(w); rebuild(); });
+          pool.appendChild(t);
+        });
+      }
+      rebuild();
+      card.appendChild(answerBox);
+      card.appendChild(pool);
+      getResult = () => current.join(" ") === q.answer.join(" ");
+      lock = (ok) => {
+        answerBox.querySelectorAll(".token").forEach((t) => (t.disabled = true));
+        pool.querySelectorAll(".token").forEach((t) => (t.disabled = true));
+      };
+      var canCheck = () => current.length === q.answer.length;
+
+    } else if (q.type === "fill" || q.type === "dictation") {
+      card.appendChild(el("div", "q-prompt", escapeHtml(q.q).replace(/_+/g, '<span class="blank">____</span>')));
+      if (q.audio) {
+        const play = el("button", "btn btn-ghost", "🔊 音声を再生");
+        play.style.marginBottom = "10px";
+        play.addEventListener("click", () => speak(q.audio, play));
+        card.appendChild(play);
+      }
+      const input = el("input", "text-input");
+      input.type = "text";
+      input.placeholder = "英語で入力";
+      input.autocomplete = "off";
+      input.spellcheck = false;
+      card.appendChild(input);
+      // キーボード: Enter で答え合わせ
+      input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); checkBtn.click(); } });
+      const accepted = q.answer.map(normalize);
+      if (q.type === "dictation") {
+        // 聞き取り：語の8割が一致すれば正解（軽微なミスは許容）
+        getResult = () => {
+          const got = normalize(input.value).split(" ").filter(Boolean);
+          const want = normalize(q.answer[0]).split(" ").filter(Boolean);
+          if (!got.length || !want.length) return false;
+          const pool = got.slice();
+          let match = 0;
+          want.forEach((w) => { const k = pool.indexOf(w); if (k >= 0) { match++; pool.splice(k, 1); } });
+          return match / want.length >= 0.8;
+        };
+      } else {
+        getResult = () => accepted.indexOf(normalize(input.value)) >= 0;
+      }
+      lock = (ok) => { input.disabled = true; input.classList.add(ok ? "correct" : "wrong"); };
+      var canCheck = () => input.value.trim().length > 0;
+
+    } else { // translate
+      card.appendChild(el("div", "q-prompt", escapeHtml(q.q)));
+      const input = el("textarea", "text-input");
+      input.rows = 2;
+      input.placeholder = "英語で入力";
+      input.spellcheck = false;
+      card.appendChild(input);
+      // キーボード: Ctrl/⌘ + Enter で答え合わせ
+      input.addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); checkBtn.click(); } });
+      // ヒントは最初は非表示。タップしたときだけキーワードを表示
+      const hintBox = el("div");
+      const hintBtn = el("button", "mini-link", "💡 ヒントを見る");
+      hintBtn.addEventListener("click", () => {
+        hintBox.innerHTML = '<div class="hint">キーワード： ' +
+          q.keywords.map((k) => "「" + escapeHtml(k) + "」").join(" ") + "</div>";
+        hintBtn.style.display = "none";
+      });
+      hintBox.appendChild(hintBtn);
+      card.appendChild(hintBox);
+      getResult = () => {
+        const tokens = normalize(input.value).split(" ");
+        return q.keywords.every((k) => tokens.indexOf(normalize(k)) >= 0);
+      };
+      lock = (ok) => { input.disabled = true; input.classList.add(ok ? "correct" : "wrong"); };
+      var canCheck = () => input.value.trim().length > 0;
+    }
+
+    // ボタン（答え合わせ / わからない）
+    const checkBtn = el("button", "btn btn-ghost", "答え合わせ");
+    const giveBtn = el("button", "btn btn-ghost", "❓ わからない");
+    const btnRow = el("div");
+    btnRow.style.display = "flex";
+    btnRow.style.gap = "8px";
+    btnRow.style.flexWrap = "wrap";
+    btnRow.style.marginTop = "12px";
+    btnRow.appendChild(checkBtn);
+    btnRow.appendChild(giveBtn);
+    const foot = el("div", "test-foot");
+    foot.appendChild(btnRow);
+    card.appendChild(foot);
+
+    // 採点・答え表示を共通化（giveUp=「わからない」で答えを見たとき）
+    function settle(ok, giveUp) {
+      if (session.checked[idx]) return;
+      session.checked[idx] = true;
+      session.correct[idx] = ok;
+      // 復習リストの更新（日付がDay番号のもののみ／会話テストは対象外）
+      if (typeof item.day === "number") {
+        if (ok) clearWrong(item.day, item.qIndex); else markWrong(item.day, item.qIndex);
+      }
+      lock(ok);
+      btnRow.style.display = "none";
+
+      const fb = el("div", "feedback " + (ok ? "ok" : "ng"));
+      const head = ok ? "✅ 正解！" : (giveUp ? "📖 答え" : "❌ 不正解");
+      let body = "<div class='fb-head'>" + head + "</div>";
+      const showAnswer = !ok; // 不正解 or わからない のとき正解を表示
+      if (showAnswer) {
+        if (q.type === "order") body += "<div>正しい語順：<span class='model'>" + escapeHtml(q.answer.join(" ")) + "</span></div>";
+        else if (q.type === "fill") body += "<div>正解例：<span class='model'>" + escapeHtml(q.answer[0]) + "</span></div>";
+        else if (q.type === "translate") body += "<div>模範解答：<span class='model'>" + escapeHtml(q.model) + "</span></div>";
+        else if (q.type === "choice") body += "<div>正解：<span class='model'>" + escapeHtml(q.options[q.answer]) + "</span></div>";
+      } else if (q.type === "translate") {
+        body += "<div>模範解答：<span class='model'>" + escapeHtml(q.model) + "</span></div>";
+      }
+      if (q.explain) body += "<div style='margin-top:4px'>💡 " + escapeHtml(q.explain) + "</div>";
+      fb.innerHTML = body;
+
+      const speakText = q.speak ? q.speak :
+        q.type === "order" ? q.answer.join(" ") :
+        q.type === "translate" ? q.model :
+        q.type === "fill" ? q.answer[0] : q.options[q.answer];
+      if (speakText && speechOK) {
+        const sb = speakButton(speakText);
+        sb.style.marginTop = "6px";
+        fb.appendChild(sb);
+      }
+      foot.appendChild(fb);
+      onChecked();
+    }
+
+    checkBtn.addEventListener("click", () => {
+      if (session.checked[idx]) return;
+      if (!canCheck()) {
+        checkBtn.textContent = "回答を入力してください";
+        setTimeout(() => (checkBtn.textContent = "答え合わせ"), 1200);
+        return;
+      }
+      settle(getResult(), false);
+    });
+    giveBtn.addEventListener("click", () => settle(false, true));
+  }
+
+  /* ============================================================
+     結果ページ
+     ============================================================ */
+  function renderResult() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    const total = session.items.length;
+    const correct = session.correct.filter(Boolean).length;
+    const pct = Math.round((correct / total) * 100);
+
+    // 進捗保存
+    if (session.mode === "day") {
+      const r = dayRecord(session.day);
+      r.attempts = (r.attempts || 0) + 1;
+      r.best = Math.max(r.best || 0, pct);
+      r.completed = true;
+      progress.days[session.day] = r;
+      saveProgress(progress);
+      recordActivityToday();
+    } else if (session.mode === "final") {
+      progress.finalBest = Math.max(progress.finalBest || 0, pct);
+      saveProgress(progress);
+      recordActivityToday();
+    } else if (session.mode === "conv") {
+      progress.convBest = Math.max(progress.convBest || 0, pct);
+      saveProgress(progress);
+      recordActivityToday();
+    } else if (session.mode === "phrase") {
+      progress.phraseBest = Math.max(progress.phraseBest || 0, pct);
+      saveProgress(progress);
+      recordActivityToday();
+    } else if (session.mode === "dialogue") {
+      progress.dialogueBest = Math.max(progress.dialogueBest || 0, pct);
+      saveProgress(progress);
+      recordActivityToday();
+    } else if (session.mode === "listen") {
+      progress.listenBest = Math.max(progress.listenBest || 0, pct);
+      saveProgress(progress);
+      recordActivityToday();
+    } else if (session.mode === "essential") {
+      progress.essentialBest = Math.max(progress.essentialBest || 0, pct);
+      saveProgress(progress);
+      recordActivityToday();
+    } else if (session.mode === "review") {
+      recordActivityToday();
+    }
+
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+
+    let msg, emoji;
+    if (session.mode === "conv") {
+      // 会話できそう度の判定
+      if (pct >= 80) { msg = "会話デビューできそう！基本のやり取りはバッチリ"; emoji = "🎉"; }
+      else if (pct >= 60) { msg = "あと少し！定番フレーズを復習すれば会話できます"; emoji = "💪"; }
+      else { msg = "まずはフレーズ集と会話シナリオで定番表現を覚えよう"; emoji = "📒"; }
+    } else if (pct >= 90) { msg = "すばらしい！完璧に近いです"; emoji = "🏆"; }
+    else if (pct >= 70) { msg = "よくできました！"; emoji = "🎉"; }
+    else if (pct >= 50) { msg = "もう少し！復習して再挑戦"; emoji = "💪"; }
+    else { msg = "復習して基礎を固めましょう"; emoji = "📚"; }
+
+    const color = pct >= 70 ? "var(--green)" : (pct >= 50 ? "var(--amber)" : "var(--red)");
+    const circ = 2 * Math.PI * 60;
+    const offset = circ * (1 - pct / 100);
+
+    const hero = el("div", "card result-hero");
+    hero.innerHTML =
+      '<div class="score-ring">' +
+      '<svg width="140" height="140" viewBox="0 0 140 140">' +
+      '<circle cx="70" cy="70" r="60" fill="none" stroke="var(--line)" stroke-width="12"/>' +
+      '<circle cx="70" cy="70" r="60" fill="none" stroke="' + color + '" stroke-width="12" stroke-linecap="round" ' +
+      'stroke-dasharray="' + circ + '" stroke-dashoffset="' + offset + '"/>' +
+      "</svg>" +
+      '<div class="pct" style="color:' + color + '">' + pct + "%</div></div>" +
+      '<div class="result-msg">' + emoji + " " + msg + "</div>" +
+      '<div class="result-detail">' + total + " 問中 " + correct + " 問正解" +
+      (session.mode === "day" ? "（ベスト " + dayRecord(session.day).best + "%）" :
+        session.mode === "final" ? "（ベスト " + progress.finalBest + "%）" :
+        session.mode === "conv" ? "（ベスト " + progress.convBest + "%）" :
+        session.mode === "phrase" ? "（ベスト " + progress.phraseBest + "%）" :
+        session.mode === "dialogue" ? "（ベスト " + progress.dialogueBest + "%）" :
+        session.mode === "listen" ? "（ベスト " + progress.listenBest + "%）" :
+        session.mode === "essential" ? "（ベスト " + progress.essentialBest + "%）" : "") + "</div>";
+    wrap.appendChild(hero);
+
+    const actions = el("div", "result-actions");
+
+    const wrongInThis = session.items.filter((_, i) => !session.correct[i]).length;
+    if (wrongInThis > 0) {
+      const retryWrong = el("button", "btn btn-primary", "間違えた " + wrongInThis + " 問を解き直す");
+      retryWrong.addEventListener("click", () => {
+        const items = session.items.filter((_, i) => !session.correct[i]);
+        session = {
+          mode: session.mode,
+          day: session.day,
+          title: (session.mode === "day" ? "Day " + session.day + "：" : "") + "間違えた問題の再テスト",
+          items: items,
+          checked: new Array(items.length).fill(false),
+          correct: new Array(items.length).fill(false),
+        };
+        renderTest();
+      });
+      actions.appendChild(retryWrong);
+    }
+
+    if (session.mode === "day") {
+      const retry = el("button", "btn btn-ghost", "もう一度テスト");
+      retry.addEventListener("click", () => startTest(session.day));
+      actions.appendChild(retry);
+    } else if (session.mode === "final") {
+      const retry = el("button", "btn btn-ghost", "別の15問で再挑戦");
+      retry.addEventListener("click", () => startFinalTest());
+      actions.appendChild(retry);
+    } else if (session.mode === "conv") {
+      const retry = el("button", "btn btn-ghost", "もう一度判定する");
+      retry.addEventListener("click", () => startConvTest());
+      actions.appendChild(retry);
+      const hub = el("button", "btn btn-ghost", "実践会話に戻る");
+      hub.addEventListener("click", renderConversationHub);
+      actions.appendChild(hub);
+    } else if (session.mode === "phrase" || session.mode === "dialogue" || session.mode === "listen" || session.mode === "essential") {
+      const retry = el("button", "btn btn-ghost", "別の問題でもう一度");
+      const againMap = { phrase: startPhraseQuiz, dialogue: startDialogueQuiz, listen: startListeningQuiz, essential: startEssentialsQuiz };
+      const again = againMap[session.mode];
+      retry.addEventListener("click", () => again());
+      actions.appendChild(retry);
+      const hub = el("button", "btn btn-ghost", "実践会話に戻る");
+      hub.addEventListener("click", renderConversationHub);
+      actions.appendChild(hub);
+    }
+
+    const home = el("button", "btn btn-ghost", "ホームへ");
+    home.addEventListener("click", renderDashboard);
+    actions.appendChild(home);
+
+    wrap.appendChild(actions);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  /* ============================================================
+     復習ビュー（ナビ用）
+     ============================================================ */
+  function renderReview() {
+    if (progress.wrong.length === 0) {
+      window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+      app.innerHTML = "";
+      const wrap = el("div", "fade-in empty");
+      wrap.innerHTML =
+        '<div class="big">🎯</div>' +
+        "<h3>復習する問題はありません</h3>" +
+        "<p>テストで間違えた問題が、ここに自動でたまります。</p>";
+      const home = el("button", "btn btn-primary", "ホームへ");
+      home.addEventListener("click", renderDashboard);
+      wrap.appendChild(home);
+      app.appendChild(wrap);
+      return;
+    }
+    startReview();
+  }
+
+  /* ============================================================
+     実践会話モジュール
+     ============================================================ */
+  function renderConversationHub() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+
+    const hero = el("div", "conv-hero");
+    hero.innerHTML =
+      "<h1>💬 実践会話 — 会話デビューを目指す</h1>" +
+      "<p>テストが解けることと「会話できる」ことは別もの。挨拶から会話の流れ、" +
+      "普段使いのフレーズを身につけて、実際のやり取りに備えましょう。</p>";
+    wrap.appendChild(hero);
+
+    const grid = el("div", "conv-grid");
+    const cards = [
+      { ic: "📒", title: "普段使いフレーズ集", desc: "あいさつ・あいづち・お願いなど、会話で即使える定番表現。", go: renderPhrases },
+      { ic: "🎭", title: "会話シナリオ（流れ）", desc: "カフェ・道案内・空港・ホテルなど、自然な会話の流れを場面で学ぶ。", go: renderDialogues },
+      { ic: "🔢", title: "数字・時刻・お金", desc: "買い物や予約で必須の実用表現。専用クイズ付き。", go: renderEssentials },
+      { ic: "🎧", title: "リスニング", desc: "音声を聞いて意味を選ぶ・書き取る。聞き取り力を鍛える。", go: startListeningQuiz },
+      { ic: "🎤", title: "スピーキング練習", desc: "マイクで話して発音を判定（Chrome系推奨）。実際に声に出す練習。", go: renderSpeakingPractice },
+      { ic: "🎯", title: "会話力判定テスト", desc: "「これができれば会話できそう」を測る、デイリーとは別の実践テスト。" +
+        (progress.convBest > 0 ? "（ベスト " + progress.convBest + "%）" : ""), go: startConvTest },
+    ];
+    cards.forEach((c) => {
+      const card = el("div", "conv-card");
+      card.innerHTML = '<div class="ic">' + c.ic + "</div><h3>" + c.title + "</h3><p>" + c.desc + "</p>";
+      card.addEventListener("click", c.go);
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  function renderPhrases() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const back = el("button", "back-link", "← 実践会話に戻る");
+    back.addEventListener("click", renderConversationHub);
+    wrap.appendChild(back);
+    wrap.appendChild(el("h2", "section-title", "📒 普段使いフレーズ集"));
+    wrap.appendChild(el("p", "section-sub", "🔊 を押すと発音が聞けます。声に出して練習しましょう。"));
+
+    const quizBtn = el("button", "btn btn-primary btn-block", "📝 フレーズクイズに挑戦" +
+      (progress.phraseBest > 0 ? "（ベスト " + progress.phraseBest + "%）" : ""));
+    quizBtn.style.marginBottom = "18px";
+    quizBtn.addEventListener("click", () => startPhraseQuiz());
+    wrap.appendChild(quizBtn);
+
+    PHRASES.forEach((cat) => {
+      const card = el("div", "card phrase-cat");
+      card.appendChild(el("span", "block-label", cat.category));
+      cat.items.forEach((p) => {
+        const item = el("div", "phrase-item");
+        item.appendChild(speakButton(p.en));
+        const t = el("div");
+        t.innerHTML = '<div class="phrase-en">' + escapeHtml(p.en) + '</div><div class="phrase-ja">' + escapeHtml(p.ja) + "</div>";
+        item.appendChild(t);
+        card.appendChild(item);
+      });
+      wrap.appendChild(card);
+    });
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  function renderDialogues() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const back = el("button", "back-link", "← 実践会話に戻る");
+    back.addEventListener("click", renderConversationHub);
+    wrap.appendChild(back);
+    wrap.appendChild(el("h2", "section-title", "🎭 会話シナリオ（流れ）"));
+    wrap.appendChild(el("p", "section-sub", "場面ごとの自然な会話の流れです。「▶ 通して聞く」で会話全体を再生できます。"));
+
+    const quizBtn = el("button", "btn btn-primary btn-block", "📝 会話シナリオクイズに挑戦" +
+      (progress.dialogueBest > 0 ? "（ベスト " + progress.dialogueBest + "%）" : ""));
+    quizBtn.style.marginBottom = "18px";
+    quizBtn.addEventListener("click", () => startDialogueQuiz());
+    wrap.appendChild(quizBtn);
+
+    DIALOGUES.forEach((d) => {
+      const card = el("div", "card dialogue-scene");
+      const head = el("div");
+      head.style.display = "flex";
+      head.style.alignItems = "center";
+      head.style.justifyContent = "space-between";
+      head.style.flexWrap = "wrap";
+      head.style.gap = "8px";
+      head.style.marginBottom = "6px";
+      head.appendChild(el("span", "block-label", d.scene));
+      const playBtn = el("button", "btn btn-ghost", "▶ 通して聞く");
+      playBtn.style.padding = "8px 14px";
+      playBtn.style.fontSize = "14px";
+      playBtn.addEventListener("click", () => speakSequence(d.lines.map((l) => l.en), playBtn));
+      head.appendChild(playBtn);
+      card.appendChild(head);
+
+      d.lines.forEach((l, i) => {
+        const line = el("div", "dia-line" + (i % 2 === 1 ? " right" : ""));
+        line.appendChild(el("span", "dia-speaker", escapeHtml(l.s)));
+        const body = el("div", "dia-body");
+        body.innerHTML = '<div class="dia-en">' + escapeHtml(l.en) + '</div><div class="dia-ja">' + escapeHtml(l.ja) + "</div>";
+        line.appendChild(body);
+        line.appendChild(speakButton(l.en));
+        card.appendChild(line);
+      });
+      wrap.appendChild(card);
+    });
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  function startConvTest() {
+    const items = shuffle(CONV_TEST).map((q, i) => ({ day: "conv", qIndex: i, q: q }));
+    session = {
+      mode: "conv",
+      title: "🎯 会話力判定テスト（" + items.length + "問）",
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
+  // 重複しない誤答選択肢を作る
+  function pickDistractors(pool, correct, n) {
+    const cands = shuffle(pool.filter((x) => x !== correct));
+    const out = [];
+    for (const c of cands) { if (out.indexOf(c) < 0) out.push(c); if (out.length >= n) break; }
+    return out;
+  }
+  function buildChoiceFromPair(promptText, correct, distractorPool, explain, speak) {
+    const opts = shuffle([correct].concat(pickDistractors(distractorPool, correct, 3)));
+    const q = { type: "choice", q: promptText, options: opts, answer: opts.indexOf(correct), explain: explain };
+    if (speak) q.speak = speak; // 読み上げる英文（答えが日本語の問題用）
+    return q;
+  }
+
+  // フレーズ集クイズ（日↔英を交互に出題、フレーズ集から自動生成）
+  function startPhraseQuiz() {
+    const all = [];
+    PHRASES.forEach((cat) => cat.items.forEach((p) => all.push(p)));
+    const enPool = all.map((p) => p.en);
+    const jaPool = all.map((p) => p.ja);
+    const picks = shuffle(all).slice(0, Math.min(10, all.length));
+    const questions = picks.map((p, i) => {
+      if (i % 2 === 0) {
+        return buildChoiceFromPair("「" + p.ja + "」を英語で言うと？", p.en, enPool, "「" + p.ja + "」→ " + p.en);
+      }
+      return buildChoiceFromPair("「" + p.en + "」の意味は？", p.ja, jaPool, p.en + " →「" + p.ja + "」", p.en);
+    });
+    const items = questions.map((q, i) => ({ day: "phrase", qIndex: i, q: q }));
+    session = {
+      mode: "phrase",
+      title: "📒 フレーズクイズ（" + items.length + "問）",
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
+  // 会話シナリオクイズ（流れに合う自然な次のセリフを選ぶ、ダイアログから自動生成）
+  function startDialogueQuiz() {
+    const allLines = [];
+    DIALOGUES.forEach((d) => d.lines.forEach((l) => allLines.push(l.en)));
+    // 各ダイアログから 2行目以降を候補に
+    const spots = [];
+    DIALOGUES.forEach((d) => {
+      for (let i = 1; i < d.lines.length; i++) spots.push({ d: d, i: i });
+    });
+    const picks = shuffle(spots).slice(0, Math.min(10, spots.length));
+    const questions = picks.map((s) => {
+      const prev = s.d.lines[s.i - 1];
+      const correct = s.d.lines[s.i];
+      const promptText = "【" + s.d.scene + "】 直前のセリフ：" + prev.s + "「" + prev.en + "（" + prev.ja + "）」。次に続く自然なセリフは？";
+      return buildChoiceFromPair(promptText, correct.en, allLines, "意味：" + correct.ja);
+    });
+    const items = questions.map((q, i) => ({ day: "dialogue", qIndex: i, q: q }));
+    session = {
+      mode: "dialogue",
+      title: "🎭 会話シナリオクイズ（" + items.length + "問）",
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
+  // 例文・会話・フレーズを集めた英文プール（リスニング/スピーキング用）
+  function sentencePool() {
+    const pool = [];
+    CURRICULUM.forEach((d) => d.examples.forEach((e) => pool.push({ en: e.en, ja: e.ja })));
+    DIALOGUES.forEach((d) => d.lines.forEach((l) => pool.push({ en: l.en, ja: l.ja })));
+    PHRASES.forEach((c) => c.items.forEach((p) => pool.push({ en: p.en, ja: p.ja })));
+    return pool;
+  }
+
+  // リスニング/ディクテーションクイズ（音声を聞いて意味を選ぶ・書き取る）
+  function startListeningQuiz() {
+    const pool = sentencePool();
+    const jaPool = pool.map((p) => p.ja);
+    const picks = shuffle(pool).slice(0, 10);
+    const questions = picks.map((p, i) => {
+      const words = p.en.split(/\s+/).length;
+      if (i % 2 === 1 && words <= 6) {
+        // ディクテーション（短文のみ）
+        return { type: "dictation", q: "🎧 聞こえた英文を入力しましょう", audio: p.en, speak: p.en, answer: [p.en], explain: "意味：" + p.ja };
+      }
+      // リスニング選択（意味を選ぶ）
+      const q = buildChoiceFromPair("🎧 音声を聞いて、合う意味を選びましょう", p.ja, jaPool, "英文：" + p.en, p.en);
+      q.type = "listen";
+      q.audio = p.en;
+      return q;
+    });
+    const items = questions.map((q, i) => ({ day: "listen", qIndex: i, q: q }));
+    session = {
+      mode: "listen",
+      title: "🎧 リスニング（" + items.length + "問）",
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
+  // 実用クイズ（数字・時刻・お金）
+  function startEssentialsQuiz() {
+    const all = [];
+    ESSENTIALS.forEach((g) => g.items.forEach((it) => all.push(it)));
+    const enPool = all.map((x) => x.en);
+    const jaPool = all.map((x) => x.ja);
+    const picks = shuffle(all).slice(0, Math.min(10, all.length));
+    const questions = picks.map((p, i) =>
+      i % 2 === 0
+        ? buildChoiceFromPair("「" + p.ja + "」を英語で？", p.en, enPool, "「" + p.ja + "」→ " + p.en)
+        : buildChoiceFromPair("「" + p.en + "」の意味は？", p.ja, jaPool, p.en + " →「" + p.ja + "」", p.en));
+    const items = questions.map((q, i) => ({ day: "essential", qIndex: i, q: q }));
+    session = {
+      mode: "essential",
+      title: "🔢 実用クイズ（" + items.length + "問）",
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
+  // 数字・時刻・お金 レッスンページ
+  function renderEssentials() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const back = el("button", "back-link", "← 実践会話に戻る");
+    back.addEventListener("click", renderConversationHub);
+    wrap.appendChild(back);
+    wrap.appendChild(el("h2", "section-title", "🔢 数字・時刻・お金"));
+    wrap.appendChild(el("p", "section-sub", "買い物・予約・道案内で必ず使う実用表現です。🔊 で発音を確認。"));
+
+    const quizBtn = el("button", "btn btn-primary btn-block", "📝 実用クイズに挑戦" +
+      (progress.essentialBest > 0 ? "（ベスト " + progress.essentialBest + "%）" : ""));
+    quizBtn.style.marginBottom = "18px";
+    quizBtn.addEventListener("click", () => startEssentialsQuiz());
+    wrap.appendChild(quizBtn);
+
+    ESSENTIALS.forEach((g) => {
+      const card = el("div", "card phrase-cat");
+      card.appendChild(el("span", "block-label", g.title));
+      g.items.forEach((it) => {
+        const item = el("div", "phrase-item");
+        item.appendChild(speakButton(it.en));
+        const t = el("div");
+        t.innerHTML = '<div class="phrase-en">' + escapeHtml(it.en) + '</div><div class="phrase-ja">' + escapeHtml(it.ja) + "</div>";
+        item.appendChild(t);
+        card.appendChild(item);
+      });
+      wrap.appendChild(card);
+    });
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  // スピーキング練習（マイクで話して発音判定・Chrome系のみ）
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function renderSpeakingPractice() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const back = el("button", "back-link", "← 実践会話に戻る");
+    back.addEventListener("click", renderConversationHub);
+    wrap.appendChild(back);
+    wrap.appendChild(el("h2", "section-title", "🎤 スピーキング練習"));
+
+    if (!SpeechRec) {
+      const note = el("div", "card");
+      note.innerHTML = "<p>この機能は音声認識（Web Speech API）を使います。<br>" +
+        "<strong>Google Chrome / Microsoft Edge</strong> でのご利用をおすすめします。<br>" +
+        "（マイクの使用許可と、httpsまたはlocalhostでの表示が必要です。ファイルを直接開いた場合は使えないことがあります。）</p>";
+      wrap.appendChild(note);
+      app.appendChild(wrap);
+      return;
+    }
+    wrap.appendChild(el("p", "section-sub", "お手本を聞いて、🎤 を押して英語で話してみましょう。認識結果と照らして判定します。"));
+
+    const pool = shuffle(sentencePool());
+    let idx = 0;
+
+    const card = el("div", "card");
+    const target = el("div");
+    target.style.fontSize = "20px";
+    target.style.fontWeight = "700";
+    target.style.margin = "6px 0";
+    const targetJa = el("div", "phrase-ja");
+    card.appendChild(target);
+    card.appendChild(targetJa);
+
+    const ctrls = el("div");
+    ctrls.style.display = "flex";
+    ctrls.style.flexWrap = "wrap";
+    ctrls.style.gap = "8px";
+    ctrls.style.marginTop = "14px";
+    const listenBtn = el("button", "btn btn-ghost", "🔊 お手本を聞く");
+    const micBtn = el("button", "btn btn-primary", "🎤 話す");
+    const nextBtn = el("button", "btn btn-ghost", "次へ →");
+    ctrls.appendChild(listenBtn);
+    ctrls.appendChild(micBtn);
+    ctrls.appendChild(nextBtn);
+    card.appendChild(ctrls);
+
+    const fb = el("div");
+    fb.style.marginTop = "12px";
+    card.appendChild(fb);
+    wrap.appendChild(card);
+
+    function load() {
+      const p = pool[idx % pool.length];
+      target.textContent = p.en;
+      targetJa.textContent = p.ja;
+      fb.innerHTML = "";
+      micBtn.disabled = false;
+      micBtn.textContent = "🎤 話す";
+    }
+    listenBtn.addEventListener("click", () => speak(pool[idx % pool.length].en, listenBtn));
+    nextBtn.addEventListener("click", () => { idx++; load(); });
+
+    micBtn.addEventListener("click", () => {
+      const targetEn = pool[idx % pool.length].en;
+      const rec = new SpeechRec();
+      rec.lang = "en-US";
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      micBtn.disabled = true;
+      micBtn.textContent = "🎙️ 聞き取り中...";
+      fb.innerHTML = "";
+      rec.onresult = (ev) => {
+        const said = ev.results[0][0].transcript;
+        const got = normalize(said).split(" ").filter(Boolean);
+        const want = normalize(targetEn).split(" ").filter(Boolean);
+        const pl = got.slice();
+        let match = 0;
+        want.forEach((w) => { const k = pl.indexOf(w); if (k >= 0) { match++; pl.splice(k, 1); } });
+        const score = Math.round((match / want.length) * 100);
+        const ok = score >= 70;
+        fb.innerHTML =
+          '<div class="feedback ' + (ok ? "ok" : "ng") + '">' +
+          "<div class='fb-head'>" + (ok ? "✅ いい発音です！" : "🔁 もう一度挑戦") + "（一致度 " + score + "%）</div>" +
+          "<div>認識結果：<span class='model'>" + escapeHtml(said) + "</span></div>" +
+          "<div>お手本：<span class='model'>" + escapeHtml(targetEn) + "</span></div></div>";
+        recordActivityToday();
+      };
+      rec.onerror = (ev) => {
+        fb.innerHTML = '<div class="feedback ng"><div class="fb-head">🎤 認識できませんでした</div>' +
+          "<div>マイクの許可を確認して、もう一度お試しください。（" + escapeHtml(ev.error || "") + "）</div></div>";
+      };
+      rec.onend = () => { micBtn.disabled = false; micBtn.textContent = "🎤 話す"; };
+      try { rec.start(); } catch (e) { micBtn.disabled = false; micBtn.textContent = "🎤 話す"; }
+    });
+
+    load();
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  /* ============================================================
+     データのエクスポート / インポート
+     ============================================================ */
+  function exportData() {
+    const data = {
+      app: "eikaiwa_bootcamp",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      progress: progress,
+      theme: theme,
+      voice: voiceSettings,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "eikaiwa-progress-" + todayKey() + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  function importData() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "application/json,.json";
+    input.addEventListener("change", () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          if (!data || !data.progress) throw new Error("形式が違います");
+          confirmDialog("このバックアップで現在の進捗を上書きします。よろしいですか？", () => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data.progress));
+            if (data.theme) localStorage.setItem(THEME_KEY, data.theme);
+            if (data.voice) localStorage.setItem(VOICE_KEY, JSON.stringify(data.voice));
+            location.reload();
+          });
+        } catch (e) {
+          confirmDialog("読み込みに失敗しました：" + (e.message || "不明なエラー") + "（このボタンを押すと閉じます）", () => {});
+        }
+      };
+      reader.readAsText(file);
+    });
+    input.click();
+  }
+
+  /* ============================================================
+     リセット（確認モーダル）
+     ============================================================ */
+  const overlay = document.getElementById("modal-overlay");
+  const modalMsg = document.getElementById("modal-message");
+  const modalOk = document.getElementById("modal-ok");
+  const modalCancel = document.getElementById("modal-cancel");
+  let onConfirm = null;
+
+  function confirmDialog(message, cb) {
+    modalMsg.textContent = message;
+    onConfirm = cb;
+    overlay.hidden = false;
+  }
+  modalCancel.addEventListener("click", () => { overlay.hidden = true; onConfirm = null; });
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) { overlay.hidden = true; onConfirm = null; } });
+  modalOk.addEventListener("click", () => {
+    overlay.hidden = true;
+    if (onConfirm) onConfirm();
+    onConfirm = null;
+  });
+
+  document.getElementById("reset-btn").addEventListener("click", () => {
+    confirmDialog("学習の進捗・スコア・復習リスト・暗記状況・連続記録をすべて消去して最初からやり直します。よろしいですか？", () => {
+      progress = { days: {}, wrong: [], mastered: {}, streak: { count: 0, lastDate: null }, finalBest: 0, convBest: 0, phraseBest: 0, dialogueBest: 0, listenBest: 0, essentialBest: 0 };
+      saveProgress(progress);
+      renderDashboard();
+    });
+  });
+
+  /* ============================================================
+     ナビゲーション
+     ============================================================ */
+  document.getElementById("brand").addEventListener("click", renderDashboard);
+  document.querySelectorAll(".nav-btn[data-nav]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const nav = b.getAttribute("data-nav");
+      if (nav === "dashboard") renderDashboard();
+      else if (nav === "review") renderReview();
+      else if (nav === "conversation") renderConversationHub();
+    });
+  });
+  document.getElementById("theme-btn").addEventListener("click", toggleTheme);
+
+  /* ---------- PWA（オフライン対応） ---------- */
+  // http(s) 経由のときだけ Service Worker を登録（file:// では無効）
+  if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => { /* 失敗しても通常動作 */ });
+    });
+  }
+
+  /* ---------- 起動 ---------- */
+  renderDashboard();
+})();
+
+  </script>
+</body>
+</html>

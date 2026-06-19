@@ -1,0 +1,366 @@
+/* =========================================================
+   7日間 英会話ブートキャンプ — 学習コンテンツ & テストデータ
+   - grammar : 文法解説（ポイント＋例文）
+   - vocab   : Day別 頻出単語
+   - examples: 会話で使える例文（読み上げ対応）
+   - questions: テスト問題
+       type: 'choice'    4択      -> answer は正解インデックス
+       type: 'order'     並べ替え -> answer は正しい語順の配列
+       type: 'fill'      穴埋め   -> answer は許容解の配列（表記ゆれ可）
+       type: 'translate' 英作文   -> keywords 必須語 / model 模範解答
+   ========================================================= */
+
+const CURRICULUM = [
+  /* ================= DAY 1 ================= */
+  {
+    day: 1,
+    title: "be動詞・自己紹介",
+    theme: "I am / You are / This is、肯定・否定・疑問、人称代名詞",
+    grammar: {
+      intro: "英語の土台になる「be動詞（am / is / are）」を覚えます。主語によって形が変わるのがポイントです。",
+      points: [
+        { h: "主語とbe動詞の組み合わせ", p: "I → am、he / she / it → is、you / we / they → are。", eg: "I am Ken. / She is a teacher. / They are students." },
+        { h: "否定文は not を足すだけ", p: "be動詞の後ろに not を置きます。短縮形(isn't / aren't)もよく使います。", eg: "I am not busy. / He is not (isn't) here." },
+        { h: "疑問文は be動詞を前に出す", p: "主語とbe動詞を入れ替えます。答えは Yes, I am. / No, I'm not. など。", eg: "Are you a student? — Yes, I am." },
+        { h: "人称代名詞", p: "I(私), you(あなた), he(彼), she(彼女), it(それ), we(私たち), they(彼ら)。", eg: "This is my friend. He is from Osaka." },
+      ],
+    },
+    vocab: [
+      { en: "I", ja: "私は" }, { en: "you", ja: "あなたは" }, { en: "he", ja: "彼は" },
+      { en: "she", ja: "彼女は" }, { en: "it", ja: "それは" }, { en: "we", ja: "私たちは" },
+      { en: "they", ja: "彼らは" }, { en: "this", ja: "これ" }, { en: "that", ja: "あれ" },
+      { en: "name", ja: "名前" }, { en: "friend", ja: "友達" }, { en: "teacher", ja: "先生" },
+      { en: "student", ja: "学生" }, { en: "from", ja: "〜出身で" }, { en: "Japan", ja: "日本" },
+      { en: "nice", ja: "すてきな" }, { en: "happy", ja: "うれしい" }, { en: "tired", ja: "疲れた" },
+      { en: "busy", ja: "忙しい" }, { en: "fine", ja: "元気な" }, { en: "yes", ja: "はい" },
+      { en: "no", ja: "いいえ" }, { en: "and", ja: "そして" }, { en: "very", ja: "とても" },
+      { en: "here", ja: "ここに" }, { en: "now", ja: "今" }, { en: "old", ja: "年をとった/古い" },
+      { en: "young", ja: "若い" }, { en: "my", ja: "私の" }, { en: "your", ja: "あなたの" },
+    ],
+    examples: [
+      { en: "Hi, I am Ken. Nice to meet you.", ja: "やあ、ケンです。はじめまして。" },
+      { en: "I am from Japan.", ja: "私は日本出身です。" },
+      { en: "Are you a student?", ja: "あなたは学生ですか？" },
+      { en: "This is my friend, Mari.", ja: "こちらは友達のマリです。" },
+      { en: "She is very kind.", ja: "彼女はとても親切です。" },
+      { en: "I am not tired.", ja: "私は疲れていません。" },
+    ],
+    questions: [
+      { type: "choice", q: "I ___ a student.", options: ["am", "is", "are", "be"], answer: 0, explain: "主語が I のときは am を使います。" },
+      { type: "choice", q: "She ___ from Japan.", options: ["am", "are", "is", "do"], answer: 2, explain: "主語が she（3人称単数）なので is。" },
+      { type: "choice", q: "「彼らは忙しい」を表すのは？", options: ["They is busy.", "They are busy.", "They am busy.", "They be busy."], answer: 1, explain: "they には are を使います。" },
+      { type: "choice", q: "疑問文として正しいのは？", options: ["You are a teacher?", "Are you a teacher?", "Do you teacher?", "Is you a teacher?"], answer: 1, explain: "be動詞の疑問文は be動詞を主語の前に出します。" },
+      { type: "order", q: "「私はケンです」を並べ替えましょう。", answer: ["I", "am", "Ken"], explain: "I + am + 名前 の語順です。" },
+      { type: "order", q: "「彼女は私の友達です」を並べ替えましょう。", answer: ["She", "is", "my", "friend"], explain: "She is my friend. が正解です。" },
+      { type: "order", q: "「あなたは学生ですか？」を並べ替えましょう。", answer: ["Are", "you", "a", "student"], explain: "疑問文は Are を先頭に。" },
+      { type: "fill", q: "He ___ a teacher.（be動詞を入れる）", answer: ["is"], explain: "he は3人称単数なので is。" },
+      { type: "fill", q: "We ___ happy.（be動詞を入れる）", answer: ["are"], explain: "we には are を使います。" },
+      { type: "fill", q: "I am ___ tired.（「〜ない」の語）", answer: ["not"], explain: "否定は be動詞の後ろに not。" },
+      { type: "translate", q: "「私は日本出身です。」を英語にしましょう。", keywords: ["i", "am", "from", "japan"], model: "I am from Japan.", explain: "I am from + 場所。" },
+      { type: "translate", q: "「はじめまして。」を英語にしましょう。", keywords: ["nice", "to", "meet", "you"], model: "Nice to meet you.", explain: "定番の挨拶 Nice to meet you. です。to を忘れずに。" },
+    ],
+  },
+
+  /* ================= DAY 2 ================= */
+  {
+    day: 2,
+    title: "一般動詞の現在形",
+    theme: "I like / He likes、Do/Does、3単現のs、頻度の副詞",
+    grammar: {
+      intro: "「〜する」を表す一般動詞を学びます。3人称単数(he/she/it)が主語のとき動詞に s が付くのが最大のポイントです。",
+      points: [
+        { h: "3単現の s", p: "he / she / it が主語のとき、動詞に s（または es）を付けます。", eg: "I like coffee. / She likes coffee." },
+        { h: "疑問文は Do / Does", p: "主語が he/she/it なら Does、それ以外は Do を文頭に。動詞は原形に戻します。", eg: "Do you like music? / Does he play tennis?" },
+        { h: "否定文は don't / doesn't", p: "don't / doesn't の後ろは動詞の原形。", eg: "I don't eat meat. / She doesn't drink coffee." },
+        { h: "頻度を表す副詞", p: "always(いつも) > usually(たいてい) > often(よく) > sometimes(時々) > never(全くない)。ふつう動詞の前に置きます。", eg: "I always get up at six. / He sometimes plays games." },
+      ],
+    },
+    vocab: [
+      { en: "like", ja: "好む" }, { en: "have", ja: "持っている" }, { en: "want", ja: "ほしい" },
+      { en: "need", ja: "必要とする" }, { en: "go", ja: "行く" }, { en: "play", ja: "(競技を)する/遊ぶ" },
+      { en: "work", ja: "働く/仕事" }, { en: "study", ja: "勉強する" }, { en: "eat", ja: "食べる" },
+      { en: "drink", ja: "飲む" }, { en: "live", ja: "住む" }, { en: "speak", ja: "話す" },
+      { en: "know", ja: "知っている" }, { en: "do", ja: "する" }, { en: "make", ja: "作る" },
+      { en: "always", ja: "いつも" }, { en: "usually", ja: "たいてい" }, { en: "often", ja: "よく" },
+      { en: "sometimes", ja: "時々" }, { en: "never", ja: "決して〜ない" }, { en: "every day", ja: "毎日" },
+      { en: "coffee", ja: "コーヒー" }, { en: "music", ja: "音楽" }, { en: "English", ja: "英語" },
+      { en: "tennis", ja: "テニス" }, { en: "morning", ja: "朝" }, { en: "food", ja: "食べ物" },
+      { en: "water", ja: "水" }, { en: "book", ja: "本" }, { en: "well", ja: "上手に" },
+    ],
+    examples: [
+      { en: "I like Japanese food.", ja: "私は和食が好きです。" },
+      { en: "She speaks English very well.", ja: "彼女は英語をとても上手に話します。" },
+      { en: "Do you play tennis?", ja: "テニスをしますか？" },
+      { en: "He doesn't drink coffee.", ja: "彼はコーヒーを飲みません。" },
+      { en: "I usually study in the morning.", ja: "私はたいてい朝に勉強します。" },
+      { en: "We sometimes go to the movies.", ja: "私たちは時々映画に行きます。" },
+    ],
+    questions: [
+      { type: "choice", q: "She ___ coffee every morning.", options: ["drink", "drinks", "drinking", "is drink"], answer: 1, explain: "she が主語なので3単現の s を付けて drinks。" },
+      { type: "choice", q: "「あなたは音楽が好きですか？」", options: ["Do you like music?", "Does you like music?", "Are you like music?", "You like music?"], answer: 0, explain: "you の疑問文は Do を文頭に。" },
+      { type: "choice", q: "He ___ play soccer.（否定文）", options: ["don't", "doesn't", "isn't", "not"], answer: 1, explain: "he の否定は doesn't。後ろは原形 play。" },
+      { type: "choice", q: "頻度が最も高いのは？", options: ["sometimes", "never", "always", "often"], answer: 2, explain: "always(いつも)が最も頻度が高い副詞です。" },
+      { type: "order", q: "「私は毎日英語を勉強します」を並べ替えましょう。", answer: ["I", "study", "English", "every day"], explain: "I study English every day. が正解。" },
+      { type: "order", q: "「彼はテニスをしますか？」を並べ替えましょう。", answer: ["Does", "he", "play", "tennis"], explain: "Does + 主語 + 動詞の原形。" },
+      { type: "order", q: "「彼女はコーヒーを飲みません」を並べ替えましょう。", answer: ["She", "doesn't", "drink", "coffee"], explain: "doesn't の後ろは原形 drink。" },
+      { type: "fill", q: "He ___ in Tokyo.（live を正しい形に）", answer: ["lives"], explain: "he が主語なので live に s を付けて lives。" },
+      { type: "fill", q: "___ you want some water?（Do/Does）", answer: ["do"], explain: "you の疑問文は Do。" },
+      { type: "fill", q: "I ___ eat meat.（「食べない」の否定語）", answer: ["don't", "do not"], explain: "I の否定は don't（do not）。" },
+      { type: "translate", q: "「私は和食が好きです。」を英語にしましょう。", keywords: ["i", "like", "japanese", "food"], model: "I like Japanese food.", explain: "I like + 名詞。" },
+      { type: "translate", q: "「彼女は英語を話します。」を英語にしましょう。", keywords: ["she", "speaks", "english"], model: "She speaks English.", explain: "she なので speak に s を付けます。" },
+    ],
+  },
+
+  /* ================= DAY 3 ================= */
+  {
+    day: 3,
+    title: "過去形",
+    theme: "規則変化(-ed)、不規則動詞、Did〜?",
+    grammar: {
+      intro: "「〜した」という過去の出来事を表します。規則動詞は -ed、不規則動詞は形が変わります。",
+      points: [
+        { h: "規則動詞は -ed", p: "多くの動詞は語尾に ed を付けます。", eg: "play → played, want → wanted, study → studied" },
+        { h: "頻出の不規則動詞", p: "go→went, have→had, eat→ate, see→saw, get→got, make→made, take→took, come→came。", eg: "I went to school. / She had lunch." },
+        { h: "疑問文は Did", p: "Did を文頭に置き、動詞は原形に戻します。", eg: "Did you go to the party? — Yes, I did." },
+        { h: "否定文は didn't", p: "didn't の後ろは動詞の原形。", eg: "I didn't see him. / She didn't come." },
+      ],
+    },
+    vocab: [
+      { en: "went", ja: "行った(go)" }, { en: "had", ja: "持っていた(have)" }, { en: "ate", ja: "食べた(eat)" },
+      { en: "saw", ja: "見た(see)" }, { en: "got", ja: "得た(get)" }, { en: "made", ja: "作った(make)" },
+      { en: "took", ja: "取った(take)" }, { en: "came", ja: "来た(come)" }, { en: "bought", ja: "買った(buy)" },
+      { en: "said", ja: "言った(say)" }, { en: "did", ja: "した(do)" }, { en: "yesterday", ja: "昨日" },
+      { en: "last night", ja: "昨夜" }, { en: "last week", ja: "先週" }, { en: "ago", ja: "〜前に" },
+      { en: "then", ja: "それから/その時" }, { en: "buy", ja: "買う" }, { en: "see", ja: "見る/会う" },
+      { en: "get", ja: "得る/着く" }, { en: "take", ja: "取る/乗る" }, { en: "come", ja: "来る" },
+      { en: "say", ja: "言う" }, { en: "party", ja: "パーティー" }, { en: "lunch", ja: "昼食" },
+      { en: "dinner", ja: "夕食" }, { en: "movie", ja: "映画" }, { en: "home", ja: "家(へ)" },
+      { en: "school", ja: "学校" }, { en: "weekend", ja: "週末" }, { en: "great", ja: "すばらしい" },
+    ],
+    examples: [
+      { en: "I went to the park yesterday.", ja: "私は昨日公園に行きました。" },
+      { en: "We had dinner at a nice restaurant.", ja: "私たちはすてきなレストランで夕食を食べました。" },
+      { en: "Did you watch the movie?", ja: "その映画を見ましたか？" },
+      { en: "She didn't come to the party.", ja: "彼女はパーティーに来ませんでした。" },
+      { en: "I saw my friend last week.", ja: "先週、友達に会いました。" },
+      { en: "It was a great weekend.", ja: "すばらしい週末でした。" },
+    ],
+    questions: [
+      { type: "choice", q: "I ___ to school yesterday.", options: ["go", "goed", "went", "gone"], answer: 2, explain: "go の過去形は不規則変化で went。" },
+      { type: "choice", q: "「play」の過去形は？", options: ["played", "plaid", "plaied", "plays"], answer: 0, explain: "規則動詞なので -ed を付けて played。" },
+      { type: "choice", q: "「彼は来ましたか？」", options: ["Did he came?", "Did he come?", "Does he come?", "Was he come?"], answer: 1, explain: "Did の後ろは動詞の原形 come。" },
+      { type: "choice", q: "She ___ see the email.（否定文）", options: ["didn't", "doesn't", "wasn't", "don't"], answer: 0, explain: "過去の否定は didn't。後ろは原形 see。" },
+      { type: "order", q: "「私は昨日テニスをしました」を並べ替えましょう。", answer: ["I", "played", "tennis", "yesterday"], explain: "play の過去形 played を使います。" },
+      { type: "order", q: "「私たちは夕食を食べました」を並べ替えましょう。", answer: ["We", "had", "dinner"], explain: "have の過去形は had。" },
+      { type: "order", q: "「あなたは公園に行きましたか？」を並べ替えましょう。", answer: ["Did", "you", "go", "to", "the", "park"], explain: "Did + 主語 + 原形(go)。" },
+      { type: "fill", q: "I ___ a new phone last week.（buy の過去形）", answer: ["bought"], explain: "buy の過去形は bought。" },
+      { type: "fill", q: "She ___ lunch with me.（have の過去形）", answer: ["had"], explain: "have の過去形は had。" },
+      { type: "fill", q: "I ___ come yesterday.（「来なかった」の否定語）", answer: ["didn't", "did not"], explain: "過去の否定は didn't（did not）。" },
+      { type: "translate", q: "「私は昨日公園に行きました。」を英語にしましょう。", keywords: ["i", "went", "park", "yesterday"], model: "I went to the park yesterday.", explain: "go の過去形 went を使います。" },
+      { type: "translate", q: "「その映画を見ましたか？」を英語にしましょう。", keywords: ["did", "you", "watch", "movie"], model: "Did you watch the movie?", explain: "Did you + 原形 で過去の疑問文。" },
+    ],
+  },
+
+  /* ================= DAY 4 ================= */
+  {
+    day: 4,
+    title: "未来表現",
+    theme: "will / be going to、予定や意志の言い方",
+    grammar: {
+      intro: "これからのこと（未来）を表す2つの言い方を学びます。will と be going to です。",
+      points: [
+        { h: "will（その場の意志・予測）", p: "will + 動詞の原形。「〜するつもり」「〜だろう」。", eg: "I will call you later. / It will rain tomorrow." },
+        { h: "be going to（決まっている予定）", p: "am/is/are going to + 動詞の原形。すでに決めている予定に使います。", eg: "I am going to visit Kyoto. / She is going to study abroad." },
+        { h: "否定・疑問", p: "will not(won't)、Will you 〜? / be動詞を前に出して Are you going to 〜?", eg: "I won't be late. / Are you going to come?" },
+        { h: "未来を表す語句", p: "tomorrow(明日), next week(来週), soon(まもなく), later(あとで)。", eg: "See you tomorrow! / I'll be back soon." },
+      ],
+    },
+    vocab: [
+      { en: "will", ja: "〜だろう/するつもり" }, { en: "going to", ja: "〜する予定" }, { en: "tomorrow", ja: "明日" },
+      { en: "next week", ja: "来週" }, { en: "soon", ja: "まもなく" }, { en: "later", ja: "あとで" },
+      { en: "visit", ja: "訪れる" }, { en: "call", ja: "電話する" }, { en: "meet", ja: "会う" },
+      { en: "travel", ja: "旅行する" }, { en: "rain", ja: "雨が降る/雨" }, { en: "leave", ja: "出発する/去る" },
+      { en: "arrive", ja: "到着する" }, { en: "stay", ja: "滞在する" }, { en: "start", ja: "始める" },
+      { en: "finish", ja: "終える" }, { en: "tonight", ja: "今夜" }, { en: "future", ja: "未来" },
+      { en: "plan", ja: "計画" }, { en: "trip", ja: "旅行" }, { en: "weekend", ja: "週末" },
+      { en: "back", ja: "戻って" }, { en: "ready", ja: "準備ができた" }, { en: "late", ja: "遅れて" },
+      { en: "early", ja: "早く" }, { en: "tomorrow morning", ja: "明日の朝" }, { en: "vacation", ja: "休暇" },
+      { en: "next year", ja: "来年" }, { en: "probably", ja: "おそらく" }, { en: "maybe", ja: "たぶん" },
+    ],
+    examples: [
+      { en: "I will call you later.", ja: "あとで電話しますね。" },
+      { en: "I am going to visit Kyoto next week.", ja: "来週、京都を訪れる予定です。" },
+      { en: "It will rain tomorrow.", ja: "明日は雨でしょう。" },
+      { en: "Are you going to come to the party?", ja: "パーティーに来る予定ですか？" },
+      { en: "I won't be late.", ja: "遅れません。" },
+      { en: "See you tomorrow!", ja: "また明日！" },
+    ],
+    questions: [
+      { type: "choice", q: "I ___ call you tonight.", options: ["will", "am", "do", "did"], answer: 0, explain: "「〜するつもり」は will + 原形。" },
+      { type: "choice", q: "I am going ___ visit Osaka.", options: ["to", "for", "at", "in"], answer: 0, explain: "be going to + 動詞の原形。to が入ります。" },
+      { type: "choice", q: "「彼女は来る予定ですか？」", options: ["Is she going to come?", "She is going to come?", "Does she going to come?", "Will she coming?"], answer: 0, explain: "be動詞を前に出して疑問文に。" },
+      { type: "choice", q: "won't は何の短縮形？", options: ["will not", "want not", "would not", "was not"], answer: 0, explain: "won't = will not。" },
+      { type: "order", q: "「明日電話します」を並べ替えましょう。", answer: ["I", "will", "call", "you", "tomorrow"], explain: "will + 原形 call。" },
+      { type: "order", q: "「私は京都を訪れる予定です」を並べ替えましょう。", answer: ["I", "am", "going", "to", "visit", "Kyoto"], explain: "be going to + 原形 visit。" },
+      { type: "order", q: "「明日は雨でしょう」を並べ替えましょう。", answer: ["It", "will", "rain", "tomorrow"], explain: "It will rain tomorrow. が正解。" },
+      { type: "fill", q: "I ___ be late.（「〜しないだろう」の短縮形）", answer: ["won't", "will not"], explain: "won't（will not）で否定の未来。" },
+      { type: "fill", q: "She is ___ to study abroad.（going を補う）", answer: ["going"], explain: "be going to の going。" },
+      { type: "fill", q: "We ___ travel next year.（will を補う）", answer: ["will"], explain: "未来の意志は will + 原形。" },
+      { type: "translate", q: "「あとで電話します。」を英語にしましょう。", keywords: ["i", "will", "call", "you", "later"], model: "I will call you later.", explain: "will + 原形 call。" },
+      { type: "translate", q: "「また明日！」を英語にしましょう。", keywords: ["see", "you", "tomorrow"], model: "See you tomorrow!", explain: "別れの定番表現 See you tomorrow!。" },
+    ],
+  },
+
+  /* ================= DAY 5 ================= */
+  {
+    day: 5,
+    title: "助動詞・依頼表現",
+    theme: "can / could / must / should / would like to、Can I〜? / Could you〜?",
+    grammar: {
+      intro: "「できる」「〜すべき」など気持ちを添える助動詞と、ていねいな依頼の表現を学びます。",
+      points: [
+        { h: "can（能力・可能）", p: "can + 動詞の原形。「〜できる」。否定は can't。", eg: "I can swim. / She can't drive." },
+        { h: "should（助言）/ must（義務）", p: "should は「〜したほうがいい」、must は「〜しなければならない」。", eg: "You should rest. / I must go now." },
+        { h: "ていねいな依頼・許可", p: "Can I 〜?（〜してもいい？）、Could you 〜?（〜してもらえますか？）。could はより丁寧。", eg: "Can I sit here? / Could you help me?" },
+        { h: "would like to（〜したい）", p: "want to のていねいな言い方。注文などで便利。", eg: "I would like to order coffee. / I'd like a cup of tea." },
+      ],
+    },
+    vocab: [
+      { en: "can", ja: "〜できる" }, { en: "could", ja: "〜できた/(丁寧)〜してもらえる" }, { en: "should", ja: "〜すべき" },
+      { en: "must", ja: "〜しなければ" }, { en: "would like", ja: "〜したい(丁寧)" }, { en: "help", ja: "助ける" },
+      { en: "swim", ja: "泳ぐ" }, { en: "drive", ja: "運転する" }, { en: "cook", ja: "料理する" },
+      { en: "rest", ja: "休む" }, { en: "order", ja: "注文する" }, { en: "open", ja: "開ける" },
+      { en: "close", ja: "閉める" }, { en: "sit", ja: "座る" }, { en: "wait", ja: "待つ" },
+      { en: "use", ja: "使う" }, { en: "try", ja: "試す" }, { en: "ask", ja: "頼む/尋ねる" },
+      { en: "please", ja: "どうか/お願いします" }, { en: "sure", ja: "もちろん" }, { en: "of course", ja: "もちろん" },
+      { en: "maybe", ja: "たぶん" }, { en: "menu", ja: "メニュー" }, { en: "bill", ja: "勘定書" },
+      { en: "tea", ja: "紅茶" }, { en: "window", ja: "窓" }, { en: "door", ja: "ドア" },
+      { en: "again", ja: "もう一度" }, { en: "slowly", ja: "ゆっくり" }, { en: "problem", ja: "問題" },
+    ],
+    examples: [
+      { en: "I can speak a little English.", ja: "私は少し英語を話せます。" },
+      { en: "Could you help me, please?", ja: "手伝っていただけますか？" },
+      { en: "Can I sit here?", ja: "ここに座ってもいいですか？" },
+      { en: "You should get some rest.", ja: "少し休んだほうがいいですよ。" },
+      { en: "I would like to order, please.", ja: "注文したいのですが。" },
+      { en: "Could you speak more slowly?", ja: "もう少しゆっくり話してもらえますか？" },
+    ],
+    questions: [
+      { type: "choice", q: "I ___ swim very well.", options: ["can", "am", "do", "must"], answer: 0, explain: "「〜できる」は can + 原形。" },
+      { type: "choice", q: "ていねいに「手伝ってもらえますか？」", options: ["You help me?", "Could you help me?", "Do you help me?", "Help you me?"], answer: 1, explain: "Could you 〜? はていねいな依頼。" },
+      { type: "choice", q: "「もう休んだほうがいいよ」", options: ["You should rest.", "You can rest.", "You must rest?", "Rest you should."], answer: 0, explain: "助言は should。" },
+      { type: "choice", q: "レストランで「注文したいのですが」", options: ["I want order.", "I would like to order.", "I can order?", "I order would."], answer: 1, explain: "would like to + 原形 でていねいに希望を伝えます。" },
+      { type: "order", q: "「ここに座ってもいいですか？」を並べ替えましょう。", answer: ["Can", "I", "sit", "here"], explain: "Can I + 原形 で許可を求めます。" },
+      { type: "order", q: "「窓を開けてもらえますか？」を並べ替えましょう。", answer: ["Could", "you", "open", "the", "window"], explain: "Could you + 原形 でていねいな依頼。" },
+      { type: "order", q: "「私は今行かなければならない」を並べ替えましょう。", answer: ["I", "must", "go", "now"], explain: "must + 原形 go。" },
+      { type: "fill", q: "She ___ drive a car.（「できない」の短縮形）", answer: ["can't", "cannot", "can not"], explain: "can の否定は can't。" },
+      { type: "fill", q: "___ I use your pen?（許可を求める助動詞）", answer: ["can", "could", "may"], explain: "Can I 〜? / Could I 〜? で許可を求めます。" },
+      { type: "fill", q: "You ___ see a doctor.（「〜すべき」の助動詞）", answer: ["should"], explain: "助言の should。" },
+      { type: "translate", q: "「手伝っていただけますか？」を英語にしましょう。", keywords: ["could", "you", "help", "me"], model: "Could you help me?", explain: "Could you help me? がていねいです。" },
+      { type: "translate", q: "「私は少し英語が話せます。」を英語にしましょう。", keywords: ["i", "can", "speak", "english"], model: "I can speak a little English.", explain: "can + 原形 speak。" },
+    ],
+  },
+
+  /* ================= DAY 6 ================= */
+  {
+    day: 6,
+    title: "疑問詞・疑問文",
+    theme: "what, where, when, who, why, how、How much/many、語順整理",
+    grammar: {
+      intro: "「何？どこ？いつ？」など、具体的に質問する言い方を学びます。会話を広げる鍵です。",
+      points: [
+        { h: "基本の疑問詞", p: "what(何), where(どこ), when(いつ), who(誰), why(なぜ), how(どう/どうやって)。", eg: "Where do you live? / What is this?" },
+        { h: "語順", p: "疑問詞 + 疑問文の語順（do/does/be動詞 + 主語 …）。", eg: "What do you want? / Where is the station?" },
+        { h: "How much / How many", p: "How much は値段・量（数えない名詞）、How many は数（数えられる名詞）。", eg: "How much is it? / How many books do you have?" },
+        { h: "why と because", p: "Why 〜? には Because 〜（なぜなら）で答えます。", eg: "Why are you happy? — Because it's Friday." },
+      ],
+    },
+    vocab: [
+      { en: "what", ja: "何" }, { en: "where", ja: "どこ" }, { en: "when", ja: "いつ" },
+      { en: "who", ja: "誰" }, { en: "why", ja: "なぜ" }, { en: "how", ja: "どう/どうやって" },
+      { en: "how much", ja: "いくら/どのくらい(量)" }, { en: "how many", ja: "いくつ(数)" }, { en: "how long", ja: "どのくらい(時間/長さ)" },
+      { en: "because", ja: "なぜなら" }, { en: "station", ja: "駅" }, { en: "time", ja: "時間/時刻" },
+      { en: "day", ja: "日" }, { en: "people", ja: "人々" }, { en: "place", ja: "場所" },
+      { en: "money", ja: "お金" }, { en: "price", ja: "値段" }, { en: "address", ja: "住所" },
+      { en: "phone", ja: "電話" }, { en: "way", ja: "道/方法" }, { en: "ticket", ja: "チケット" },
+      { en: "open", ja: "開いている" }, { en: "favorite", ja: "お気に入りの" }, { en: "color", ja: "色" },
+      { en: "weather", ja: "天気" }, { en: "today", ja: "今日" }, { en: "right", ja: "右/正しい" },
+      { en: "left", ja: "左" }, { en: "near", ja: "近くに" }, { en: "far", ja: "遠くに" },
+    ],
+    examples: [
+      { en: "Where do you live?", ja: "どこに住んでいますか？" },
+      { en: "What time is it now?", ja: "今、何時ですか？" },
+      { en: "How much is this?", ja: "これはいくらですか？" },
+      { en: "Why are you late?", ja: "なぜ遅れたのですか？" },
+      { en: "How many people are there?", ja: "何人いますか？" },
+      { en: "Where is the station?", ja: "駅はどこですか？" },
+    ],
+    questions: [
+      { type: "choice", q: "___ do you live? (どこに住んでいますか？)", options: ["What", "Where", "When", "Who"], answer: 1, explain: "場所をたずねるのは Where。" },
+      { type: "choice", q: "「これはいくらですか？」", options: ["How many is this?", "How much is this?", "What much is this?", "How long is this?"], answer: 1, explain: "値段は How much。" },
+      { type: "choice", q: "___ is your birthday? (いつ？)", options: ["When", "Where", "Why", "How"], answer: 0, explain: "時をたずねるのは When。" },
+      { type: "choice", q: "本の数をたずねるなら？", options: ["How much books", "How many books", "How long books", "What books much"], answer: 1, explain: "数えられる名詞の数は How many。" },
+      { type: "order", q: "「あなたは何がほしいですか？」を並べ替えましょう。", answer: ["What", "do", "you", "want"], explain: "疑問詞 + do you + 原形。" },
+      { type: "order", q: "「駅はどこですか？」を並べ替えましょう。", answer: ["Where", "is", "the", "station"], explain: "Where is + 主語。" },
+      { type: "order", q: "「今、何時ですか？」を並べ替えましょう。", answer: ["What", "time", "is", "it", "now"], explain: "What time is it now? が正解。" },
+      { type: "fill", q: "___ are you sad?（理由をたずねる疑問詞）", answer: ["why"], explain: "理由は Why。答えは Because 〜。" },
+      { type: "fill", q: "___ is that man?（人をたずねる疑問詞）", answer: ["who"], explain: "人をたずねるのは Who。" },
+      { type: "fill", q: "I'm happy ___ it's Friday.（「なぜなら」の語）", answer: ["because"], explain: "理由を述べるのは because。" },
+      { type: "translate", q: "「どこに住んでいますか？」を英語にしましょう。", keywords: ["where", "do", "you", "live"], model: "Where do you live?", explain: "Where do you + 原形。" },
+      { type: "translate", q: "「これはいくらですか？」を英語にしましょう。", keywords: ["how", "much", "is", "this"], model: "How much is this?", explain: "値段は How much is 〜?。" },
+    ],
+  },
+
+  /* ================= DAY 7 ================= */
+  {
+    day: 7,
+    title: "接続詞・前置詞＋総合復習",
+    theme: "and, but, because, so / in, on, at, to, for ＋総復習・ロールプレイ",
+    grammar: {
+      intro: "最終日は文をつなぐ接続詞と、場所・時間を表す前置詞を学び、これまでの総復習をします。",
+      points: [
+        { h: "接続詞", p: "and(そして), but(しかし), because(なぜなら), so(だから)。文や語をつなぎます。", eg: "I'm tired, but I'm happy. / I stayed home because it rained." },
+        { h: "時の前置詞 at / on / in", p: "at + 時刻(at 7), on + 曜日・日付(on Monday), in + 月・年・季節(in May)。", eg: "I get up at six. / See you on Friday." },
+        { h: "場所の前置詞 in / on / at", p: "in + 広い場所(in Tokyo), on + 接している面(on the table), at + 地点(at the station)。", eg: "The book is on the desk. / Meet me at the cafe." },
+        { h: "to / for", p: "to は方向「〜へ」、for は目的・相手「〜のために」。", eg: "I go to work. / This is for you." },
+      ],
+    },
+    vocab: [
+      { en: "and", ja: "そして" }, { en: "but", ja: "しかし" }, { en: "because", ja: "なぜなら" },
+      { en: "so", ja: "だから" }, { en: "or", ja: "または" }, { en: "in", ja: "〜の中に/(月・年)に" },
+      { en: "on", ja: "〜の上に/(曜日)に" }, { en: "at", ja: "〜で/(時刻)に" }, { en: "to", ja: "〜へ" },
+      { en: "for", ja: "〜のために" }, { en: "with", ja: "〜と一緒に" }, { en: "from", ja: "〜から" },
+      { en: "table", ja: "テーブル" }, { en: "desk", ja: "机" }, { en: "cafe", ja: "カフェ" },
+      { en: "city", ja: "都市" }, { en: "Monday", ja: "月曜日" }, { en: "May", ja: "5月" },
+      { en: "gift", ja: "贈り物" }, { en: "thanks", ja: "ありがとう" }, { en: "sorry", ja: "ごめんなさい" },
+      { en: "excuse me", ja: "すみません" }, { en: "welcome", ja: "どういたしまして" }, { en: "really", ja: "本当に" },
+      { en: "together", ja: "一緒に" }, { en: "about", ja: "〜について/およそ" }, { en: "after", ja: "〜の後で" },
+      { en: "before", ja: "〜の前に" }, { en: "next to", ja: "〜の隣に" }, { en: "between", ja: "〜の間に" },
+    ],
+    examples: [
+      { en: "I'm tired, but I'm happy.", ja: "疲れたけど、うれしいです。" },
+      { en: "I stayed home because it rained.", ja: "雨が降ったので家にいました。" },
+      { en: "The book is on the desk.", ja: "本は机の上にあります。" },
+      { en: "Let's meet at the cafe at three.", ja: "3時にカフェで会いましょう。" },
+      { en: "This gift is for you. Thank you so much.", ja: "この贈り物はあなたへ。本当にありがとう。" },
+      { en: "I'm sorry. Excuse me, where is the station?", ja: "すみません。あの、駅はどこですか？" },
+    ],
+    questions: [
+      { type: "choice", q: "I like tea, ___ I don't like coffee.", options: ["and", "but", "so", "because"], answer: 1, explain: "対比「しかし」は but。" },
+      { type: "choice", q: "See you ___ Monday.", options: ["at", "in", "on", "to"], answer: 2, explain: "曜日には on を使います。" },
+      { type: "choice", q: "I get up ___ six.", options: ["on", "in", "at", "for"], answer: 2, explain: "時刻には at。" },
+      { type: "choice", q: "This present is ___ you.", options: ["to", "for", "at", "in"], answer: 1, explain: "相手・目的は for。" },
+      { type: "choice", q: "It rained, ___ I stayed home.", options: ["but", "or", "so", "because"], answer: 2, explain: "結果「だから」は so。" },
+      { type: "order", q: "「本は机の上にあります」を並べ替えましょう。", answer: ["The", "book", "is", "on", "the", "desk"], explain: "接している面の上は on。" },
+      { type: "order", q: "「3時にカフェで会いましょう」を並べ替えましょう。", answer: ["Let's", "meet", "at", "the", "cafe"], explain: "地点には at the cafe。" },
+      { type: "order", q: "「雨が降ったので家にいました」を並べ替えましょう。", answer: ["I", "stayed", "home", "because", "it", "rained"], explain: "理由は because でつなぎます。" },
+      { type: "fill", q: "I live ___ Tokyo.（広い場所の前置詞）", answer: ["in"], explain: "都市・国など広い場所は in。" },
+      { type: "fill", q: "I'm happy ___ it's my birthday.（理由の接続詞）", answer: ["because"], explain: "理由は because。" },
+      { type: "translate", q: "「すみません、駅はどこですか？」を英語にしましょう。", keywords: ["excuse", "me", "where", "station"], model: "Excuse me, where is the station?", explain: "声をかけるときは Excuse me。" },
+      { type: "translate", q: "「本当にありがとう。」を英語にしましょう。", keywords: ["thank", "you", "much"], model: "Thank you so much.", explain: "強調するなら Thank you so much.。" },
+    ],
+  },
+];
+
+// 1日あたりの設問数（評価表示などで使用）
+CURRICULUM.forEach((d) => { d.totalQuestions = d.questions.length; });
