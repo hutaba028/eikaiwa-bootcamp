@@ -1739,7 +1739,7 @@
       item.appendChild(speakButton(w.en));
       const t = el("div");
       t.style.flex = "1";
-      t.innerHTML = '<div class="phrase-en">' + escapeHtml(w.en) + (w.day ? ' <span class="vocab-ja">(Day ' + w.day + ")</span>" : "") +
+      t.innerHTML = '<div class="phrase-en">' + escapeHtml(w.en) + (w.day ? ' <span class="vocab-ja">(Day ' + escapeHtml(w.day) + ")</span>" : "") +
         '</div><div class="phrase-ja">' + escapeHtml(w.ja) + "</div>";
       item.appendChild(t);
       const done = el("button", "mini-link", "✓ 覚えた");
