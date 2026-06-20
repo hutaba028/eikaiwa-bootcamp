@@ -1617,6 +1617,20 @@ const CONV_TEST = [
     try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
     applyTheme(theme);
   }
+
+  /* ---------- インストール（PWA）判定 ---------- */
+  let deferredInstallPrompt = null;
+  window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredInstallPrompt = e; });
+  window.addEventListener("appinstalled", () => { deferredInstallPrompt = null; });
+  function isStandalone() {
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+  }
+  function detectPlatform() {
+    const ua = navigator.userAgent || "";
+    if (/iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && "ontouchend" in document)) return "ios";
+    if (/Android/i.test(ua)) return "android";
+    return "desktop";
+  }
   function wrongKey(day, qi) { return day + ":" + qi; }
   function isWrong(day, qi) {
     return progress.wrong.some((w) => w.day === day && w.qIndex === qi);
@@ -1982,6 +1996,18 @@ const CONV_TEST = [
     cbtn.addEventListener("click", () => renderConversationHub());
     ccard.appendChild(cbtn);
     wrap.appendChild(ccard);
+
+    // アプリのインストール案内
+    const icard = el("div", "feature-card");
+    icard.style.borderColor = "#7c3aed";
+    icard.innerHTML =
+      '<div class="fc-icon">📲</div>' +
+      '<div class="fc-text"><strong>アプリとしてインストール</strong>' +
+      "<div>ホーム画面に追加してアプリのように起動。機種別の方法を案内します。</div></div>";
+    const ibtn = el("button", "btn btn-primary", "方法を見る");
+    ibtn.addEventListener("click", () => renderInstallGuide());
+    icard.appendChild(ibtn);
+    wrap.appendChild(icard);
 
     // データのバックアップ
     const bcard = el("div", "card");
@@ -3421,6 +3447,82 @@ const CONV_TEST = [
       reader.readAsText(file);
     });
     input.click();
+  }
+
+  /* ============================================================
+     アプリのインストール方法（機種別）
+     ============================================================ */
+  function renderInstallGuide() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const back = el("button", "back-link", "← ホームに戻る");
+    back.addEventListener("click", renderDashboard);
+    wrap.appendChild(back);
+    wrap.appendChild(el("h2", "section-title", "📲 アプリとしてインストール"));
+    wrap.appendChild(el("p", "section-sub",
+      "ホーム画面に追加すると、独立したアプリのように起動でき、オフラインでも使えます。"));
+
+    if (isStandalone()) {
+      const ok = el("div", "feedback ok");
+      ok.innerHTML = "<div class='fb-head'>✅ すでにアプリとして起動しています</div><div>追加の操作は不要です。</div>";
+      ok.style.marginBottom = "16px";
+      wrap.appendChild(ok);
+    }
+
+    // 対応ブラウザ（PC/Android Chrome・Edge）ではワンタップでインストール
+    if (deferredInstallPrompt) {
+      const btn = el("button", "btn btn-primary btn-block", "📲 今すぐインストール");
+      btn.style.marginBottom = "16px";
+      btn.addEventListener("click", () => {
+        const p = deferredInstallPrompt;
+        if (!p) return;
+        p.prompt();
+        Promise.resolve(p.userChoice).catch(function () {}).then(function () { deferredInstallPrompt = null; });
+        btn.disabled = true;
+        btn.textContent = "✅ インストールの確認を表示しました";
+      });
+      wrap.appendChild(btn);
+    }
+
+    const plat = detectPlatform();
+    const sections = [
+      { id: "desktop", icon: "🖥", title: "PC（Chrome / Edge）", steps: [
+        "このページを <strong>Chrome</strong> または <strong>Edge</strong> で開く",
+        "アドレスバー右端の<strong>インストールアイコン</strong>（⊞ やモニターのマーク）をクリック。無ければ右上の <strong>⋮</strong> メニュー →「<strong>アプリをインストール</strong>」",
+        "「<strong>インストール</strong>」を押すと、独立したウィンドウのアプリとして起動し、スタートメニュー / Dock にも追加されます",
+      ] },
+      { id: "ios", icon: "📱", title: "iPhone / iPad（Safari）", steps: [
+        "<strong>Safari</strong> でこのページを開く（Chromeアプリ等ではなく Safari を使ってください）",
+        "画面下（iPadは上）の<strong>共有ボタン</strong>（□に↑のマーク）をタップ",
+        "メニューを下にスクロールして「<strong>ホーム画面に追加</strong>」をタップ",
+        "右上の「<strong>追加</strong>」をタップ → ホーム画面にアイコンが追加されます",
+      ] },
+      { id: "android", icon: "🤖", title: "Android（Chrome）", steps: [
+        "このページを <strong>Chrome</strong> で開く",
+        "右上の <strong>⋮</strong> メニューをタップ",
+        "「<strong>アプリをインストール</strong>」または「<strong>ホーム画面に追加</strong>」をタップ",
+        "確認して追加 → ホーム画面 / アプリ一覧にアイコンが追加されます",
+      ] },
+    ];
+    sections.sort((a, b) => (a.id === plat ? -1 : b.id === plat ? 1 : 0));
+    sections.forEach((s) => {
+      const card = el("div", "card phrase-cat");
+      card.appendChild(el("span", "block-label", s.icon + " " + s.title + (s.id === plat ? "　← あなたの端末" : "")));
+      const ol = document.createElement("ol");
+      ol.style.margin = "10px 0 0";
+      ol.style.paddingLeft = "22px";
+      ol.style.lineHeight = "1.9";
+      s.steps.forEach((st) => { const li = document.createElement("li"); li.innerHTML = st; ol.appendChild(li); });
+      card.appendChild(ol);
+      wrap.appendChild(card);
+    });
+
+    wrap.appendChild(el("p", "hint",
+      "※ インストールには公開URL（https://… ）でアクセスしている必要があります。ファイルを直接開いた状態ではインストールできません。"));
+
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
   }
 
   /* ============================================================
