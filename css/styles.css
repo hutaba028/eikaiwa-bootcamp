@@ -165,6 +165,25 @@ body {
 .fade-in { animation: fade .35s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
+/* ===== Week header (月コースの週見出し) ===== */
+.week-head {
+  margin: 26px 0 12px;
+  padding: 14px 16px;
+  background: var(--indigo-soft);
+  border-radius: 14px;
+  border-left: 4px solid var(--indigo);
+}
+.week-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.week-title { font-weight: 800; font-size: 16px; color: var(--indigo-dark); }
+.week-count { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.week-desc { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
 /* ===== Dashboard ===== */
 .overview {
   background: linear-gradient(135deg, var(--indigo), #7c3aed);

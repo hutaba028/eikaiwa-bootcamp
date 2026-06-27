@@ -25,6 +25,7 @@
     if (typeof p.dialogueBest !== "number") p.dialogueBest = 0;
     if (typeof p.listenBest !== "number") p.listenBest = 0;
     if (typeof p.essentialBest !== "number") p.essentialBest = 0;
+    if (!p.weekBest || typeof p.weekBest !== "object") p.weekBest = {};
     if (!p.weakWords || typeof p.weakWords !== "object") p.weakWords = {};
     if (typeof p.lastWordQuizDate === "undefined") p.lastWordQuizDate = null;
     return p;
@@ -362,6 +363,54 @@
   /* ============================================================
      ダッシュボード
      ============================================================ */
+  function weekOf(d) { return d.week || Math.ceil(d.day / 7); }
+
+  function buildDayCard(d) {
+    const r = dayRecord(d.day);
+    const card = el("div", "day-card" + (r.completed ? " done" : ""));
+    const status = r.completed
+      ? '<span class="day-status status-done">✓ 完了（ベスト ' + r.best + "%）</span>"
+      : (r.attempts > 0
+        ? '<span class="day-status status-todo">挑戦中（ベスト ' + r.best + "%）</span>"
+        : '<span class="day-status status-todo">未着手</span>');
+    const mc = masteredCount(d.vocab);
+    card.innerHTML =
+      '<div class="day-top">' +
+      '<div class="day-badge">Day<br>' + d.day + "</div>" +
+      '<div><div class="day-title">' + escapeHtml(d.title) + "</div>" +
+      '<div class="day-theme">' + escapeHtml(d.theme) + "</div></div></div>" +
+      status +
+      '<div class="day-theme">🎴 暗記 ' + mc + " / " + d.vocab.length + " 語</div>" +
+      '<div class="mini-bar"><span style="width:' + r.best + '%"></span></div>';
+    const actions = el("div", "day-actions");
+    const learnBtn = el("button", "btn btn-ghost", "学習");
+    learnBtn.addEventListener("click", () => renderLearn(d.day));
+    const testBtn = el("button", "btn btn-primary", "テスト");
+    testBtn.addEventListener("click", () => startTest(d.day));
+    actions.appendChild(learnBtn);
+    actions.appendChild(testBtn);
+    card.appendChild(actions);
+    return card;
+  }
+
+  // 週ごとの復習テスト（その週の全Dayからランダム出題）
+  function startWeekTest(w) {
+    const pool = [];
+    CURRICULUM.filter((d) => weekOf(d) === w).forEach((d) => {
+      d.questions.forEach((q, i) => pool.push({ day: d.day, qIndex: i, q: q }));
+    });
+    const items = shuffle(pool).slice(0, Math.min(15, pool.length));
+    session = {
+      mode: "week",
+      week: w,
+      title: "📝 Week " + w + " 復習テスト（" + items.length + "問）",
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+    };
+    renderTest();
+  }
+
   function renderDashboard() {
     window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
     app.innerHTML = "";
@@ -386,9 +435,9 @@
 
     const ov = el("div", "overview");
     ov.innerHTML =
-      '<h1>7日間 英会話ブートキャンプ 🚀</h1>' +
+      '<h1>英会話ブートキャンプ 🚀</h1>' +
       streakHtml +
-      '<p>1日1テーマ。会話で使える基礎を一気に身につけましょう。</p>' +
+      '<p>1日1テーマ。1週間で基礎、1か月（4週間）で会話力を伸ばしましょう。</p>' +
       '<div class="overall-bar"><span style="width:' + overallPct + '%"></span></div>' +
       '<div class="overall-meta"><span>達成 ' + completedDays + " / " + totalDays + " 日</span>" +
       "<span>平均スコア " + avgScore + "%</span></div>";
@@ -414,38 +463,33 @@
       wrap.appendChild(rv);
     }
 
-    // Dayカード
-    const grid = el("div", "day-grid");
-    CURRICULUM.forEach((d) => {
-      const r = dayRecord(d.day);
-      const card = el("div", "day-card" + (r.completed ? " done" : ""));
-      const status = r.completed
-        ? '<span class="day-status status-done">✓ 完了（ベスト ' + r.best + "%）</span>"
-        : (r.attempts > 0
-          ? '<span class="day-status status-todo">挑戦中（ベスト ' + r.best + "%）</span>"
-          : '<span class="day-status status-todo">未着手</span>');
-      const barPct = r.best;
-      const mc = masteredCount(d.vocab);
-      card.innerHTML =
-        '<div class="day-top">' +
-        '<div class="day-badge">Day<br>' + d.day + "</div>" +
-        '<div><div class="day-title">' + escapeHtml(d.title) + "</div>" +
-        '<div class="day-theme">' + escapeHtml(d.theme) + "</div></div></div>" +
-        status +
-        '<div class="day-theme">🎴 暗記 ' + mc + " / " + d.vocab.length + " 語</div>" +
-        '<div class="mini-bar"><span style="width:' + barPct + '%"></span></div>';
+    // Dayカード（週ごとにグループ表示）
+    const weeksPresent = [];
+    CURRICULUM.forEach((d) => { const w = weekOf(d); if (weeksPresent.indexOf(w) < 0) weeksPresent.push(w); });
+    weeksPresent.sort((a, b) => a - b);
 
-      const actions = el("div", "day-actions");
-      const learnBtn = el("button", "btn btn-ghost", "学習");
-      learnBtn.addEventListener("click", () => renderLearn(d.day));
-      const testBtn = el("button", "btn btn-primary", "テスト");
-      testBtn.addEventListener("click", () => startTest(d.day));
-      actions.appendChild(learnBtn);
-      actions.appendChild(testBtn);
-      card.appendChild(actions);
-      grid.appendChild(card);
+    weeksPresent.forEach((w) => {
+      const info = (typeof WEEKS !== "undefined") ? WEEKS.find((x) => x.week === w) : null;
+      const days = CURRICULUM.filter((d) => weekOf(d) === w);
+      const doneInWeek = days.filter((d) => dayRecord(d.day).completed).length;
+
+      const head = el("div", "week-head");
+      head.innerHTML =
+        '<div class="week-row"><div class="week-title">' + (info ? escapeHtml(info.title) : "Week " + w) +
+        '</div><div class="week-count">' + doneInWeek + " / " + days.length + " 完了</div></div>" +
+        (info ? '<div class="week-desc">' + escapeHtml(info.desc) + "</div>" : "");
+      const wt = el("button", "btn btn-ghost", "📝 この週の復習テスト");
+      wt.style.marginTop = "10px";
+      wt.style.fontSize = "13.5px";
+      wt.style.padding = "8px 14px";
+      wt.addEventListener("click", () => startWeekTest(w));
+      head.appendChild(wt);
+      wrap.appendChild(head);
+
+      const grid = el("div", "day-grid");
+      days.forEach((d) => grid.appendChild(buildDayCard(d)));
+      wrap.appendChild(grid);
     });
-    wrap.appendChild(grid);
 
     // 修了テスト
     const allCompleted = CURRICULUM.every((d) => dayRecord(d.day).completed);
@@ -1140,6 +1184,10 @@
       progress.essentialBest = Math.max(progress.essentialBest || 0, pct);
       saveProgress(progress);
       recordActivityToday();
+    } else if (session.mode === "week") {
+      progress.weekBest[session.week] = Math.max(progress.weekBest[session.week] || 0, pct);
+      saveProgress(progress);
+      recordActivityToday();
     } else if (session.mode === "weak" || session.mode === "review") {
       recordActivityToday();
     }
@@ -1179,7 +1227,8 @@
         session.mode === "phrase" ? "（ベスト " + progress.phraseBest + "%）" :
         session.mode === "dialogue" ? "（ベスト " + progress.dialogueBest + "%）" :
         session.mode === "listen" ? "（ベスト " + progress.listenBest + "%）" :
-        session.mode === "essential" ? "（ベスト " + progress.essentialBest + "%）" : "") + "</div>";
+        session.mode === "essential" ? "（ベスト " + progress.essentialBest + "%）" :
+        session.mode === "week" ? "（ベスト " + (progress.weekBest[session.week] || 0) + "%）" : "") + "</div>";
     wrap.appendChild(hero);
 
     const actions = el("div", "result-actions");
@@ -1209,6 +1258,10 @@
     } else if (session.mode === "final") {
       const retry = el("button", "btn btn-ghost", "別の15問で再挑戦");
       retry.addEventListener("click", () => startFinalTest());
+      actions.appendChild(retry);
+    } else if (session.mode === "week") {
+      const retry = el("button", "btn btn-ghost", "この週をもう一度");
+      retry.addEventListener("click", () => startWeekTest(session.week));
       actions.appendChild(retry);
     } else if (session.mode === "conv") {
       const retry = el("button", "btn btn-ghost", "もう一度判定する");
@@ -2041,7 +2094,7 @@
 
   document.getElementById("reset-btn").addEventListener("click", () => {
     confirmDialog("学習の進捗・スコア・復習リスト・暗記状況・連続記録をすべて消去して最初からやり直します。よろしいですか？", () => {
-      progress = { days: {}, wrong: [], mastered: {}, streak: { count: 0, lastDate: null }, finalBest: 0, convBest: 0, phraseBest: 0, dialogueBest: 0, listenBest: 0, essentialBest: 0, weakWords: {}, lastWordQuizDate: null };
+      progress = { days: {}, wrong: [], mastered: {}, streak: { count: 0, lastDate: null }, finalBest: 0, convBest: 0, phraseBest: 0, dialogueBest: 0, listenBest: 0, essentialBest: 0, weekBest: {}, weakWords: {}, lastWordQuizDate: null };
       saveProgress(progress);
       renderDashboard();
     });

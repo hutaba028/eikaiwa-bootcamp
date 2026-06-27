@@ -1,12 +1,13 @@
 /* 7日間 英会話ブートキャンプ — Service Worker
    方針：ネットワーク優先（オンラインなら常に最新を配信＝更新が全員に反映）。
    オフライン時のみキャッシュから配信。 */
-const CACHE = "eikaiwa-bootcamp-v2";
+const CACHE = "eikaiwa-bootcamp-v3";
 const ASSETS = [
   "./",
   "./index.html",
   "./css/styles.css",
   "./js/data.js",
+  "./js/curriculum-month.js",
   "./js/conversation.js",
   "./js/app.js",
   "./manifest.json",
