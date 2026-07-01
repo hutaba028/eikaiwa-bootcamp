@@ -18,6 +18,7 @@
     if (!p.days || typeof p.days !== "object") p.days = {};
     if (!Array.isArray(p.wrong)) p.wrong = [];
     if (!p.mastered || typeof p.mastered !== "object") p.mastered = {};
+    if (!p.dayMastered || typeof p.dayMastered !== "object") p.dayMastered = {};
     if (!p.streak || typeof p.streak !== "object") p.streak = { count: 0, lastDate: null };
     if (typeof p.finalBest !== "number") p.finalBest = 0;
     if (typeof p.convBest !== "number") p.convBest = 0;
@@ -61,6 +62,17 @@
     saveProgress(progress);
   }
   function masteredCount(vocab) { return vocab.filter((v) => isMastered(v.en)).length; }
+
+  // Day別の暗記記録（ダッシュボードのDayカード表示用。全単語帳・苦手は上の全体版を使用）
+  function dayMasterKey(day, en) { return day + ":" + masterKey(en); }
+  function isDayMastered(day, en) { return !!progress.dayMastered[dayMasterKey(day, en)]; }
+  function setDayMastered(day, en, val) {
+    if (day == null) return;
+    const k = dayMasterKey(day, en);
+    if (val) progress.dayMastered[k] = true; else delete progress.dayMastered[k];
+    saveProgress(progress);
+  }
+  function dayMasteredCount(day, vocab) { return vocab.filter((v) => isDayMastered(day, v.en)).length; }
 
   // 日本語訳から英語原形の注釈（例:「行った(go)」の "(go)"）を除く。クイズ/カード表示用。
   function cleanJa(ja) {
@@ -373,7 +385,7 @@
       : (r.attempts > 0
         ? '<span class="day-status status-todo">挑戦中（ベスト ' + r.best + "%）</span>"
         : '<span class="day-status status-todo">未着手</span>');
-    const mc = masteredCount(d.vocab);
+    const mc = dayMasteredCount(d.day, d.vocab);
     card.innerHTML =
       '<div class="day-top">' +
       '<div class="day-badge">Day<br>' + d.day + "</div>" +
@@ -673,6 +685,15 @@
     const cards = shuffle(fullDeck);
     let idx = 0, flipped = false, dir = "en2ja";
 
+    // Day別デッキ（学習ページから開いたカード）はそのDayだけで暗記を数える。
+    // 全単語帳・苦手練習は従来どおり「単語共通（全体）」で判定する。
+    const perDay = !!opts.day;
+    function cardMastered(v) { return perDay ? isDayMastered(v.day || opts.day, v.en) : isMastered(v.en); }
+    function setCardMastered(v, val) {
+      setMastered(v.en, val);                        // 全体（全単語帳・苦手用）
+      setDayMastered(v.day || opts.day, v.en, val);  // Day別（ダッシュボード表示用）
+    }
+
     function shell() {
       app.innerHTML = "";
       const wrap = el("div", "fade-in");
@@ -686,7 +707,7 @@
     // 一周し終えたときの完了画面
     function renderDone() {
       clearFcKeys();
-      const learned = fullDeck.filter((c) => isMastered(c.en)).length;
+      const learned = fullDeck.filter((c) => cardMastered(c)).length;
       const weakInDeck = fullDeck.filter((c) => isWeak(c.en));
       const wrap = shell();
       const card = el("div", "card");
@@ -758,7 +779,7 @@
         const v = cards[idx];
         const front = dir === "en2ja" ? v.en : v.ja;
         const back2 = dir === "en2ja" ? v.ja : v.en;
-        const mastered = isMastered(v.en);
+        const mastered = cardMastered(v);
         card.className = "flashcard" + (mastered ? " mastered" : "");
         card.innerHTML =
           (mastered ? '<span class="fc-mastered-tag">✓ 暗記済み</span>' : (isWeak(v.en) ? '<span class="fc-mastered-tag" style="color:var(--amber)">😖 苦手</span>' : "")) +
@@ -770,7 +791,7 @@
         count.textContent = (idx + 1) + " / " + cards.length;
         dirBtn.textContent = dir === "en2ja" ? "英 → 日" : "日 → 英";
         gotBtn.textContent = mastered ? "✓ 暗記済み（解除）" : "✅ 覚えた";
-        pspan.style.width = Math.round((fullDeck.filter((c) => isMastered(c.en)).length / fullDeck.length) * 100) + "%";
+        pspan.style.width = Math.round((fullDeck.filter((c) => cardMastered(c)).length / fullDeck.length) * 100) + "%";
         prevBtn.disabled = idx === 0;
         nextBtn.textContent = idx === cards.length - 1 ? "完了 →" : "次へ →";
       }
@@ -788,15 +809,15 @@
       nextBtn.addEventListener("click", () => go(idx + 1));
       gotBtn.addEventListener("click", () => {
         const v = cards[idx];
-        const nowMastered = !isMastered(v.en);
-        setMastered(v.en, nowMastered);
+        const nowMastered = !cardMastered(v);
+        setCardMastered(v, nowMastered);
         if (nowMastered) removeWeak(v.en);
         recordActivityToday();
         if (nowMastered) go(idx + 1); else render();
       });
       hardBtn.addEventListener("click", () => {
         const v = cards[idx];
-        setMastered(v.en, false);
+        setCardMastered(v, false);
         addWeak(v.en, v.ja, v.day || opts.day);
         recordActivityToday();
         go(idx + 1);
@@ -2094,7 +2115,7 @@
 
   document.getElementById("reset-btn").addEventListener("click", () => {
     confirmDialog("学習の進捗・スコア・復習リスト・暗記状況・連続記録をすべて消去して最初からやり直します。よろしいですか？", () => {
-      progress = { days: {}, wrong: [], mastered: {}, streak: { count: 0, lastDate: null }, finalBest: 0, convBest: 0, phraseBest: 0, dialogueBest: 0, listenBest: 0, essentialBest: 0, weekBest: {}, weakWords: {}, lastWordQuizDate: null };
+      progress = { days: {}, wrong: [], mastered: {}, dayMastered: {}, streak: { count: 0, lastDate: null }, finalBest: 0, convBest: 0, phraseBest: 0, dialogueBest: 0, listenBest: 0, essentialBest: 0, weekBest: {}, weakWords: {}, lastWordQuizDate: null };
       saveProgress(progress);
       renderDashboard();
     });
@@ -2119,7 +2140,22 @@
   // http(s) 経由のときだけ Service Worker を登録（file:// では無効）
   if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch(() => { /* 失敗しても通常動作 */ });
+      // updateViaCache:"none" で sw.js を常にネットワーク確認 → 更新が確実に届く
+      navigator.serviceWorker.register("sw.js", { updateViaCache: "none" })
+        .then((reg) => {
+          reg.update();
+          // 新しいSWが有効化されたら、次回のためにページを1回だけ更新
+          reg.addEventListener("updatefound", () => {
+            const nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener("statechange", () => {
+              if (nw.state === "activated" && navigator.serviceWorker.controller) {
+                if (!window.__swReloaded) { window.__swReloaded = true; location.reload(); }
+              }
+            });
+          });
+        })
+        .catch(() => { /* 失敗しても通常動作 */ });
     });
   }
 
