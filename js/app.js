@@ -2522,6 +2522,26 @@
       grid.appendChild(card);
     });
     wrap.appendChild(grid);
+
+    // 定番フレーズ集
+    if (typeof EIKEN_INTERVIEW_PHRASES !== "undefined") {
+      wrap.appendChild(el("h3", "section-title", "💬 面接の定番フレーズ集"));
+      wrap.appendChild(el("p", "section-sub", "そのまま使える型です。声に出して覚えましょう。"));
+      EIKEN_INTERVIEW_PHRASES.forEach((cat) => {
+        const card = el("div", "card phrase-cat");
+        card.appendChild(el("span", "block-label", cat.category));
+        cat.items.forEach((p) => {
+          const item = el("div", "phrase-item");
+          item.appendChild(speakButton(p.en));
+          const t = el("div");
+          t.innerHTML = '<div class="phrase-en">' + escapeHtml(p.en) + '</div><div class="phrase-ja">' + escapeHtml(p.ja) + "</div>";
+          item.appendChild(t);
+          card.appendChild(item);
+        });
+        wrap.appendChild(card);
+      });
+    }
+
     app.appendChild(wrap);
     window.scrollTo(0, 0);
   }
