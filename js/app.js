@@ -374,6 +374,121 @@
   }
 
   /* ============================================================
+     単語辞書（タップで 読み方・品詞・意味 を表示）
+     ============================================================ */
+  let _dict = null;
+  function buildDict() {
+    const d = {};
+    function add(en, ja, pos, kana) {
+      const k = String(en).toLowerCase().trim();
+      if (!k || /\s/.test(k)) return; // 1語のみ登録
+      if (!d[k]) d[k] = { ja: ja || "", pos: pos || "", kana: kana || "" };
+      else { if (!d[k].ja && ja) d[k].ja = ja; if (!d[k].pos && pos) d[k].pos = pos; if (!d[k].kana && kana) d[k].kana = kana; }
+    }
+    if (typeof WORD_DICT !== "undefined") { for (const k in WORD_DICT) { const e = WORD_DICT[k]; add(k, e.ja, e.pos, e.kana); } }
+    try { CURRICULUM.forEach((dd) => dd.vocab.forEach((v) => add(v.en, cleanJa(v.ja)))); } catch (e) {}
+    try { if (typeof EIKEN_VOCAB !== "undefined") EIKEN_VOCAB.forEach((u) => u.items.forEach((v) => add(v.en, v.ja))); } catch (e) {}
+    try { if (typeof PHRASES !== "undefined") PHRASES.forEach((c) => c.items.forEach((v) => add(v.en, v.ja))); } catch (e) {}
+    try { if (typeof ESSENTIALS !== "undefined") ESSENTIALS.forEach((g) => g.items.forEach((v) => add(v.en, v.ja))); } catch (e) {}
+    return d;
+  }
+  function lookupWord(raw) {
+    if (!_dict) _dict = buildDict();
+    const w = String(raw).toLowerCase().replace(/[^a-z'\-]/g, "");
+    if (!w) return { word: raw, found: false };
+    if (_dict[w]) return Object.assign({ word: raw, found: true }, _dict[w]);
+    const tries = [];
+    if (w.length > 3 && w.endsWith("ies")) tries.push(w.slice(0, -3) + "y");
+    if (w.length > 2 && w.endsWith("es")) tries.push(w.slice(0, -2));
+    if (w.length > 1 && w.endsWith("s")) tries.push(w.slice(0, -1));
+    if (w.length > 4 && w.endsWith("ing")) { tries.push(w.slice(0, -3)); tries.push(w.slice(0, -3) + "e"); }
+    if (w.length > 3 && w.endsWith("ed")) { tries.push(w.slice(0, -2)); tries.push(w.slice(0, -1)); tries.push(w.slice(0, -2) + "e"); }
+    for (const t of tries) { if (_dict[t]) return Object.assign({ word: raw, found: true, base: t }, _dict[t]); }
+    return { word: raw, found: false };
+  }
+  // 英文を「単語ごとにタップできる」スパンに変換
+  function tappableText(text) {
+    const wrap = el("span", "tap-text");
+    String(text).split(/(\s+)/).forEach((p) => {
+      if (p === "" || /^\s+$/.test(p)) { wrap.appendChild(document.createTextNode(p)); return; }
+      const m = p.match(/^([^A-Za-z']*)([A-Za-z][A-Za-z'\-]*)?([^A-Za-z']*)$/);
+      if (m && m[2]) {
+        if (m[1]) wrap.appendChild(document.createTextNode(m[1]));
+        const sp = el("span", "tap-word", escapeHtml(m[2]));
+        sp.addEventListener("click", (e) => { e.stopPropagation(); showWordPopup(m[2]); });
+        wrap.appendChild(sp);
+        if (m[3]) wrap.appendChild(document.createTextNode(m[3]));
+      } else {
+        wrap.appendChild(document.createTextNode(p));
+      }
+    });
+    return wrap;
+  }
+  function showWordPopup(word) {
+    const info = lookupWord(word);
+    let ov = document.getElementById("word-pop-overlay");
+    if (!ov) {
+      ov = el("div", "wordpop-overlay");
+      ov.id = "word-pop-overlay";
+      ov.addEventListener("click", (e) => { if (e.target === ov) ov.remove(); });
+      document.body.appendChild(ov);
+    }
+    ov.innerHTML = "";
+    const box = el("div", "wordpop");
+    const head = el("div", "wordpop-head");
+    head.appendChild(el("span", "wordpop-word", escapeHtml(info.word)));
+    head.appendChild(speakButton(info.word));
+    box.appendChild(head);
+    if (info.found) {
+      if (info.kana) box.appendChild(el("div", "wordpop-row", "読み方：" + escapeHtml(info.kana)));
+      if (info.pos) box.appendChild(el("div", "wordpop-row", "品詞：<b>" + escapeHtml(info.pos) + "</b>"));
+      box.appendChild(el("div", "wordpop-row", "意味：" + escapeHtml(info.ja || "（登録なし）")));
+      if (info.base) box.appendChild(el("div", "wordpop-note", "※ 原形「" + escapeHtml(info.base) + "」で表示"));
+    } else {
+      box.appendChild(el("div", "wordpop-row", "この辞書には未収録です。🔊 で発音は確認できます。"));
+    }
+    const close = el("button", "btn btn-ghost", "閉じる");
+    close.style.marginTop = "12px";
+    close.addEventListener("click", () => ov.remove());
+    box.appendChild(close);
+    ov.appendChild(box);
+  }
+  // 辞書ツール（単語や文を入力してタップ）
+  function renderDictionary() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const back = el("button", "back-link", "← ホームに戻る");
+    back.addEventListener("click", renderDashboard);
+    wrap.appendChild(back);
+    wrap.appendChild(el("h2", "section-title", "🔍 単語辞典"));
+    wrap.appendChild(el("p", "section-sub", "英単語・英文を入力して「調べる」を押すと、各単語をタップして読み方・品詞・意味を確認できます。"));
+    const card = el("div", "card");
+    const input = el("textarea", "text-input");
+    input.rows = 2;
+    input.placeholder = "例：I want to improve my English.";
+    card.appendChild(input);
+    const btn = el("button", "btn btn-primary", "調べる");
+    btn.style.marginTop = "10px";
+    const out = el("div");
+    out.style.marginTop = "14px";
+    out.style.fontSize = "18px";
+    out.style.lineHeight = "2.2";
+    btn.addEventListener("click", () => {
+      out.innerHTML = "";
+      const t = input.value.trim();
+      if (!t) return;
+      out.appendChild(el("div", "hint", "↓ 単語をタップしてください"));
+      out.appendChild(tappableText(t));
+    });
+    card.appendChild(btn);
+    card.appendChild(out);
+    wrap.appendChild(card);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  /* ============================================================
      ダッシュボード
      ============================================================ */
   function weekOf(d) { return d.week || Math.ceil(d.day / 7); }
@@ -559,6 +674,18 @@
     ekcard.appendChild(ekbtn);
     wrap.appendChild(ekcard);
 
+    // 単語辞典（タップで意味）
+    const dcard = el("div", "feature-card");
+    dcard.style.borderColor = "#d97706";
+    dcard.innerHTML =
+      '<div class="fc-icon">🔍</div>' +
+      '<div class="fc-text"><strong>単語辞典（タップで意味）</strong>' +
+      "<div>例文・長文・会話の英単語をタップすると、読み方・品詞・意味が出ます。単語を調べることも。</div></div>";
+    const dbtn = el("button", "btn btn-primary", "辞書を開く");
+    dbtn.addEventListener("click", () => renderDictionary());
+    dcard.appendChild(dbtn);
+    wrap.appendChild(dcard);
+
     // アプリのインストール案内
     const icard = el("div", "feature-card");
     icard.style.borderColor = "#7c3aed";
@@ -662,7 +789,10 @@
       const item = el("div", "example-item");
       item.appendChild(speakButton(ex.en));
       const t = el("div");
-      t.innerHTML = '<div class="example-en">' + escapeHtml(ex.en) + '</div><div class="example-ja">' + escapeHtml(ex.ja) + "</div>";
+      const en = el("div", "example-en");
+      en.appendChild(tappableText(ex.en));
+      t.appendChild(en);
+      t.appendChild(el("div", "example-ja", escapeHtml(ex.ja)));
       item.appendChild(t);
       ecard.appendChild(item);
     });
@@ -858,6 +988,8 @@
   let fcKeyHandler = null;
   function clearFcKeys() {
     if (fcKeyHandler) { document.removeEventListener("keydown", fcKeyHandler); fcKeyHandler = null; }
+    const wp = document.getElementById("word-pop-overlay");
+    if (wp) wp.remove();
   }
 
   /* ============================================================
@@ -1479,7 +1611,10 @@
         const line = el("div", "dia-line" + (i % 2 === 1 ? " right" : ""));
         line.appendChild(el("span", "dia-speaker", escapeHtml(l.s)));
         const body = el("div", "dia-body");
-        body.innerHTML = '<div class="dia-en">' + escapeHtml(l.en) + '</div><div class="dia-ja">' + escapeHtml(l.ja) + "</div>";
+        const den = el("div", "dia-en");
+        den.appendChild(tappableText(l.en));
+        body.appendChild(den);
+        body.appendChild(el("div", "dia-ja", escapeHtml(l.ja)));
         line.appendChild(body);
         line.appendChild(speakButton(l.en));
         card.appendChild(line);
@@ -2380,7 +2515,7 @@
     body.style.whiteSpace = "pre-wrap";
     body.style.marginTop = "8px";
     body.style.lineHeight = "1.9";
-    body.textContent = p.passage;
+    body.appendChild(tappableText(p.passage));
     c.appendChild(body);
     const sp = speakButton(p.passage);
     sp.style.marginTop = "8px";
@@ -2557,7 +2692,7 @@
     // パッセージ（音読）
     const pc = el("div", "card learn-block");
     pc.appendChild(el("span", "block-label", "📖 パッセージ（音読）"));
-    const body = el("div"); body.style.lineHeight = "1.9"; body.style.margin = "8px 0"; body.textContent = c.passage;
+    const body = el("div"); body.style.lineHeight = "1.9"; body.style.margin = "8px 0"; body.appendChild(tappableText(c.passage));
     pc.appendChild(body);
     pc.appendChild(el("div", "phrase-ja", c.passageJa));
     const prow = el("div"); prow.style.display = "flex"; prow.style.gap = "8px"; prow.style.marginTop = "10px"; prow.style.flexWrap = "wrap";
