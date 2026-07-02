@@ -240,3 +240,60 @@ EIKEN_WRITING.email.samples.push(
   { situation: "友達が「今度の休みに映画に行こう。何の映画が見たい？何時に会う？」と聞いてきた。", model: "Hi Lisa,\n\nThank you for your email! To answer your questions, I really want to see the new action movie. Everyone says it is exciting. How about meeting at the station at one o'clock? Then we can have lunch before the movie. By the way, should I buy the tickets online? Please write back soon.\n\nYour friend,\nKen" },
   { situation: "友達が「新しい町に引っ越した。どんな町？友達はできた？」と聞いてきた。", model: "Hi Alex,\n\nThanks for your email. To answer your questions, my new town is quiet and has a beautiful park. I like it very much. I have already made two friends at my new school, and they are very kind. By the way, when can you come and visit me? I'm looking forward to seeing you.\n\nYour friend,\nMika" }
 );
+
+/* =========================================================
+   重点追加：得点に直結する最重要語彙・連語と、それを狙う大問1
+   （すべて自作の頻出語。準2級で差がつく中級レベルに厳選）
+   ========================================================= */
+EIKEN_VOCAB.push(
+  { unit: "⭐ 最重要動詞", items: [
+    { en: "achieve", ja: "達成する" }, { en: "avoid", ja: "避ける" }, { en: "offer", ja: "申し出る/提供する" },
+    { en: "decide", ja: "決める" }, { en: "expect", ja: "予期する/期待する" }, { en: "receive", ja: "受け取る" },
+    { en: "realize", ja: "気づく/実現する" }, { en: "suggest", ja: "提案する" }, { en: "allow", ja: "許す" },
+    { en: "provide", ja: "供給する" }, { en: "produce", ja: "生産する" }, { en: "discover", ja: "発見する" },
+    { en: "describe", ja: "描写する/説明する" }, { en: "notice", ja: "気づく" }, { en: "contain", ja: "含む" },
+    { en: "continue", ja: "続ける" }, { en: "mention", ja: "言及する" }, { en: "complete", ja: "完成させる" },
+  ] },
+  { unit: "⭐ 最重要 形容詞・副詞", items: [
+    { en: "similar", ja: "似ている" }, { en: "common", ja: "共通の/よくある" }, { en: "certain", ja: "確かな/ある特定の" },
+    { en: "various", ja: "さまざまな" }, { en: "special", ja: "特別な" }, { en: "particular", ja: "特定の" },
+    { en: "recent", ja: "最近の" }, { en: "actually", ja: "実際は" }, { en: "especially", ja: "特に" },
+    { en: "probably", ja: "おそらく" }, { en: "finally", ja: "ついに/最後に" }, { en: "hardly", ja: "ほとんど〜ない" },
+    { en: "immediately", ja: "すぐに" }, { en: "exactly", ja: "正確に" }, { en: "quite", ja: "かなり" },
+    { en: "nearly", ja: "ほぼ" }, { en: "whole", ja: "全体の" }, { en: "suddenly", ja: "突然" },
+  ] },
+  { unit: "⭐ 最重要 名詞", items: [
+    { en: "chance", ja: "機会/見込み" }, { en: "reason", ja: "理由" }, { en: "result", ja: "結果" },
+    { en: "situation", ja: "状況" }, { en: "condition", ja: "状態/条件" }, { en: "choice", ja: "選択" },
+    { en: "effort", ja: "努力" }, { en: "opportunity", ja: "機会" }, { en: "activity", ja: "活動" },
+    { en: "relationship", ja: "関係" }, { en: "benefit", ja: "利益/恩恵" }, { en: "purpose", ja: "目的" },
+    { en: "method", ja: "方法" }, { en: "amount", ja: "量" }, { en: "quality", ja: "質" },
+    { en: "average", ja: "平均" }, { en: "goal", ja: "目標" }, { en: "matter", ja: "事柄/問題" },
+  ] },
+  { unit: "🔑 最重要 連語・熟語③", items: [
+    { en: "be likely to", ja: "〜しそうだ" }, { en: "be willing to", ja: "喜んで〜する" }, { en: "be supposed to", ja: "〜することになっている" },
+    { en: "be used to ~ing", ja: "〜に慣れている" }, { en: "would rather", ja: "むしろ〜したい" }, { en: "had better", ja: "〜したほうがよい" },
+    { en: "no longer", ja: "もはや〜ない" }, { en: "as well as", ja: "〜だけでなく" }, { en: "rather than", ja: "〜よりむしろ" },
+    { en: "as a result", ja: "結果として" }, { en: "in addition", ja: "加えて" }, { en: "on the other hand", ja: "一方で" },
+    { en: "at first", ja: "最初は" }, { en: "in the end", ja: "最終的に" }, { en: "make sure", ja: "確かめる" },
+    { en: "keep in touch", ja: "連絡を取り合う" },
+  ] }
+);
+
+EIKEN_PART1.push(
+  { type: "choice", q: "She worked very hard to ___ her goal.", options: ["avoid", "achieve", "offer", "receive"], answer: 1, explain: "achieve a goal＝目標を達成する。" },
+  { type: "choice", q: "You should ___ eating too much sugar.", options: ["avoid", "achieve", "offer", "allow"], answer: 0, explain: "avoid + 動名詞＝〜を避ける。" },
+  { type: "choice", q: "The hotel will ___ free breakfast to guests.", options: ["provide", "receive", "avoid", "decide"], answer: 0, explain: "provide A to B＝提供する。" },
+  { type: "choice", q: "I didn't ___ that you were behind me.", options: ["offer", "avoid", "realize", "provide"], answer: 2, explain: "realize＝気づく。" },
+  { type: "choice", q: "Could you ___ what the man looked like?", options: ["avoid", "describe", "offer", "allow"], answer: 1, explain: "describe＝描写する。" },
+  { type: "choice", q: "My teacher ___ that I join the speech contest.", options: ["avoided", "offered", "suggested", "received"], answer: 2, explain: "suggest that 〜＝提案する。" },
+  { type: "choice", q: "This drink ___ a lot of vitamin C.", options: ["offers", "avoids", "decides", "contains"], answer: 3, explain: "contain＝含む。" },
+  { type: "choice", q: "There is a good ___ that it will snow tonight.", options: ["chance", "reason", "result", "effort"], answer: 0, explain: "a good chance＝〜の見込みが高い。" },
+  { type: "choice", q: "It rained hard. ___ a result, the game was canceled.", options: ["In", "As", "For", "By"], answer: 1, explain: "as a result＝結果として。" },
+  { type: "choice", q: "She made a lot of ___ to improve her English.", options: ["chance", "result", "effort", "reason"], answer: 2, explain: "make an effort＝努力する。" },
+  { type: "choice", q: "My idea is ___ to yours.", options: ["common", "certain", "special", "similar"], answer: 3, explain: "be similar to＝〜に似ている。" },
+  { type: "choice", q: "Making this mistake is very ___ among beginners.", options: ["common", "similar", "certain", "recent"], answer: 0, explain: "common＝よくある。" },
+  { type: "choice", q: "We are ___ to wear a uniform at this school.", options: ["supposed", "likely", "willing", "afraid"], answer: 0, explain: "be supposed to＝〜することになっている。" },
+  { type: "choice", q: "It is ___ to rain this afternoon, so take an umbrella.", options: ["likely", "willing", "supposed", "afraid"], answer: 0, explain: "be likely to＝〜しそうだ。" },
+  { type: "choice", q: "I'm ___ to getting up early now, so it's not hard.", options: ["used", "likely", "supposed", "willing"], answer: 0, explain: "be used to ~ing＝〜に慣れている。" }
+);
