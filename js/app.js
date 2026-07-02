@@ -27,6 +27,7 @@
     if (typeof p.listenBest !== "number") p.listenBest = 0;
     if (typeof p.essentialBest !== "number") p.essentialBest = 0;
     if (!p.weekBest || typeof p.weekBest !== "object") p.weekBest = {};
+    if (!p.eikenBest || typeof p.eikenBest !== "object") p.eikenBest = {};
     if (!p.weakWords || typeof p.weakWords !== "object") p.weakWords = {};
     if (typeof p.lastWordQuizDate === "undefined") p.lastWordQuizDate = null;
     return p;
@@ -545,6 +546,19 @@
     ccard.appendChild(cbtn);
     wrap.appendChild(ccard);
 
+    // 英検準2級 対策への入口
+    const ekcard = el("div", "feature-card");
+    ekcard.style.borderColor = "#0d9488";
+    const mockTxt = (progress.eikenBest && progress.eikenBest.mock) ? "（模試ベスト " + progress.eikenBest.mock + "%）" : "";
+    ekcard.innerHTML =
+      '<div class="fc-icon">🎓</div>' +
+      '<div class="fc-text"><strong>英検準2級 対策 ' + mockTxt + "</strong>" +
+      "<div>約3か月で合格レベルへ。語彙・文法・読解・作文・リスニング＋二次(面接)まで。</div></div>";
+    const ekbtn = el("button", "btn btn-primary", "開く");
+    ekbtn.addEventListener("click", () => renderEikenHub());
+    ekcard.appendChild(ekbtn);
+    wrap.appendChild(ekcard);
+
     // アプリのインストール案内
     const icard = el("div", "feature-card");
     icard.style.borderColor = "#7c3aed";
@@ -907,8 +921,8 @@
     app.innerHTML = "";
     const wrap = el("div", "fade-in");
 
-    const back = el("button", "back-link", "← ホームに戻る");
-    back.addEventListener("click", renderDashboard);
+    const back = el("button", "back-link", session.backLabel || "← ホームに戻る");
+    back.addEventListener("click", session.back || renderDashboard);
     wrap.appendChild(back);
 
     wrap.appendChild(el("h2", "section-title", session.title));
@@ -916,6 +930,9 @@
       "各問題に答えたら「答え合わせ」を押してください。全問終えると結果が表示されます。"));
     wrap.appendChild(el("p", "kbd-hint",
       "⌨️ 4択は <kbd>1</kbd>〜<kbd>4</kbd> で選択 ・ 穴埋めは <kbd>Enter</kbd> ・ 英作文は <kbd>Ctrl</kbd>+<kbd>Enter</kbd> で答え合わせ"));
+
+    // 長文などの導入（パッセージ）を上部に表示
+    if (session.intro) wrap.appendChild(session.intro);
 
     // 進捗バー
     const prog = el("div", "test-progress");
@@ -1209,6 +1226,10 @@
       progress.weekBest[session.week] = Math.max(progress.weekBest[session.week] || 0, pct);
       saveProgress(progress);
       recordActivityToday();
+    } else if (session.mode === "eiken") {
+      progress.eikenBest[session.eikenKey] = Math.max(progress.eikenBest[session.eikenKey] || 0, pct);
+      saveProgress(progress);
+      recordActivityToday();
     } else if (session.mode === "weak" || session.mode === "review") {
       recordActivityToday();
     }
@@ -1222,6 +1243,11 @@
       if (pct >= 80) { msg = "会話デビューできそう！基本のやり取りはバッチリ"; emoji = "🎉"; }
       else if (pct >= 60) { msg = "あと少し！定番フレーズを復習すれば会話できます"; emoji = "💪"; }
       else { msg = "まずはフレーズ集と会話シナリオで定番表現を覚えよう"; emoji = "📒"; }
+    } else if (session.mode === "eiken" && session.eikenKey === "mock") {
+      // 準2級 合否の目安
+      if (pct >= 75) { msg = "合格圏！この調子で本番も"; emoji = "🎉"; }
+      else if (pct >= 60) { msg = "合格ラインの目安（約6割）。あと一歩！"; emoji = "💪"; }
+      else { msg = "分野別対策でもう少し。苦手を重点的に"; emoji = "📚"; }
     } else if (pct >= 90) { msg = "すばらしい！完璧に近いです"; emoji = "🏆"; }
     else if (pct >= 70) { msg = "よくできました！"; emoji = "🎉"; }
     else if (pct >= 50) { msg = "もう少し！復習して再挑戦"; emoji = "💪"; }
@@ -1249,7 +1275,8 @@
         session.mode === "dialogue" ? "（ベスト " + progress.dialogueBest + "%）" :
         session.mode === "listen" ? "（ベスト " + progress.listenBest + "%）" :
         session.mode === "essential" ? "（ベスト " + progress.essentialBest + "%）" :
-        session.mode === "week" ? "（ベスト " + (progress.weekBest[session.week] || 0) + "%）" : "") + "</div>";
+        session.mode === "week" ? "（ベスト " + (progress.weekBest[session.week] || 0) + "%）" :
+        session.mode === "eiken" ? "（ベスト " + (progress.eikenBest[session.eikenKey] || 0) + "%）" : "") + "</div>";
     wrap.appendChild(hero);
 
     const actions = el("div", "result-actions");
@@ -1259,14 +1286,12 @@
       const retryWrong = el("button", "btn btn-primary", "間違えた " + wrongInThis + " 問を解き直す");
       retryWrong.addEventListener("click", () => {
         const items = session.items.filter((_, i) => !session.correct[i]);
-        session = {
-          mode: session.mode,
-          day: session.day,
+        session = Object.assign({}, session, {
           title: (session.mode === "day" ? "Day " + session.day + "：" : "") + "間違えた問題の再テスト",
           items: items,
           checked: new Array(items.length).fill(false),
           correct: new Array(items.length).fill(false),
-        };
+        });
         renderTest();
       });
       actions.appendChild(retryWrong);
@@ -1306,6 +1331,15 @@
       actions.appendChild(retry);
       const hub = el("button", "btn btn-ghost", "苦手単語に戻る");
       hub.addEventListener("click", renderWeakWords);
+      actions.appendChild(hub);
+    } else if (session.mode === "eiken") {
+      if (typeof session.restart === "function") {
+        const retry = el("button", "btn btn-ghost", "もう一度");
+        retry.addEventListener("click", () => session.restart());
+        actions.appendChild(retry);
+      }
+      const hub = el("button", "btn btn-ghost", "英検メニューに戻る");
+      hub.addEventListener("click", renderEikenHub);
       actions.appendChild(hub);
     }
 
@@ -2092,6 +2126,486 @@
   }
 
   /* ============================================================
+     英検準2級 対策モジュール
+     ============================================================ */
+  function eikenBest(key) { return progress.eikenBest[key] || 0; }
+  function bestTag(key) { return eikenBest(key) > 0 ? "（ベスト " + eikenBest(key) + "%）" : ""; }
+
+  // 汎用：英検の4択・リスニング等のテストを開始
+  function startEikenTest(opts) {
+    const items = opts.questions.map((q, i) => ({ day: "eiken", qIndex: i, q: q }));
+    session = {
+      mode: "eiken",
+      eikenKey: opts.key,
+      title: opts.title,
+      items: items,
+      checked: new Array(items.length).fill(false),
+      correct: new Array(items.length).fill(false),
+      intro: opts.intro || null,
+      back: renderEikenHub,
+      backLabel: "← 英検メニューに戻る",
+      restart: opts.restart || null,
+    };
+    renderTest();
+  }
+
+  function eikenVocabAll() {
+    const a = [];
+    EIKEN_VOCAB.forEach((u) => u.items.forEach((it) => a.push(it)));
+    return a;
+  }
+
+  // マイク録音ボタン（二次試験の音読・応答練習用・Chrome系のみ）
+  function makeMicButton(getTarget, fbEl) {
+    const b = el("button", "btn btn-ghost", "🎤 話す");
+    if (!SpeechRec) { b.disabled = true; b.title = "Chrome系ブラウザで利用できます"; return b; }
+    b.addEventListener("click", () => {
+      const target = getTarget();
+      const rec = new SpeechRec();
+      rec.lang = "en-US"; rec.interimResults = false; rec.maxAlternatives = 1;
+      b.disabled = true; b.textContent = "🎙️ 聞き取り中...";
+      rec.onresult = (ev) => {
+        const said = ev.results[0][0].transcript;
+        let scoreTxt = "";
+        if (target) {
+          const g = normalize(said).split(" ").filter(Boolean);
+          const w = normalize(target).split(" ").filter(Boolean);
+          const pl = g.slice(); let m = 0;
+          w.forEach((x) => { const k = pl.indexOf(x); if (k >= 0) { m++; pl.splice(k, 1); } });
+          scoreTxt = "（一致度 " + Math.round((m / Math.max(w.length, 1)) * 100) + "%）";
+        }
+        fbEl.innerHTML = '<div class="feedback ok"><div class="fb-head">🎧 認識結果 ' + scoreTxt + "</div><div>" + escapeHtml(said) + "</div></div>";
+        recordActivityToday();
+      };
+      rec.onerror = () => { fbEl.innerHTML = '<div class="feedback ng"><div class="fb-head">🎤 認識できませんでした</div><div>マイクの許可をご確認ください。</div></div>'; };
+      rec.onend = () => { b.disabled = false; b.textContent = "🎤 話す"; };
+      try { rec.start(); } catch (e) { b.disabled = false; b.textContent = "🎤 話す"; }
+    });
+    return b;
+  }
+
+  // ---- ハブ ----
+  function renderEikenHub() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const hero = el("div", "conv-hero");
+    hero.style.background = "linear-gradient(135deg,#0d9488,#4f46e5)";
+    hero.innerHTML =
+      "<h1>🎓 英検準2級 対策</h1>" +
+      "<p>約3か月で準2級合格レベルへ。一次（語彙・文法・読解・作文・リスニング）と二次（面接）を、" +
+      "この中だけで対策できます。まずは学習計画から。</p>";
+    wrap.appendChild(hero);
+
+    const grid = el("div", "conv-grid");
+    const cards = [
+      { ic: "🗺️", title: "試験ガイド & 3か月計画", desc: "試験の形式と、合格までの学習ロードマップ。", go: renderEikenPlan },
+      { ic: "📗", title: "語彙・熟語", desc: "分野別の頻出単語・熟語＋語彙クイズ。", go: renderEikenVocab },
+      { ic: "📘", title: "文法（準2級）", desc: "現在完了進行形・分詞・間接疑問など8ユニット。", go: renderEikenGrammar },
+      { ic: "1️⃣", title: "大問1：語句空所補充", desc: "単語・熟語・文法の4択練習。" + bestTag("part1"), go: startEikenPart1 },
+      { ic: "2️⃣", title: "大問2：会話文", desc: "会話の流れに合う応答を選ぶ。" + bestTag("part2"), go: startEikenPart2 },
+      { ic: "📖", title: "大問3：長文読解", desc: "掲示・Eメール・説明文の内容一致。", go: renderEikenReadingList },
+      { ic: "✍️", title: "ライティング", desc: "意見論述・Eメールの型と模範解答。", go: renderEikenWriting },
+      { ic: "🎧", title: "リスニング", desc: "会話・説明を聞いて答える。" + bestTag("listening"), go: startEikenListening },
+      { ic: "🗣️", title: "二次試験（面接）", desc: "音読・質問応答をカードで練習（発音判定つき）。", go: renderEikenInterview },
+      { ic: "📝", title: "模試（判定）", desc: "本番形式のミックスで合否の目安を判定。" + bestTag("mock"), go: startEikenMock },
+    ];
+    cards.forEach((c) => {
+      const card = el("div", "conv-card");
+      card.innerHTML = '<div class="ic">' + c.ic + "</div><h3>" + c.title + "</h3><p>" + c.desc + "</p>";
+      card.addEventListener("click", c.go);
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  function eikenBackLink() {
+    const back = el("button", "back-link", "← 英検メニューに戻る");
+    back.addEventListener("click", renderEikenHub);
+    return back;
+  }
+
+  // ---- 試験ガイド & 学習計画 ----
+  function renderEikenPlan() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    wrap.appendChild(eikenBackLink());
+    wrap.appendChild(el("h2", "section-title", "🗺️ 試験ガイド & 3か月計画"));
+
+    const g = el("div", "card learn-block");
+    g.appendChild(el("span", "block-label", "📋 試験の形式"));
+    g.appendChild(el("p", null, escapeHtml(EIKEN_GUIDE.overview)));
+    g.appendChild(el("div", "block-label", "一次試験（筆記＋リスニング）"));
+    EIKEN_GUIDE.primary.forEach((s) => {
+      const p = el("div", "grammar-point");
+      p.innerHTML = "<h4>" + escapeHtml(s.section) + "</h4><p>" + escapeHtml(s.content) + "</p>";
+      g.appendChild(p);
+    });
+    g.appendChild(el("div", "block-label", "二次試験（面接・スピーキング）"));
+    EIKEN_GUIDE.secondary.forEach((s) => {
+      const p = el("div", "grammar-point");
+      p.innerHTML = "<h4>" + escapeHtml(s.section) + "</h4><p>" + escapeHtml(s.content) + "</p>";
+      g.appendChild(p);
+    });
+    wrap.appendChild(g);
+
+    EIKEN_PLAN.forEach((ph) => {
+      const c = el("div", "card learn-block");
+      c.appendChild(el("span", "block-label", "📅 " + ph.phase + "（" + ph.weeks + "）"));
+      const ul = el("ul");
+      ul.style.margin = "8px 0 0"; ul.style.paddingLeft = "20px"; ul.style.lineHeight = "1.9";
+      ph.tasks.forEach((t) => { const li = el("li"); li.textContent = t; ul.appendChild(li); });
+      c.appendChild(ul);
+      wrap.appendChild(c);
+    });
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  // ---- 語彙 ----
+  function renderEikenVocab() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    wrap.appendChild(eikenBackLink());
+    wrap.appendChild(el("h2", "section-title", "📗 語彙・熟語（準2級）"));
+    wrap.appendChild(el("p", "section-sub", "分野別の頻出語です。🔊 で発音を確認しましょう。"));
+
+    const quiz = el("button", "btn btn-primary btn-block", "📝 語彙クイズに挑戦" + (eikenBest("vocab") ? "（ベスト " + eikenBest("vocab") + "%）" : ""));
+    quiz.style.marginBottom = "18px";
+    quiz.addEventListener("click", startEikenVocabQuiz);
+    wrap.appendChild(quiz);
+
+    EIKEN_VOCAB.forEach((u) => {
+      const card = el("div", "card phrase-cat");
+      card.appendChild(el("span", "block-label", u.unit));
+      u.items.forEach((it) => {
+        const item = el("div", "phrase-item");
+        item.appendChild(speakButton(it.en));
+        const t = el("div");
+        t.innerHTML = '<div class="phrase-en">' + escapeHtml(it.en) + '</div><div class="phrase-ja">' + escapeHtml(it.ja) + "</div>";
+        item.appendChild(t);
+        card.appendChild(item);
+      });
+      wrap.appendChild(card);
+    });
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+  function startEikenVocabQuiz() {
+    const all = eikenVocabAll();
+    const enPool = all.map((x) => x.en), jaPool = all.map((x) => x.ja);
+    const picks = shuffle(all).slice(0, 12);
+    const qs = picks.map((p, i) =>
+      i % 2 === 0
+        ? buildChoiceFromPair("「" + p.ja + "」を英語で？", p.en, enPool, "「" + p.ja + "」→ " + p.en)
+        : buildChoiceFromPair("「" + p.en + "」の意味は？", p.ja, jaPool, p.en + " →「" + p.ja + "」", p.en));
+    startEikenTest({ key: "vocab", title: "📗 語彙クイズ（" + qs.length + "問）", questions: qs, restart: startEikenVocabQuiz });
+  }
+
+  // ---- 文法 ----
+  function renderEikenGrammar() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    wrap.appendChild(eikenBackLink());
+    wrap.appendChild(el("h2", "section-title", "📘 文法（準2級）"));
+    wrap.appendChild(el("p", "section-sub", "気になるユニットを選んで、解説＋確認テストで身につけましょう。"));
+    const grid = el("div", "conv-grid");
+    EIKEN_GRAMMAR.forEach((u) => {
+      const card = el("div", "conv-card");
+      card.innerHTML = "<h3>" + escapeHtml(u.title) + "</h3><p>" + escapeHtml(u.theme) + "</p>";
+      card.addEventListener("click", () => renderEikenGrammarUnit(u));
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+  function renderEikenGrammarUnit(u) {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const back = el("button", "back-link", "← 文法一覧に戻る");
+    back.addEventListener("click", renderEikenGrammar);
+    wrap.appendChild(back);
+    wrap.appendChild(el("h2", "section-title", "📘 " + escapeHtml(u.title)));
+    wrap.appendChild(el("p", "section-sub", escapeHtml(u.theme)));
+    const gc = el("div", "card learn-block");
+    gc.appendChild(el("p", null, escapeHtml(u.intro)));
+    u.points.forEach((pt) => {
+      const p = el("div", "grammar-point");
+      p.innerHTML = "<h4>" + escapeHtml(pt.h) + "</h4><p>" + escapeHtml(pt.p) + "</p>";
+      const eg = el("div", "eg"); eg.style.display = "flex"; eg.style.alignItems = "center"; eg.style.gap = "8px";
+      eg.appendChild(document.createTextNode("例) " + pt.eg));
+      eg.appendChild(speakButton(pt.eg));
+      p.appendChild(eg);
+      gc.appendChild(p);
+    });
+    wrap.appendChild(gc);
+    const t = el("button", "btn btn-primary btn-block", "この文法の確認テスト →");
+    t.addEventListener("click", () => runEikenGrammarTest(u));
+    wrap.appendChild(t);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+  function runEikenGrammarTest(u) {
+    startEikenTest({
+      key: "g_" + u.id,
+      title: "📘 " + u.title + " 確認テスト",
+      questions: u.questions,
+      restart: () => runEikenGrammarTest(u),
+    });
+  }
+
+  // ---- 大問1 / 大問2 ----
+  function startEikenPart1() {
+    const qs = shuffle(EIKEN_PART1).slice(0, 12);
+    startEikenTest({ key: "part1", title: "1️⃣ 大問1 語句空所補充（" + qs.length + "問）", questions: qs, restart: startEikenPart1 });
+  }
+  function startEikenPart2() {
+    const qs = shuffle(EIKEN_PART2).slice(0, 10);
+    startEikenTest({ key: "part2", title: "2️⃣ 大問2 会話文の空所補充（" + qs.length + "問）", questions: qs, restart: startEikenPart2 });
+  }
+
+  // ---- 長文読解 ----
+  function eikenPassageCard(p) {
+    const c = el("div", "card");
+    c.style.marginBottom = "16px";
+    c.appendChild(el("span", "block-label", "📖 " + p.title));
+    const body = el("div");
+    body.style.whiteSpace = "pre-wrap";
+    body.style.marginTop = "8px";
+    body.style.lineHeight = "1.9";
+    body.textContent = p.passage;
+    c.appendChild(body);
+    const sp = speakButton(p.passage);
+    sp.style.marginTop = "8px";
+    c.appendChild(sp);
+    return c;
+  }
+  function renderEikenReadingList() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    wrap.appendChild(eikenBackLink());
+    wrap.appendChild(el("h2", "section-title", "📖 長文読解"));
+    wrap.appendChild(el("p", "section-sub", "パッセージを読んで内容一致問題に答えます。"));
+    const grid = el("div", "conv-grid");
+    EIKEN_READING.forEach((p) => {
+      const card = el("div", "conv-card");
+      card.innerHTML = "<h3>" + escapeHtml(p.title) + "</h3><p>" + escapeHtml(p.intro) + "</p>";
+      card.addEventListener("click", () => startEikenReading(p));
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+  function startEikenReading(p) {
+    startEikenTest({
+      key: "reading", title: "📖 " + p.title, questions: p.questions,
+      intro: eikenPassageCard(p), restart: () => startEikenReading(p),
+    });
+  }
+
+  // ---- リスニング ----
+  function startEikenListening() {
+    const qs = shuffle(EIKEN_LISTENING).slice(0, 10);
+    startEikenTest({ key: "listening", title: "🎧 リスニング（" + qs.length + "問）", questions: qs, restart: startEikenListening });
+  }
+
+  // ---- ライティング ----
+  function renderEikenWriting() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    wrap.appendChild(eikenBackLink());
+    wrap.appendChild(el("h2", "section-title", "✍️ ライティング対策"));
+
+    function reveal(container, label, text) {
+      const b = el("button", "mini-link", "▶ " + label);
+      const box = el("div");
+      b.addEventListener("click", () => {
+        if (box.childNodes.length) { box.innerHTML = ""; b.textContent = "▶ " + label; return; }
+        const m = el("div", "feedback ok");
+        m.style.whiteSpace = "pre-wrap";
+        m.textContent = text;
+        m.appendChild(speakButton(text));
+        box.appendChild(m);
+        b.textContent = "▼ " + label;
+      });
+      container.appendChild(b);
+      container.appendChild(box);
+    }
+
+    // 意見論述
+    const o = EIKEN_WRITING.opinion;
+    const oc = el("div", "card learn-block");
+    oc.appendChild(el("span", "block-label", "🗒️ 意見論述（Opinion）"));
+    oc.appendChild(el("p", null, escapeHtml(o.intro)));
+    const os = el("div", "grammar-point");
+    os.innerHTML = "<h4>書き方の型</h4>";
+    o.structure.forEach((s) => { const d = el("div", "eg"); d.textContent = s; os.appendChild(d); });
+    oc.appendChild(os);
+    const op = el("div", "grammar-point");
+    op.innerHTML = "<h4>使える表現</h4>";
+    o.phrases.forEach((ph) => {
+      const row = el("div", "phrase-item");
+      row.appendChild(speakButton(ph.en));
+      const t = el("div"); t.innerHTML = '<div class="phrase-en">' + escapeHtml(ph.en) + '</div><div class="phrase-ja">' + escapeHtml(ph.ja) + "</div>";
+      row.appendChild(t); op.appendChild(row);
+    });
+    oc.appendChild(op);
+    o.topics.forEach((tp, i) => {
+      const tc = el("div", "grammar-point");
+      tc.innerHTML = "<h4>練習トピック " + (i + 1) + "</h4><p>" + escapeHtml(tp.prompt) + "</p>";
+      const ta = el("textarea", "text-input"); ta.rows = 4; ta.placeholder = "ここに50語程度で書いてみましょう";
+      tc.appendChild(ta);
+      reveal(tc, "模範解答を見る", tp.model);
+      oc.appendChild(tc);
+    });
+    wrap.appendChild(oc);
+
+    // Eメール
+    const e = EIKEN_WRITING.email;
+    const ec = el("div", "card learn-block");
+    ec.appendChild(el("span", "block-label", "✉️ Eメール返信"));
+    ec.appendChild(el("p", null, escapeHtml(e.intro)));
+    const es = el("div", "grammar-point");
+    es.innerHTML = "<h4>書き方の型</h4>";
+    e.structure.forEach((s) => { const d = el("div", "eg"); d.textContent = s; es.appendChild(d); });
+    ec.appendChild(es);
+    const ep = el("div", "grammar-point");
+    ep.innerHTML = "<h4>使える表現</h4>";
+    e.phrases.forEach((ph) => {
+      const row = el("div", "phrase-item");
+      row.appendChild(speakButton(ph.en));
+      const t = el("div"); t.innerHTML = '<div class="phrase-en">' + escapeHtml(ph.en) + '</div><div class="phrase-ja">' + escapeHtml(ph.ja) + "</div>";
+      row.appendChild(t); ep.appendChild(row);
+    });
+    ec.appendChild(ep);
+    e.samples.forEach((sm) => {
+      const sc = el("div", "grammar-point");
+      sc.innerHTML = "<h4>例題</h4><p>" + escapeHtml(sm.situation) + "</p>";
+      reveal(sc, "模範解答を見る", sm.model);
+      ec.appendChild(sc);
+    });
+    wrap.appendChild(ec);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  // ---- 二次試験（面接） ----
+  function renderEikenInterview() {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    wrap.appendChild(eikenBackLink());
+    wrap.appendChild(el("h2", "section-title", "🗣️ 二次試験（面接）対策"));
+    wrap.appendChild(el("p", "section-sub",
+      "面接の流れ：入室のあいさつ → カードの音読 → パッセージの質問 → イラストの質問 → 意見の質問（2つ）。カードを選んで練習しましょう。"));
+    if (!SpeechRec) {
+      const note = el("div", "card");
+      note.style.marginBottom = "14px";
+      note.innerHTML = "<p style='margin:0'>🎤 発音判定（マイク）は <strong>Chrome / Edge</strong> で使えます。他のブラウザでは模範解答と音声で練習してください。</p>";
+      wrap.appendChild(note);
+    }
+    const grid = el("div", "conv-grid");
+    EIKEN_INTERVIEW.forEach((c, i) => {
+      const card = el("div", "conv-card");
+      card.innerHTML = "<div class='ic'>🗂️</div><h3>面接カード " + (i + 1) + "</h3><p>" + escapeHtml(c.topic) + "</p>";
+      card.addEventListener("click", () => renderEikenInterviewCard(c));
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+  function renderEikenInterviewCard(c) {
+    window.speechSynthesis && window.speechSynthesis.cancel(); clearFcKeys();
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const back = el("button", "back-link", "← 面接カード一覧に戻る");
+    back.addEventListener("click", renderEikenInterview);
+    wrap.appendChild(back);
+    wrap.appendChild(el("h2", "section-title", "🗂️ " + escapeHtml(c.topic)));
+
+    // パッセージ（音読）
+    const pc = el("div", "card learn-block");
+    pc.appendChild(el("span", "block-label", "📖 パッセージ（音読）"));
+    const body = el("div"); body.style.lineHeight = "1.9"; body.style.margin = "8px 0"; body.textContent = c.passage;
+    pc.appendChild(body);
+    pc.appendChild(el("div", "phrase-ja", c.passageJa));
+    const prow = el("div"); prow.style.display = "flex"; prow.style.gap = "8px"; prow.style.marginTop = "10px"; prow.style.flexWrap = "wrap";
+    const listen = el("button", "btn btn-ghost", "🔊 お手本を聞く");
+    listen.addEventListener("click", () => speak(c.passage, listen));
+    const pfb = el("div"); pfb.style.marginTop = "10px";
+    prow.appendChild(listen);
+    prow.appendChild(makeMicButton(() => c.passage, pfb));
+    pc.appendChild(prow);
+    pc.appendChild(pfb);
+    wrap.appendChild(pc);
+
+    // イラスト説明
+    const ic = el("div", "card learn-block");
+    ic.appendChild(el("span", "block-label", "🖼️ イラスト（No.3用）"));
+    ic.appendChild(el("p", null, escapeHtml(c.illustration)));
+    wrap.appendChild(ic);
+
+    // 質問 No.2〜5
+    c.questions.filter((q) => q.no >= 2).forEach((q) => {
+      const qc = el("div", "card learn-block");
+      qc.appendChild(el("span", "block-label", "No." + q.no + "：" + q.kind));
+      const qr = el("div"); qr.style.display = "flex"; qr.style.alignItems = "center"; qr.style.gap = "8px"; qr.style.flexWrap = "wrap";
+      const qt = el("div"); qt.style.fontWeight = "700"; qt.textContent = q.q;
+      qr.appendChild(qt);
+      qr.appendChild(speakButton(q.q));
+      qc.appendChild(qr);
+      const fb = el("div"); fb.style.marginTop = "10px";
+      const row = el("div"); row.style.display = "flex"; row.style.gap = "8px"; row.style.marginTop = "10px"; row.style.flexWrap = "wrap";
+      row.appendChild(makeMicButton(() => q.model || "", fb));
+      const rev = el("button", "mini-link", "▶ 模範解答を見る");
+      const mbox = el("div");
+      rev.addEventListener("click", () => {
+        if (mbox.childNodes.length) { mbox.innerHTML = ""; rev.textContent = "▶ 模範解答を見る"; return; }
+        const m = el("div", "feedback ok");
+        m.innerHTML = "<div class='model'>" + escapeHtml(q.model) + "</div>";
+        m.appendChild(speakButton(q.model));
+        mbox.appendChild(m);
+        rev.textContent = "▼ 模範解答を隠す";
+      });
+      qc.appendChild(row);
+      qc.appendChild(rev);
+      qc.appendChild(mbox);
+      qc.appendChild(fb);
+      wrap.appendChild(qc);
+    });
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  // ---- 模試（判定） ----
+  function startEikenMock() {
+    const rp = shuffle(EIKEN_READING.slice())[0];
+    const gq = [];
+    EIKEN_GRAMMAR.forEach((u) => u.questions.forEach((q) => { if (q.type === "choice") gq.push(q); }));
+    const qs = []
+      .concat(shuffle(EIKEN_PART1).slice(0, 6))
+      .concat(shuffle(EIKEN_PART2).slice(0, 2))
+      .concat(shuffle(gq).slice(0, 4))
+      .concat(shuffle(EIKEN_LISTENING).slice(0, 4))
+      .concat(rp.questions);
+    startEikenTest({
+      key: "mock", title: "📝 準2級 模試（" + qs.length + "問）",
+      questions: qs, intro: eikenPassageCard(rp), restart: startEikenMock,
+    });
+  }
+
+  /* ============================================================
      リセット（確認モーダル）
      ============================================================ */
   const overlay = document.getElementById("modal-overlay");
@@ -2115,7 +2629,7 @@
 
   document.getElementById("reset-btn").addEventListener("click", () => {
     confirmDialog("学習の進捗・スコア・復習リスト・暗記状況・連続記録をすべて消去して最初からやり直します。よろしいですか？", () => {
-      progress = { days: {}, wrong: [], mastered: {}, dayMastered: {}, streak: { count: 0, lastDate: null }, finalBest: 0, convBest: 0, phraseBest: 0, dialogueBest: 0, listenBest: 0, essentialBest: 0, weekBest: {}, weakWords: {}, lastWordQuizDate: null };
+      progress = { days: {}, wrong: [], mastered: {}, dayMastered: {}, streak: { count: 0, lastDate: null }, finalBest: 0, convBest: 0, phraseBest: 0, dialogueBest: 0, listenBest: 0, essentialBest: 0, weekBest: {}, eikenBest: {}, weakWords: {}, lastWordQuizDate: null };
       saveProgress(progress);
       renderDashboard();
     });
@@ -2132,6 +2646,7 @@
       else if (nav === "review") renderReview();
       else if (nav === "conversation") renderConversationHub();
       else if (nav === "words") renderWordHub();
+      else if (nav === "eiken") renderEikenHub();
     });
   });
   document.getElementById("theme-btn").addEventListener("click", toggleTheme);
